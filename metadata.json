@@ -1,0 +1,6 @@
+{
+  "name": "燈台文庫 - Lighthouse Hashi Library",
+  "description": "Intelligent PDF library management system for LightHouse 橋i, featuring AI bulk classification, equipment lending workflows, and Japanese minimalist library design.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "Book": {
+      "title": "Book",
+      "description": "Technical book or document record in Lighthouse Hashi Library",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "topic": { "type": "string" },
+        "status": { "type": "string", "enum": ["available", "borrowed"] }
+      },
+      "required": ["id", "title", "author", "topic", "status"]
+    },
+    "EquipmentUser": {
+      "title": "EquipmentUser",
+      "description": "Terminal equipment or user profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] }
+      },
+      "required": ["id", "name", "role"]
+    },
+    "Loan": {
+      "title": "Loan",
+      "description": "Lending record for a book assigned to equipment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "bookId": { "type": "string" },
+        "userId": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "returned", "overdue"] }
+      },
+      "required": ["id", "bookId", "userId", "dueDate", "status"]
+    },
+    "TodoListDatabase": {
+      "title": "TodoListDatabase",
+      "description": "Dynamic matrix tabular list/database created by users with author, deadline and reminder settings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "author": { "type": "string" },
+        "deadline": { "type": "string" },
+        "authorEmail": { "type": "string" },
+        "authorPhone": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "author", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/books/{bookId}": {
+      "schema": "Book",
+      "description": "Repository of technical books and documents"
+    },
+    "/users/{userId}": {
+      "schema": "EquipmentUser",
+      "description": "Registered terminals and users"
+    },
+    "/loans/{loanId}": {
+      "schema": "Loan",
+      "description": "Book loan transactions"
+    },
+    "/todolists/{todoListId}": {
+      "schema": "TodoListDatabase",
+      "description": "Dynamic user-created tabular databases and checklists"
+    }
+  }
+}

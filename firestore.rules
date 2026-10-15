@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Books collection
+    match /books/{bookId} {
+      allow read, write: if true;
+    }
+    
+    // Users (Equipment) collection
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+    
+    // Loans collection
+    match /loans/{loanId} {
+      allow read, write: if true;
+    }
+
+    // Dynamic Tabular TodoLists & Databases
+    match /todolists/{todoListId} {
+      allow read, write: if true;
+    }
+  }
+}
