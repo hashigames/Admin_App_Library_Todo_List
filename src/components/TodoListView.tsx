@@ -758,6 +758,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
 
           <button
             onClick={() => setIsCreateModalOpen(true)}
+            data-miyu-tip="matrix-add-db"
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition-transform active:scale-95 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -911,6 +912,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               {/* Share Matrix to Customer / Team (Email & SMS) */}
               <button
                 onClick={() => setIsShareModalOpen(true)}
+                data-miyu-tip="matrix-share"
                 className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition-transform active:scale-95 cursor-pointer"
                 title="Share this TodoList to Customer or Team via Email (multi-recipient, comma-separated) or Cellphone SMS / WhatsApp"
               >
@@ -924,6 +926,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                   exportDatabaseToExcel(activeDb);
                   onShowToast(`Downloaded Excel spreadsheet for "${activeDb.name}"`, 'success');
                 }}
+                data-miyu-tip="matrix-export"
                 className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-xs font-medium border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-colors"
                 title="Download .xlsx Excel file"
               >
@@ -978,6 +981,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               {/* + Add Column */}
               <button
                 onClick={handleOpenAddColumn}
+                data-miyu-tip="matrix-add-col"
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#F5EFE3] dark:bg-[#201C19] hover:bg-[#EAE2D2] text-[#2B2520] dark:text-[#FAF6EE] transition-colors cursor-pointer"
               >
                 <Plus className="w-3 h-3 text-[#C88A35]" />
@@ -987,6 +991,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               {/* + Add Row (Renglón) */}
               <button
                 onClick={() => handleAddRow(1)}
+                data-miyu-tip="matrix-add-row"
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#F5EFE3] dark:bg-[#201C19] hover:bg-[#EAE2D2] text-[#2B2520] dark:text-[#FAF6EE] transition-colors cursor-pointer"
               >
                 <Plus className="w-3 h-3 text-[#4A6B53]" />
@@ -1024,6 +1029,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 type="button"
                 onClick={handleZoomOut}
                 disabled={matrixZoom <= 50}
+                data-miyu-tip="matrix-zoom-out"
                 className="p-1 rounded-lg bg-white dark:bg-[#2B2520] hover:bg-[#F5EFE3] text-[#2B2520] dark:text-[#FAF6EE] border border-[#DECFA9] dark:border-[#4A4135] disabled:opacity-40 transition shadow-2xs cursor-pointer"
                 title="Zoom Out (Visualize full matrix with many columns)"
               >
@@ -1045,6 +1051,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 type="button"
                 onClick={handleZoomIn}
                 disabled={matrixZoom >= 150}
+                data-miyu-tip="matrix-zoom-in"
                 className="p-1 rounded-lg bg-white dark:bg-[#2B2520] hover:bg-[#F5EFE3] text-[#2B2520] dark:text-[#FAF6EE] border border-[#DECFA9] dark:border-[#4A4135] disabled:opacity-40 transition shadow-2xs cursor-pointer"
                 title="Zoom In"
               >
@@ -1057,6 +1064,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <button
                 type="button"
                 onClick={handleFitMatrixToScreen}
+                data-miyu-tip="matrix-fit"
                 className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#C88A35]/15 hover:bg-[#C88A35]/25 text-[#8A5A18] dark:text-[#DECFA9] border border-[#C88A35]/30 text-[11px] font-bold transition shadow-2xs cursor-pointer"
                 title="Auto-calculate zoom to visualize entire matrix on screen without horizontal scrolling"
               >
@@ -1068,6 +1076,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <button
                 type="button"
                 onClick={handleToggleColumnDensity}
+                data-miyu-tip="matrix-diminish"
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition shadow-2xs cursor-pointer ${
                   columnDensity === 'compact'
                     ? 'bg-[#BD3A2B] text-white border-[#BD3A2B]'
@@ -1147,6 +1156,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <button
                 type="button"
                 onClick={() => setIsShortcutsModalOpen(true)}
+                data-miyu-tip="matrix-shortcuts"
                 className="flex items-center gap-1 text-[11px] font-bold text-[#BD3A2B] hover:text-[#A83225] hover:underline cursor-pointer"
                 title="View full matrix navigation & CRUD instructions"
               >

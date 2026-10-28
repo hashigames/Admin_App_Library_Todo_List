@@ -81,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="hidden lg:flex items-center gap-3">
 
             {/* Current Active Equipment Switcher */}
-            <div className="relative flex items-center bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] rounded-lg px-2.5 py-1.5 text-xs shadow-2xs">
+            <div data-miyu-tip="header-equipment" className="relative flex items-center bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] rounded-lg px-2.5 py-1.5 text-xs shadow-2xs">
               <Laptop className="w-3.5 h-3.5 text-[#C88A35] mr-1.5" />
               <div className="flex flex-col">
                 <span className="text-[10px] text-[#736859] dark:text-[#A89D8E] font-medium">
@@ -130,6 +130,7 @@ export const Header: React.FC<HeaderProps> = ({
             ) : (
               <button
                 onClick={onGoogleSignIn}
+                data-miyu-tip="header-google"
                 className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs transition active:scale-95"
                 title="Sign in with Google"
               >
@@ -158,6 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Firebase Status Pill */}
             <button
               onClick={onOpenFirebaseModal}
+              data-miyu-tip="header-firebase"
               title="Firebase Settings"
               className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-lg bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] hover:border-[#C88A35] transition"
             >
@@ -173,7 +175,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Language Switcher */}
-            <div className="relative">
+            <div className="relative" data-miyu-tip="header-language">
               <button
                 onClick={() => setLangMenuOpen(!langMenuOpen)}
                 className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] text-[#2B2520] dark:text-[#FAF6EE] transition"
@@ -209,6 +211,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Dark Mode Toggle */}
             <button
               onClick={onToggleDarkMode}
+              data-miyu-tip="header-theme"
               className="p-2 rounded-lg bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] hover:text-[#C88A35] transition"
               aria-label="Toggle theme"
             >

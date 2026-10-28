@@ -174,6 +174,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
               <div key={tab.key} className="relative group flex items-center">
                 <button
                   onClick={() => onTabChange(tab.key)}
+                  data-miyu-tip={`nav-${tab.key}`}
                   className={`flex items-center gap-2 pl-3 sm:pl-3.5 pr-2 sm:pr-2.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all relative whitespace-nowrap active:scale-98 cursor-pointer ${
                     isActive
                       ? 'bg-[#2B2520] text-[#FAF6EE] shadow-sm dark:bg-[#FAF6EE] dark:text-[#2B2520]'

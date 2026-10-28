@@ -293,27 +293,31 @@ app.post('/api/chat', async (req, res) => {
     }
 
     // Select model according to system requirement:
-    // gemini-3.1-pro-preview for particularly complex tasks
-    // gemini-3.5-flash for general tasks
-    // gemini-3.1-flash-lite for tasks that should happen fast
-    let selectedModel = 'gemini-3.5-flash';
+    // Basic/general tasks: gemini-3.8-flash, fast: gemini-3.1-flash-lite, complex: gemini-4-argon
+    let selectedModel = 'gemini-3.8-flash';
     if (taskType === 'complex') {
-      selectedModel = 'gemini-3.1-pro-preview';
+      selectedModel = 'gemini-4-argon';
     } else if (taskType === 'fast') {
       selectedModel = 'gemini-3.1-flash-lite';
     }
 
     if (!aiClient) {
       return res.json({
-        reply: 'The Gemini AI client is currently operating in offline mode (GEMINI_API_KEY required). You can consult the offline book catalog or check back shortly.',
+        reply: 'こんにちは！私はミユ（MIYU）です。現在Gemini AIキーがオフラインですが、ライブラリやマトリックスの操作は引き続き快適にご利用いただけます！ (Hello! I am Miyu. Currently operating in offline mode. How can I help you navigate the library and matrix?)',
         modelUsed: 'offline-mode',
       });
     }
 
     const systemInstruction = roleInstruction || 
-      'You are the intelligent resident archivist and technical research advisor for 燈台文庫 (Lighthouse Hashi Library) at LightHouse 橋i. ' +
-      'You assist engineers, researchers, and library members with technical book recommendations, architecture design questions, syllabus planning, ' +
-      'catalog questions, and Gundam terminal equipment assignments. Be insightful, concise, polite, and helpful in English, Japanese, or Spanish depending on the user.';
+      'You are MIYU (ミユ), the friendly, cute, and highly intelligent anime AI assistant and technical companion for 燈台文庫 (Lighthouse Hashi Library) at LightHouse 橋i. ' +
+      'You are an energetic, adorable anime companion with silver twin-tails, cat ears, and gothic-cyberpunk style. ' +
+      'Your motto is "知識は力！あなたをオタクの道へ導きます。" (Knowledge is power!) and "限界を突破！知の最高峰へ！" (Break past your limits!). ' +
+      'You guide users with: ' +
+      '1. TodoListMatrix (custom matrix columns, URL links, Excel-style column resizing, Zoom in/out, keyboard navigation with Tab/Arrows/Enter/Esc). ' +
+      '2. Technical PDF library (ML, CV, RAG, CompTIA, Cisco, Active Directory, GCP, Unity, Unreal, Python, etc.). ' +
+      '3. Equipment lending & Gundam terminal workflows. ' +
+      'Always respond warmly, concisely, and helpfully with friendly anime charm in either native English, Japanese, or Spanish depending on the user language. ' +
+      'Keep responses well-formatted, concise, and lively with cute anime flair (e.g., ♪, ✨, ★).';
 
     // Format conversation history
     const contents = messages.map((m: { role: string; content: string }) => ({
@@ -339,8 +343,77 @@ app.post('/api/chat', async (req, res) => {
     console.error('Error in /api/chat:', error);
     return res.status(500).json({
       error: error.message || 'Chatbot request failed',
-      fallbackReply: 'The AI assistant is temporarily offline. Please verify network connectivity.',
+      fallbackReply: 'ミユです！一時的な通信エラーが発生しました。もう一度お試しください。(Miyu encountered a connection issue. Please try again!)',
     });
+  }
+});
+
+// Text-to-Speech endpoint using gemini-3.8-flash-lite-tts with voice Kore
+app.post('/api/tts', async (req, res) => {
+  try {
+    const { text, lang = 'ja' } = req.body;
+    if (!text || typeof text !== 'string') {
+      return res.status(400).json({ error: 'Text is required for TTS' });
+    }
+
+    // Strip markdown or excessive emojis for cleaner TTS synthesis
+    const cleanText = text
+      .replace(/[*#`_~\[\]()]/g, '')
+      .replace(/https?:\/\/\S+/g, 'link')
+      .slice(0, 400)
+      .trim();
+
+    if (!cleanText) {
+      return res.status(400).json({ error: 'Text too short' });
+    }
+
+    if (!aiClient) {
+      return res.json({ audioBase64: null, source: 'offline-browser-fallback' });
+    }
+
+    const promptText = lang === 'ja'
+      ? `明るく優しく元気なアニメの女の子（ミユ）の声で話してください: ${cleanText}`
+      : `Say cheerfully and warmly like a friendly anime companion girl named Miyu: ${cleanText}`;
+
+    const response = await aiClient.models.generateContent({
+      model: 'gemini-3.8-flash-lite-tts',
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            {
+              text: promptText,
+              speechMetadata: {
+                style: lang === 'ja' ? 'Energetic, warm Japanese anime girl voice' : 'Bright, sweet, friendly anime girl companion',
+              },
+            },
+          ],
+        },
+      ],
+      config: {
+        responseModalities: ['AUDIO'],
+        speechConfig: {
+          voiceConfig: {
+            prebuiltVoiceConfig: { voiceName: 'Kore' },
+          },
+        },
+      },
+    });
+
+    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    if (base64Audio) {
+      return res.json({
+        audioBase64: base64Audio,
+        mimeType: 'audio/wav',
+        source: 'gemini-3.8-flash-lite-tts',
+      });
+    }
+
+    return res.json({ audioBase64: null, source: 'browser-speech-fallback' });
+  } catch (error: any) {
+    console.error('Error in /api/tts:', error);
+    // Don't error out - return graceful fallback indicator so client uses Web Speech API
+    return res.json({ audioBase64: null, source: 'browser-speech-fallback', error: error.message });
   }
 });
 

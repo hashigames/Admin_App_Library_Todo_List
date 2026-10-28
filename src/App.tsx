@@ -25,6 +25,8 @@ import { LendModal } from './components/LendModal';
 import { ReturnModal } from './components/ReturnModal';
 import { BookDetailsModal } from './components/BookDetailsModal';
 import { GeminiChatbotModal } from './components/GeminiChatbotModal';
+import { MiyuVoiceChatbot } from './components/MiyuVoiceChatbot';
+import { MiyuMouseToolkit } from './components/MiyuMouseToolkit';
 import { Toast, ToastMessage } from './components/Toast';
 import { DynamicDatabase } from './types';
 import {
@@ -110,6 +112,26 @@ export default function App() {
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const [chatBookContext, setChatBookContext] = useState<string>('');
   const [chatSearchQuery, setChatSearchQuery] = useState<string>('');
+
+  // MIYU Voice-Text Anime Chatbot & Mouse Toolkit state
+  const [isMiyuChatOpen, setIsMiyuChatOpen] = useState(false);
+  const [isMouseToolkitEnabled, setIsMouseToolkitEnabled] = useState(() => {
+    try {
+      return localStorage.getItem('lighthouse_miyu_guide') !== 'false';
+    } catch {
+      return true;
+    }
+  });
+
+  const handleToggleMouseToolkit = () => {
+    setIsMouseToolkitEnabled(prev => {
+      const next = !prev;
+      try {
+        localStorage.setItem('lighthouse_miyu_guide', String(next));
+      } catch {}
+      return next;
+    });
+  };
 
   // Toasts
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
@@ -349,9 +371,7 @@ export default function App() {
         onOpenUploadModal={() => setActiveTab('upload')}
         onOpenLendModal={() => handleOpenLend()}
         onOpenChatModal={() => {
-          setChatBookContext('');
-          setChatSearchQuery('');
-          setIsChatModalOpen(true);
+          setIsMiyuChatOpen(true);
         }}
         onOpenHamburger={() => setIsHamburgerOpen(true)}
         firebaseUser={firebaseUser}
@@ -550,6 +570,23 @@ export default function App() {
         databases={databases}
         onShowToast={showToast}
         currentUserEmail={firebaseUser?.email || undefined}
+      />
+
+      {/* MIYU Interactive Mouse Toolkit (Explains Each Button on Hover) */}
+      <MiyuMouseToolkit
+        currentLang={currentLang}
+        enabled={isMouseToolkitEnabled}
+        onToggleEnabled={handleToggleMouseToolkit}
+      />
+
+      {/* MIYU Friendly Voice-Text Anime Chatbot (Right Button & Small Panel) */}
+      <MiyuVoiceChatbot
+        currentLang={currentLang}
+        onLanguageChange={setCurrentLang}
+        mouseToolkitEnabled={isMouseToolkitEnabled}
+        onToggleMouseToolkit={handleToggleMouseToolkit}
+        isOpen={isMiyuChatOpen}
+        onToggleOpen={() => setIsMiyuChatOpen(prev => !prev)}
       />
 
       {/* Toast Notifications */}
