@@ -87,14 +87,14 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="p-1.5 rounded-lg bg-[#0097B2] text-white">
-              <Activity className="w-4 h-4" />
+            <span className="p-1.5 rounded-lg bg-[#2B2520] text-white">
+              <Activity className="w-4 h-4 text-[#C88A35]" />
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#1E2A5E] dark:text-white font-serif-jp">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
               {t.statusBoardTitle}
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-xs sm:text-sm text-[#736859] dark:text-[#A89D8E]">
             {t.statusBoardSubtitle}
           </p>
         </div>
@@ -102,9 +102,9 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
         {currentRole === 'admin' && (
           <button
             onClick={() => onLendClick()}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white text-xs font-bold shadow-md transition active:scale-98 self-start md:self-auto"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white text-xs font-bold shadow-2xs transition active:scale-95 self-start md:self-auto"
           >
-            <ArrowRight className="w-4 h-4 text-[#F5A623]" />
+            <ArrowRight className="w-4 h-4 text-white" />
             <span>{t.quickLend}</span>
           </button>
         )}
@@ -112,75 +112,75 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-[#8E8373] uppercase tracking-wider">
               {t.activeLoansCount}
             </span>
-            <span className="p-2 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300">
+            <span className="p-2 rounded-xl bg-[#FAF6EE] dark:bg-[#171513] text-[#C88A35] border border-[#EAE2D2] dark:border-[#38322B]">
               <Clock className="w-4 h-4" />
             </span>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-[#1E2A5E] dark:text-white">
+          <div className="text-2xl sm:text-3xl font-black text-[#2B2520] dark:text-[#FAF6EE]">
             {activeLoans.length}
           </div>
-          <span className="text-[11px] text-slate-400 mt-1 block">Books in circulation</span>
+          <span className="text-[11px] text-[#8E8373] mt-1 block">Books in circulation</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-[#8E8373] uppercase tracking-wider">
               {t.overdueCount}
             </span>
-            <span className="p-2 rounded-xl bg-rose-50 dark:bg-rose-900/40 text-[#DC2626]">
+            <span className="p-2 rounded-xl bg-rose-50 dark:bg-rose-900/40 text-[#BD3A2B]">
               <ShieldAlert className="w-4 h-4" />
             </span>
           </div>
-          <div className={`text-2xl sm:text-3xl font-black ${overdueLoans.length > 0 ? 'text-[#DC2626] animate-pulse' : 'text-slate-700 dark:text-slate-200'}`}>
+          <div className={`text-2xl sm:text-3xl font-black ${overdueLoans.length > 0 ? 'text-[#BD3A2B] animate-pulse' : 'text-[#2B2520] dark:text-[#FAF6EE]'}`}>
             {overdueLoans.length}
           </div>
-          <span className="text-[11px] text-slate-400 mt-1 block">Immediate action required</span>
+          <span className="text-[11px] text-[#8E8373] mt-1 block">Immediate action required</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-[#8E8373] uppercase tracking-wider">
               {t.availableBooksCount}
             </span>
-            <span className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600">
+            <span className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-900/40 text-[#4A6B53]">
               <CheckCircle2 className="w-4 h-4" />
             </span>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-emerald-600">
+          <div className="text-2xl sm:text-3xl font-black text-[#4A6B53]">
             {availableBooks.length}
           </div>
-          <span className="text-[11px] text-slate-400 mt-1 block">Ready on shelves</span>
+          <span className="text-[11px] text-[#8E8373] mt-1 block">Ready on shelves</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-[#8E8373] uppercase tracking-wider">
               {t.totalBooksCount}
             </span>
-            <span className="p-2 rounded-xl bg-amber-50 dark:bg-amber-900/40 text-[#F5A623]">
+            <span className="p-2 rounded-xl bg-[#FAF6EE] dark:bg-[#171513] text-[#C88A35] border border-[#EAE2D2] dark:border-[#38322B]">
               <BookOpen className="w-4 h-4" />
             </span>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-[#1E2A5E] dark:text-white">
+          <div className="text-2xl sm:text-3xl font-black text-[#2B2520] dark:text-[#FAF6EE]">
             {books.length}
           </div>
-          <span className="text-[11px] text-slate-400 mt-1 block">Catalog collection</span>
+          <span className="text-[11px] text-[#8E8373] mt-1 block">Catalog collection</span>
         </div>
       </div>
 
       {/* Real-Time Reading Status Board: Who has what RIGHT NOW */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-[#1E2A5E] dark:text-white flex items-center gap-2">
-            <Laptop className="w-4 h-4 text-[#0097B2]" />
+          <h2 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-2">
+            <Laptop className="w-4 h-4 text-[#C88A35]" />
             <span>Equipment Status Board (機材読書現況盤)</span>
           </h2>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-[#8E8373]">
             {equipmentList.length} Units Monitored
           </span>
         </div>
@@ -205,47 +205,47 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
                 className={`p-4 rounded-2xl border transition-all ${
                   currentBook
                     ? isOverdue
-                      ? 'border-rose-300 dark:border-rose-900 bg-rose-50/30 dark:bg-rose-950/20 shadow-xs'
-                      : 'border-[#0097B2]/40 bg-white dark:bg-slate-800 shadow-xs'
-                    : 'border-slate-200 dark:border-slate-700/60 bg-slate-50/50 dark:bg-slate-800/40 opacity-80'
+                      ? 'border-rose-300 dark:border-rose-900 bg-rose-50/30 dark:bg-rose-950/20 shadow-2xs'
+                      : 'border-[#DECFA9] dark:border-[#5C5348] bg-[#FFFFFF] dark:bg-[#201C19] shadow-2xs'
+                    : 'border-[#EAE2D2] dark:border-[#38322B] bg-[#FAF6EE]/50 dark:bg-[#171513]/40 opacity-80'
                 }`}
               >
                 {/* Equipment Top */}
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <span className={`w-2.5 h-2.5 rounded-full ${currentBook ? (isOverdue ? 'bg-[#DC2626] animate-ping' : 'bg-emerald-500 animate-pulse') : 'bg-slate-300 dark:bg-slate-600'}`} />
-                    <span className="font-bold text-xs sm:text-sm text-[#1E2A5E] dark:text-white">
+                    <span className={`w-2.5 h-2.5 rounded-full ${currentBook ? (isOverdue ? 'bg-[#BD3A2B] animate-ping' : 'bg-[#4A6B53] animate-pulse') : 'bg-slate-300 dark:bg-slate-600'}`} />
+                    <span className="font-bold text-xs sm:text-sm text-[#2B2520] dark:text-[#FAF6EE]">
                       {eq.name}
                     </span>
                   </div>
 
-                  <span className="text-[10px] uppercase font-bold text-slate-400">
+                  <span className="text-[10px] uppercase font-bold text-[#8E8373]">
                     {currentBook ? (isOverdue ? 'OVERDUE' : 'READING') : 'IDLE'}
                   </span>
                 </div>
 
                 {/* Reading Content */}
                 {currentBook ? (
-                  <div className="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <div className="space-y-2 pt-1 border-t border-[#EAE2D2] dark:border-[#38322B]">
                     <div>
                       <div
                         onClick={() => onViewBook(currentBook)}
-                        className="font-bold text-xs text-[#1E2A5E] dark:text-amber-300 line-clamp-1 hover:underline cursor-pointer"
+                        className="font-bold text-xs text-[#2B2520] dark:text-[#FAF6EE] line-clamp-1 hover:text-[#BD3A2B] hover:underline cursor-pointer"
                       >
                         {currentBook.title}
                       </div>
-                      <div className="text-[11px] text-slate-400 italic">
+                      <div className="text-[11px] text-[#8E8373] italic">
                         {currentBook.author}
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-500">
-                        Topic: <span className="font-semibold text-slate-700 dark:text-slate-300">{currentBook.topic}</span>
+                      <span className="text-[#8E8373]">
+                        Topic: <span className="font-semibold text-[#5C5348] dark:text-[#DDD3BC]">{currentBook.topic}</span>
                       </span>
                       <span
                         className={`font-bold ${
-                          isOverdue ? 'text-[#DC2626]' : 'text-slate-600 dark:text-slate-300'
+                          isOverdue ? 'text-[#BD3A2B]' : 'text-[#5C5348] dark:text-[#DDD3BC]'
                         }`}
                       >
                         {isOverdue
@@ -261,7 +261,7 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
                       <div className="flex items-center gap-1.5 pt-1">
                         <button
                           onClick={() => onReturnClick(currentBook, activeLoan)}
-                          className="flex-1 py-1 px-2 rounded-lg bg-[#0097B2] hover:bg-[#008299] text-white text-[10px] font-bold transition"
+                          className="flex-1 py-1 px-2 rounded-lg bg-[#4A6B53] hover:bg-[#3D5A45] text-white text-[10px] font-bold shadow-2xs transition"
                         >
                           {t.quickReturn}
                         </button>
@@ -269,7 +269,7 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
                           <button
                             onClick={() => handleRenew(activeLoan.id)}
                             disabled={isRenewingId === activeLoan.id}
-                            className="py-1 px-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-[10px] font-semibold hover:bg-slate-100 dark:hover:bg-slate-700"
+                            className="py-1 px-2 rounded-lg border border-[#EAE2D2] dark:border-[#38322B] text-[#5C5348] dark:text-[#DDD3BC] text-[10px] font-semibold hover:bg-[#FAF6EE] dark:hover:bg-[#201C19]"
                           >
                             +14d
                           </button>
@@ -278,12 +278,12 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
                     )}
                   </div>
                 ) : (
-                  <div className="py-2 text-center text-xs text-slate-400">
+                  <div className="py-2 text-center text-xs text-[#8E8373]">
                     <p className="mb-2 italic">No book currently assigned.</p>
                     {currentRole === 'admin' && (
                       <button
                         onClick={() => onLendClick()}
-                        className="text-[11px] text-[#0097B2] hover:underline font-bold"
+                        className="text-[11px] text-[#BD3A2B] hover:underline font-bold"
                       >
                         + Assign a book
                       </button>
@@ -300,20 +300,20 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
       <div className="space-y-4 pt-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Filter Tabs */}
-          <div className="flex items-center gap-1 bg-white dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
+          <div className="flex items-center gap-1 bg-[#FFFFFF] dark:bg-[#201C19] p-1 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] text-xs">
             {(['active', 'overdue', 'returned', 'all'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setFilterTab(tab)}
                 className={`px-3 py-1.5 rounded-lg font-bold capitalize transition ${
                   filterTab === tab
-                    ? 'bg-[#1E2A5E] text-white shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs'
+                    : 'text-[#5C5348] dark:text-[#DDD3BC] hover:text-[#2B2520] dark:hover:text-white'
                 }`}
               >
                 {tab}
                 {tab === 'overdue' && overdueLoans.length > 0 && (
-                  <span className="ml-1 px-1.5 py-0.2 rounded-full bg-[#DC2626] text-white text-[9px]">
+                  <span className="ml-1 px-1.5 py-0.2 rounded-full bg-[#BD3A2B] text-white text-[9px]">
                     {overdueLoans.length}
                   </span>
                 )}
@@ -368,27 +368,27 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
                   return (
                     <tr
                       key={loan.id}
-                      className="hover:bg-amber-50/30 dark:hover:bg-slate-750 transition-colors"
+                      className="hover:bg-[#FAF6EE]/50 dark:hover:bg-[#201C19]/50 transition-colors"
                     >
                       <td className="py-3 px-4 max-w-xs sm:max-w-md">
                         <div
                           onClick={() => associatedBook && onViewBook(associatedBook)}
-                          className="font-bold text-[#1E2A5E] dark:text-slate-100 hover:text-[#0097B2] cursor-pointer line-clamp-1"
+                          className="font-bold text-[#2B2520] dark:text-[#FAF6EE] hover:text-[#BD3A2B] cursor-pointer line-clamp-1"
                         >
                           {loan.bookTitle}
                         </div>
                         {loan.notes && (
-                          <div className="text-[11px] text-slate-400 italic truncate">
+                          <div className="text-[11px] text-[#8E8373] italic truncate">
                             Note: {loan.notes}
                           </div>
                         )}
                       </td>
 
-                      <td className="py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
+                      <td className="py-3 px-4 font-semibold text-[#2B2520] dark:text-[#FAF6EE]">
                         {loan.userName}
                       </td>
 
-                      <td className="py-3 px-4 text-slate-500">
+                      <td className="py-3 px-4 text-[#736859] dark:text-[#A89D8E]">
                         {new Date(loan.borrowedAt).toLocaleDateString()}
                       </td>
 
@@ -396,14 +396,14 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
                         <span
                           className={`font-semibold ${
                             isDuePast
-                              ? 'text-[#DC2626] font-bold'
-                              : 'text-slate-700 dark:text-slate-300'
+                              ? 'text-[#BD3A2B] font-bold'
+                              : 'text-[#5C5348] dark:text-[#DDD3BC]'
                           }`}
                         >
                           {new Date(loan.dueDate).toLocaleDateString()}
                         </span>
                         {loan.renewalCount > 0 && (
-                          <span className="text-[10px] text-slate-400 ml-1.5">
+                          <span className="text-[10px] text-[#8E8373] ml-1.5">
                             (Renewed {loan.renewalCount}x)
                           </span>
                         )}
@@ -411,17 +411,17 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
 
                       <td className="py-3 px-4">
                         {loan.status === 'returned' ? (
-                          <span className="inline-flex items-center gap-1 text-emerald-600 font-semibold text-xs">
+                          <span className="inline-flex items-center gap-1 text-[#4A6B53] font-semibold text-xs">
                             <CheckCircle2 className="w-3.5 h-3.5" />
                             <span>Returned</span>
                           </span>
                         ) : isDuePast ? (
-                          <span className="inline-flex items-center gap-1 text-[#DC2626] font-bold text-xs animate-pulse">
+                          <span className="inline-flex items-center gap-1 text-[#BD3A2B] font-bold text-xs animate-pulse">
                             <AlertCircle className="w-3.5 h-3.5" />
                             <span>OVERDUE</span>
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-[#0097B2] font-semibold text-xs">
+                          <span className="inline-flex items-center gap-1 text-[#C88A35] font-semibold text-xs">
                             <Clock className="w-3.5 h-3.5" />
                             <span>Active</span>
                           </span>
@@ -434,14 +434,14 @@ export const LoansDashboard: React.FC<LoansDashboardProps> = ({
                             <button
                               onClick={() => handleRenew(loan.id)}
                               disabled={isRenewingId === loan.id}
-                              className="px-2.5 py-1 rounded text-xs font-semibold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
+                              className="px-2.5 py-1 rounded text-xs font-semibold border border-[#EAE2D2] dark:border-[#38322B] hover:bg-[#FAF6EE] dark:hover:bg-[#201C19] text-[#5C5348] dark:text-[#DDD3BC]"
                             >
                               {isRenewingId === loan.id ? '...' : '+14d'}
                             </button>
                             {associatedBook && (
                               <button
                                 onClick={() => onReturnClick(associatedBook, loan)}
-                                className="px-3 py-1 rounded text-xs font-bold bg-[#0097B2] hover:bg-[#008299] text-white"
+                                className="px-3 py-1 rounded text-xs font-bold bg-[#4A6B53] hover:bg-[#3D5A45] text-white shadow-2xs transition"
                               >
                                 {t.quickReturn}
                               </button>

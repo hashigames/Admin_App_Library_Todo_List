@@ -147,28 +147,28 @@ service cloud.firestore {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in">
       {/* Header */}
-      <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-[#1E2A5E]/10 dark:border-slate-700/60 shadow-xs">
+      <div className="p-6 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
         <div className="flex items-center gap-2 mb-1">
-          <span className="p-1.5 rounded-lg bg-[#F5A623] text-[#1E2A5E]">
-            <Database className="w-4 h-4" />
+          <span className="p-1.5 rounded-lg bg-[#2B2520] text-[#FAF6EE]">
+            <Database className="w-4 h-4 text-[#C88A35]" />
           </span>
-          <h1 className="text-xl sm:text-2xl font-bold text-[#1E2A5E] dark:text-white font-serif-jp">
+          <h1 className="text-xl sm:text-2xl font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
             {t.firebaseTitle}
           </h1>
         </div>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-xs sm:text-sm text-[#736859] dark:text-[#A89D8E]">
           {t.firebaseSubtitle}
         </p>
       </div>
 
       {/* Firebase Status Alert */}
-      <div className="p-4 rounded-2xl bg-amber-50/70 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 flex items-start gap-3">
-        <Info className="w-5 h-5 text-[#F5A623] shrink-0 mt-0.5" />
+      <div className="p-4 rounded-2xl bg-[#F5EFE3] dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B] flex items-start gap-3">
+        <Info className="w-5 h-5 text-[#C88A35] shrink-0 mt-0.5" />
         <div className="text-xs space-y-1">
-          <p className="font-bold text-[#1E2A5E] dark:text-amber-300">
+          <p className="font-bold text-[#2B2520] dark:text-[#FAF6EE]">
             Persistent Hybrid Storage Architecture
           </p>
-          <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p className="text-[#5C5348] dark:text-[#DECFA9] leading-relaxed">
             The application operates with zero friction: by default, all books, equipment, and loans
             persist reliably in local browser storage. When you paste your Firebase project credentials
             below, the system automatically routes all catalog updates to Cloud Firestore and Firebase Storage.
@@ -177,15 +177,15 @@ service cloud.firestore {
       </div>
 
       {/* Firebase Credentials Form */}
-      <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-5">
-        <h2 className="text-base font-bold text-[#1E2A5E] dark:text-white flex items-center gap-2">
-          <Key className="w-4 h-4 text-[#0097B2]" />
+      <div className="p-6 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] space-y-5">
+        <h2 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-2">
+          <Key className="w-4 h-4 text-[#C88A35]" />
           <span>Firebase Project Keys (Placeholders / Custom Keys)</span>
         </h2>
 
         <form onSubmit={handleSaveConfig} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs font-bold text-slate-500 uppercase block mb-1">
+            <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E] uppercase block mb-1">
               {t.apiKeyLabel}
             </label>
             <input
@@ -193,12 +193,12 @@ service cloud.firestore {
               value={config.apiKey}
               onChange={e => setConfig({ ...config, apiKey: e.target.value })}
               placeholder="AIzaSy..."
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-mono"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] font-mono outline-none focus:ring-1 focus:ring-[#C88A35]"
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-500 uppercase block mb-1">
+            <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E] uppercase block mb-1">
               {t.projectIdLabel}
             </label>
             <input
@@ -206,12 +206,12 @@ service cloud.firestore {
               value={config.projectId}
               onChange={e => setConfig({ ...config, projectId: e.target.value })}
               placeholder="lighthouse-hashi-app"
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-mono"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] font-mono outline-none focus:ring-1 focus:ring-[#C88A35]"
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-500 uppercase block mb-1">
+            <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E] uppercase block mb-1">
               {t.storageBucketLabel}
             </label>
             <input
@@ -219,12 +219,12 @@ service cloud.firestore {
               value={config.storageBucket}
               onChange={e => setConfig({ ...config, storageBucket: e.target.value })}
               placeholder="lighthouse-hashi-app.appspot.com"
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-mono"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] font-mono outline-none focus:ring-1 focus:ring-[#C88A35]"
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-500 uppercase block mb-1">
+            <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E] uppercase block mb-1">
               App ID
             </label>
             <input
@@ -232,18 +232,18 @@ service cloud.firestore {
               value={config.appId}
               onChange={e => setConfig({ ...config, appId: e.target.value })}
               placeholder="1:123456789:web:abcdef"
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-mono"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] font-mono outline-none focus:ring-1 focus:ring-[#C88A35]"
             />
           </div>
 
           <div className="sm:col-span-2 pt-2 flex items-center justify-between">
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-[#A89D8E]">
               Changes will save to browser memory and switch active SDK mode.
             </span>
             <button
               type="submit"
               disabled={isSaving}
-              className="px-5 py-2.5 rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white text-xs font-bold shadow-md transition"
+              className="px-5 py-2.5 rounded-xl bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] text-xs font-bold shadow-sm transition cursor-pointer"
             >
               {isSaving ? t.loading : t.saveConfig}
             </button>
@@ -252,11 +252,11 @@ service cloud.firestore {
       </div>
 
       {/* Firestore Security Rules Display */}
-      <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-4">
+      <div className="p-6 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-emerald-600" />
-            <h2 className="text-base font-bold text-[#1E2A5E] dark:text-white">
+            <Shield className="w-4 h-4 text-[#4A6B53]" />
+            <h2 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE]">
               {t.firestoreRulesTitle}
             </h2>
           </div>
@@ -275,22 +275,22 @@ service cloud.firestore {
       </div>
 
       {/* Backup / Export / Reset Controls */}
-      <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-4">
-        <h2 className="text-base font-bold text-[#1E2A5E] dark:text-white flex items-center gap-2">
-          <Server className="w-4 h-4 text-[#F5A623]" />
+      <div className="p-6 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] space-y-4">
+        <h2 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-2">
+          <Server className="w-4 h-4 text-[#C88A35]" />
           <span>Data Management & Backup</span>
         </h2>
 
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={handleExportData}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 text-xs font-bold"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F5EFE3] dark:bg-[#2B2520] text-[#2B2520] dark:text-[#FAF6EE] hover:bg-[#EAE2D2] text-xs font-bold transition cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>{t.exportData}</span>
           </button>
 
-          <label className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 text-xs font-bold cursor-pointer">
+          <label className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F5EFE3] dark:bg-[#2B2520] text-[#2B2520] dark:text-[#FAF6EE] hover:bg-[#EAE2D2] text-xs font-bold cursor-pointer transition">
             <Upload className="w-3.5 h-3.5" />
             <span>{t.importData}</span>
             <input type="file" accept=".json" onChange={handleImportFile} className="hidden" />
@@ -298,7 +298,7 @@ service cloud.firestore {
 
           <button
             onClick={handleResetData}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-rose-200 dark:border-rose-900 text-[#DC2626] hover:bg-rose-50 dark:hover:bg-rose-950/40 text-xs font-bold ml-auto"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-[#BD3A2B]/30 text-[#BD3A2B] hover:bg-[#BD3A2B]/10 text-xs font-bold ml-auto cursor-pointer transition"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>{t.resetDemoData}</span>
@@ -307,27 +307,27 @@ service cloud.firestore {
       </div>
 
       {/* Live Email & SMTP Dispatch Configuration Card */}
-      <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-5">
-        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+      <div className="p-6 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] space-y-5">
+        <div className="flex items-center justify-between border-b border-[#EAE2D2] dark:border-[#38322B] pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="p-2.5 rounded-xl bg-linear-to-r from-[#1E2A5E] to-[#0097B2] text-white">
-              <Mail className="w-5 h-5" />
+            <div className="p-2.5 rounded-xl bg-[#2B2520] text-[#FAF6EE]">
+              <Mail className="w-5 h-5 text-[#C88A35]" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#1E2A5E] dark:text-white flex items-center gap-2">
+              <h2 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-2 font-serif-jp">
                 <span>Live Email & SMTP Dispatch Settings</span>
                 {smtpConfig.isConfigured ? (
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 flex items-center gap-1">
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#4A6B53]/15 text-[#324D3B] dark:bg-[#4A6B53]/30 dark:text-[#7EB38B] border border-[#4A6B53]/40 flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3" />
                     <span>Active</span>
                   </span>
                 ) : (
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#C88A35]/15 text-[#8A5A18] dark:text-[#DECFA9] border border-[#C88A35]/30">
                     Not configured
                   </span>
                 )}
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
                 Configure live server-side email delivery with Excel and PDF attachments
               </p>
             </div>
@@ -336,22 +336,22 @@ service cloud.firestore {
 
         {/* Informative FAQ Q&A addressing user questions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-1">
-            <h3 className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
-              <HelpCircle className="w-3.5 h-3.5 text-[#0097B2]" />
+          <div className="p-3.5 rounded-2xl bg-[#F5EFE3] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] space-y-1">
+            <h3 className="font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5">
+              <HelpCircle className="w-3.5 h-3.5 text-[#C88A35]" />
               <span>Why did the email not arrive previously?</span>
             </h3>
-            <p className="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">
+            <p className="text-[#5C5348] dark:text-[#DECFA9] text-[11px] leading-relaxed">
               In any cloud application, sending a direct email into a personal Gmail or Outlook inbox requires an authenticated SMTP mail gateway (such as a 16-character Google App Password or SendGrid). Without SMTP credentials, automated emails cannot be transmitted across the internet.
             </p>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-1">
-            <h3 className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
-              <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="p-3.5 rounded-2xl bg-[#F5EFE3] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] space-y-1">
+            <h3 className="font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5">
+              <HelpCircle className="w-3.5 h-3.5 text-[#4A6B53]" />
               <span>Do I have to publish to allow this feature to work?</span>
             </h3>
-            <p className="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">
+            <p className="text-[#5C5348] dark:text-[#DECFA9] text-[11px] leading-relaxed">
               <strong>No, you do NOT have to publish!</strong> Live emails work directly inside the preview as soon as you enter your SMTP App Password below, OR you can always use the instant 1-click &quot;Open in Gmail&quot; button to send directly from your personal Gmail right away!
             </p>
           </div>
@@ -369,7 +369,7 @@ service cloud.firestore {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold text-[#736859] dark:text-[#A89D8E] mb-1">
                 SMTP Host Server:
               </label>
               <input
@@ -377,13 +377,13 @@ service cloud.firestore {
                 value={smtpConfig.host}
                 onChange={(e) => setSmtpConfig({ ...smtpConfig, host: e.target.value })}
                 placeholder="smtp.gmail.com"
-                className="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full text-xs px-3 py-2 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
               />
-              <span className="text-[10px] text-slate-400">Use smtp.gmail.com for Gmail accounts</span>
+              <span className="text-[10px] text-[#A89D8E]">Use smtp.gmail.com for Gmail accounts</span>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold text-[#736859] dark:text-[#A89D8E] mb-1">
                 SMTP Port:
               </label>
               <input
@@ -391,13 +391,13 @@ service cloud.firestore {
                 value={smtpConfig.port}
                 onChange={(e) => setSmtpConfig({ ...smtpConfig, port: Number(e.target.value) })}
                 placeholder="587"
-                className="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full text-xs px-3 py-2 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
               />
-              <span className="text-[10px] text-slate-400">Standard: 587 (TLS/STARTTLS) or 465 (SSL)</span>
+              <span className="text-[10px] text-[#A89D8E]">Standard: 587 (TLS/STARTTLS) or 465 (SSL)</span>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold text-[#736859] dark:text-[#A89D8E] mb-1">
                 Sender User Email:
               </label>
               <input
@@ -405,12 +405,12 @@ service cloud.firestore {
                 value={smtpConfig.user}
                 onChange={(e) => setSmtpConfig({ ...smtpConfig, user: e.target.value })}
                 placeholder="andreramiers@gmail.com"
-                className="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full text-xs px-3 py-2 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold text-[#736859] dark:text-[#A89D8E] mb-1">
                 Google 16-Character App Password:
               </label>
               <input
@@ -418,18 +418,18 @@ service cloud.firestore {
                 value={smtpConfig.pass}
                 onChange={(e) => setSmtpConfig({ ...smtpConfig, pass: e.target.value })}
                 placeholder="abcd efgh ijkl mnop"
-                className="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full text-xs px-3 py-2 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
               />
-              <span className="text-[10px] text-slate-400">
+              <span className="text-[10px] text-[#A89D8E]">
                 Created at Google Account &rarr; Security &rarr; 2-Step Verification &rarr; App passwords
               </span>
             </div>
           </div>
 
           {/* Test Email Section */}
-          <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-slate-900 border border-indigo-200 dark:border-indigo-900/60 space-y-2.5">
-            <h3 className="text-xs font-bold text-indigo-950 dark:text-indigo-200 flex items-center gap-1.5">
-              <Send className="w-3.5 h-3.5 text-indigo-600" />
+          <div className="p-4 rounded-2xl bg-[#F5EFE3] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] space-y-2.5">
+            <h3 className="text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5 font-serif-jp">
+              <Send className="w-3.5 h-3.5 text-[#C88A35]" />
               <span>Verify & Send Real Test Email to Your Inbox</span>
             </h3>
 
@@ -439,7 +439,7 @@ service cloud.firestore {
                 value={testEmailTo}
                 onChange={(e) => setTestEmailTo(e.target.value)}
                 placeholder="andreramiers@gmail.com"
-                className="flex-1 text-xs px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+                className="flex-1 text-xs px-3 py-2 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE]"
               />
               <button
                 type="button"
@@ -484,7 +484,7 @@ service cloud.firestore {
                     setIsTestingSmtp(false);
                   }
                 }}
-                className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition disabled:opacity-50 cursor-pointer"
+                className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition disabled:opacity-50 cursor-pointer"
               >
                 {isTestingSmtp ? (
                   <>
@@ -493,7 +493,7 @@ service cloud.firestore {
                   </>
                 ) : (
                   <>
-                    <Send className="w-3.5 h-3.5" />
+                    <Send className="w-3.5 h-3.5 text-[#FAF6EE]" />
                     <span>Send Test Email</span>
                   </>
                 )}
@@ -504,8 +504,8 @@ service cloud.firestore {
               <div
                 className={`p-2.5 rounded-xl text-xs font-medium ${
                   smtpTestResult.type === 'success'
-                    ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700'
-                    : 'bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-200 border border-red-300 dark:border-red-700'
+                    ? 'bg-[#4A6B53]/15 text-[#324D3B] dark:bg-[#4A6B53]/30 dark:text-[#7EB38B] border border-[#4A6B53]/40'
+                    : 'bg-[#BD3A2B]/15 text-[#BD3A2B] dark:text-[#FF8D80] border border-[#BD3A2B]/30'
                 }`}
               >
                 {smtpTestResult.text}
@@ -516,9 +516,9 @@ service cloud.firestore {
           <div className="flex items-center justify-end gap-2 pt-2">
             <button
               type="submit"
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#1E2A5E] hover:bg-[#162047] text-white dark:bg-amber-400 dark:text-[#1E2A5E] shadow-sm transition cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] shadow-sm transition cursor-pointer"
             >
-              <Check className="w-3.5 h-3.5" />
+              <Check className="w-3.5 h-3.5 text-[#C88A35]" />
               <span>Save SMTP Settings</span>
             </button>
           </div>

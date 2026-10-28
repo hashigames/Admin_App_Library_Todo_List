@@ -64,25 +64,25 @@ export const ReturnModal: React.FC<ReturnModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-      <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="relative w-full max-w-md bg-[#FAF6EE] dark:bg-[#171513] rounded-3xl shadow-2xl border border-[#EAE2D2] dark:border-[#38322B] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 bg-[#FAF7F0] dark:bg-slate-800/50">
+        <div className="flex items-center justify-between p-6 border-b border-[#EAE2D2] dark:border-[#38322B] bg-[#F5EFE3] dark:bg-[#201C19]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-emerald-600 text-white">
+            <div className="p-2 rounded-xl bg-[#4A6B53] text-white">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-[#1E2A5E] dark:text-white">
+              <h2 className="text-lg font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
                 {t.returnModalTitle}
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
                 LightHouse 橋i • 返却処理 (Entregar)
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            className="p-2 rounded-xl text-[#736859] hover:text-[#2B2520] dark:text-[#A89D8E] dark:hover:text-[#FAF6EE] hover:bg-[#EAE2D2] dark:hover:bg-[#2D2823] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -90,16 +90,16 @@ export const ReturnModal: React.FC<ReturnModalProps> = ({
 
         <div className="p-6 space-y-5">
           {/* Book Info Card */}
-          <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-            <BookOpen className="w-6 h-6 text-[#1E2A5E] dark:text-amber-300 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B]">
+            <BookOpen className="w-6 h-6 text-[#C88A35] shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-bold text-sm text-[#1E2A5E] dark:text-white leading-snug">
+              <h3 className="font-bold text-sm text-[#2B2520] dark:text-[#FAF6EE] leading-snug">
                 {book.title}
               </h3>
-              <p className="text-xs text-slate-500 italic mt-0.5">
+              <p className="text-xs text-[#736859] italic mt-0.5">
                 {book.author}
               </p>
-              <span className="inline-block mt-1.5 px-2 py-0.5 rounded text-[10px] font-bold bg-[#1E2A5E]/10 dark:bg-slate-700 text-[#1E2A5E] dark:text-amber-300">
+              <span className="inline-block mt-1.5 px-2 py-0.5 rounded text-[10px] font-bold bg-[#F5EFE3] dark:bg-[#201C19] text-[#2B2520] dark:text-[#C88A35] border border-[#DECFA9] dark:border-[#38322B]">
                 {book.topic}
               </span>
             </div>
@@ -107,24 +107,24 @@ export const ReturnModal: React.FC<ReturnModalProps> = ({
 
           {/* Borrower & Due Date Details */}
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-              <span className="text-slate-500 block mb-1 font-medium flex items-center gap-1">
-                <Laptop className="w-3.5 h-3.5 text-[#0097B2]" />
+            <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B]">
+              <span className="text-[#736859] dark:text-[#A89D8E] block mb-1 font-medium flex items-center gap-1">
+                <Laptop className="w-3.5 h-3.5 text-[#C88A35]" />
                 {t.activeEquipment}
               </span>
-              <span className="font-bold text-sm text-[#1E2A5E] dark:text-white">
+              <span className="font-bold text-sm text-[#2B2520] dark:text-[#FAF6EE]">
                 {book.borrowedByName || 'Unknown'}
               </span>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-              <span className="text-slate-500 block mb-1 font-medium flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-[#F5A623]" />
+            <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B]">
+              <span className="text-[#736859] dark:text-[#A89D8E] block mb-1 font-medium flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5 text-[#C88A35]" />
                 {t.dueDateLabel}
               </span>
               <span
                 className={`font-bold text-sm ${
-                  isOverdue ? 'text-[#DC2626]' : 'text-slate-700 dark:text-slate-200'
+                  isOverdue ? 'text-[#BD3A2B]' : 'text-[#2B2520] dark:text-[#FAF6EE]'
                 }`}
               >
                 {book.dueDate ? new Date(book.dueDate).toLocaleDateString() : '—'}
@@ -134,8 +134,8 @@ export const ReturnModal: React.FC<ReturnModalProps> = ({
 
           {/* Overdue alert if applicable */}
           {isOverdue && (
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-300 text-xs font-semibold">
-              <AlertCircle className="w-4 h-4 text-[#DC2626] shrink-0" />
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-[#BD3A2B]/10 border border-[#BD3A2B]/30 text-[#BD3A2B] text-xs font-semibold">
+              <AlertCircle className="w-4 h-4 text-[#BD3A2B] shrink-0" />
               <span>{t.overdueWarning.replace('{days}', String(Math.abs(daysDiff)))}</span>
             </div>
           )}
@@ -147,7 +147,7 @@ export const ReturnModal: React.FC<ReturnModalProps> = ({
                 type="button"
                 onClick={handleRenew}
                 disabled={isRenewing || isSubmitting}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE] hover:bg-[#F5EFE3] dark:hover:bg-[#201C19] transition"
               >
                 {isRenewing ? t.loading : t.renewLoan}
               </button>
@@ -157,7 +157,7 @@ export const ReturnModal: React.FC<ReturnModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
+                className="flex-1 sm:flex-none px-4 py-2.5 text-xs font-bold text-[#736859] hover:bg-[#EAE2D2] dark:hover:bg-[#2D2823] rounded-xl transition-colors"
               >
                 {t.cancel}
               </button>
@@ -166,7 +166,7 @@ export const ReturnModal: React.FC<ReturnModalProps> = ({
                 type="button"
                 onClick={handleReturn}
                 disabled={isSubmitting || isRenewing}
-                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition active:scale-98 disabled:opacity-50"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold rounded-xl bg-[#4A6B53] hover:bg-[#3D5A45] text-white shadow-xs transition active:scale-98 disabled:opacity-50"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>{isSubmitting ? t.loading : t.confirmReturn}</span>

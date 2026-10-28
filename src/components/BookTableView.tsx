@@ -24,9 +24,9 @@ export const BookTableView: React.FC<BookTableViewProps> = ({
   const t = translations[currentLang];
 
   return (
-    <div className="w-full overflow-x-auto rounded-2xl border border-[#1E2A5E]/10 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm">
+    <div className="w-full overflow-x-auto rounded-2xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] shadow-2xs">
       <table className="w-full text-left text-xs sm:text-sm">
-        <thead className="bg-[#FAF7F0] dark:bg-slate-900 border-b border-[#1E2A5E]/10 dark:border-slate-800 text-slate-500 uppercase tracking-wider text-[11px]">
+        <thead className="bg-[#FAF6EE] dark:bg-[#171513] border-b border-[#EAE2D2] dark:border-[#38322B] text-[#736859] dark:text-[#A89D8E] uppercase tracking-wider text-[11px]">
           <tr>
             <th className="py-3 px-4 w-14">Cover</th>
             <th className="py-3 px-4">Format</th>
@@ -39,7 +39,7 @@ export const BookTableView: React.FC<BookTableViewProps> = ({
             <th className="py-3 px-4 text-right">{t.actions}</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100 dark:divide-slate-700/60">
+        <tbody className="divide-y divide-[#EAE2D2] dark:divide-[#38322B]">
           {books.map(book => {
             const isBorrowed = book.status === 'borrowed';
             let isOverdue = false;
@@ -57,13 +57,13 @@ export const BookTableView: React.FC<BookTableViewProps> = ({
             return (
               <tr
                 key={book.id}
-                className="hover:bg-amber-50/40 dark:hover:bg-slate-700/40 transition-colors"
+                className="hover:bg-[#FAF6EE]/60 dark:hover:bg-[#201C19]/60 transition-colors"
               >
                 {/* Cover thumbnail */}
                 <td className="py-2.5 px-4">
                   <div
                     onClick={() => onViewDetails(book)}
-                    className="w-10 h-14 rounded overflow-hidden bg-slate-100 cursor-pointer shadow-xs shrink-0"
+                    className="w-10 h-14 rounded overflow-hidden bg-[#FAF6EE] dark:bg-[#171513] cursor-pointer shadow-2xs shrink-0"
                   >
                     <img src={coverSrc} alt="" className="w-full h-full object-cover" />
                   </div>
@@ -75,7 +75,7 @@ export const BookTableView: React.FC<BookTableViewProps> = ({
                     className={`px-1.5 py-0.5 rounded text-[9px] font-bold text-white uppercase ${
                       book.fileType === 'docx' || book.fileName?.endsWith('.docx')
                         ? 'bg-[#185ABD]'
-                        : 'bg-[#DC2626]'
+                        : 'bg-[#BD3A2B]'
                     }`}
                   >
                     {book.fileType === 'docx' || book.fileName?.endsWith('.docx') ? 'DOCX' : 'PDF'}
@@ -86,41 +86,41 @@ export const BookTableView: React.FC<BookTableViewProps> = ({
                 <td className="py-2.5 px-4 max-w-xs sm:max-w-md">
                   <div
                     onClick={() => onViewDetails(book)}
-                    className="font-bold text-[#1E2A5E] dark:text-slate-100 hover:text-[#0097B2] cursor-pointer line-clamp-1"
+                    className="font-bold text-[#2B2520] dark:text-[#FAF6EE] hover:text-[#BD3A2B] cursor-pointer line-clamp-1"
                   >
                     {book.title}
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 italic">
+                  <div className="text-xs text-[#736859] dark:text-[#A89D8E] italic">
                     {book.author}
                   </div>
                 </td>
 
                 {/* Topic */}
                 <td className="py-2.5 px-4">
-                  <span className="inline-block px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 dark:bg-slate-700 text-[#1E2A5E] dark:text-amber-300">
+                  <span className="inline-block px-2 py-0.5 rounded text-[11px] font-semibold bg-[#FAF6EE] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] text-[#5C5348] dark:text-[#DDD3BC]">
                     {book.topic}
                   </span>
                 </td>
 
                 {/* Folder Path */}
-                <td className="py-2.5 px-4 text-xs font-mono text-slate-500 dark:text-slate-400 truncate max-w-[140px]" title={book.folderPath}>
+                <td className="py-2.5 px-4 text-xs font-mono text-[#8E8373] truncate max-w-[140px]" title={book.folderPath}>
                   {book.folderPath || 'Root'}
                 </td>
 
                 {/* Status */}
                 <td className="py-2.5 px-4">
                   {book.status === 'available' ? (
-                    <span className="inline-flex items-center gap-1 text-emerald-600 font-bold text-xs">
+                    <span className="inline-flex items-center gap-1 text-[#4A6B53] font-bold text-xs">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>{t.available}</span>
                     </span>
                   ) : isOverdue ? (
-                    <span className="inline-flex items-center gap-1 text-[#DC2626] font-bold text-xs animate-pulse">
+                    <span className="inline-flex items-center gap-1 text-[#BD3A2B] font-bold text-xs animate-pulse">
                       <AlertCircle className="w-3.5 h-3.5" />
                       <span>{t.overdueWarning.replace('{days}', String(Math.abs(daysDiff)))}</span>
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-[#0097B2] font-semibold text-xs">
+                    <span className="inline-flex items-center gap-1 text-[#BD3A2B] font-semibold text-xs">
                       <Clock className="w-3.5 h-3.5" />
                       <span>{t.borrowed}</span>
                     </span>
@@ -128,12 +128,12 @@ export const BookTableView: React.FC<BookTableViewProps> = ({
                 </td>
 
                 {/* Equipment (Reader) */}
-                <td className="py-2.5 px-4 font-medium text-slate-700 dark:text-slate-300">
+                <td className="py-2.5 px-4 font-medium text-[#2B2520] dark:text-[#FAF6EE]">
                   {book.borrowedByName || '—'}
                 </td>
 
                 {/* Due Date */}
-                <td className="py-2.5 px-4 text-xs text-slate-600 dark:text-slate-300">
+                <td className="py-2.5 px-4 text-xs text-[#736859] dark:text-[#A89D8E]">
                   {book.dueDate ? new Date(book.dueDate).toLocaleDateString() : '—'}
                 </td>
 
@@ -146,7 +146,7 @@ export const BookTableView: React.FC<BookTableViewProps> = ({
                         disabled={currentRole !== 'admin'}
                         className={`px-2.5 py-1 rounded text-xs font-bold transition ${
                           currentRole === 'admin'
-                            ? 'bg-[#1E2A5E] hover:bg-[#2A3B82] text-white'
+                            ? 'bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs'
                             : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                         }`}
                       >
@@ -158,7 +158,7 @@ export const BookTableView: React.FC<BookTableViewProps> = ({
                         disabled={currentRole !== 'admin'}
                         className={`px-2.5 py-1 rounded text-xs font-bold transition ${
                           currentRole === 'admin'
-                            ? 'bg-[#0097B2] hover:bg-[#008299] text-white'
+                            ? 'bg-[#4A6B53] hover:bg-[#3D5A45] text-white shadow-2xs'
                             : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                         }`}
                       >

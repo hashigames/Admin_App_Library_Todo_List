@@ -396,21 +396,21 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
   ).length;
 
   return (
-    <div className="flex flex-col bg-[#F3F4F6] dark:bg-[#0B1120] border border-slate-300 dark:border-slate-800 rounded-3xl overflow-hidden shadow-xl transition-all max-w-[1720px] mx-auto my-4 animate-in fade-in">
+    <div className="flex flex-col bg-[#FAF6EE] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] rounded-3xl overflow-hidden shadow-2xl transition-all max-w-[1720px] mx-auto my-4 animate-in fade-in">
       
-      {/* ── WINDOW TITLE BAR (Windows Fluent Header) ── */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-[#1E2A5E] to-[#16214A] text-white select-none">
+      {/* ── WINDOW TITLE BAR (Windows Fluent Japanese Native Header) ── */}
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#2B2520] dark:bg-[#1E1A17] text-[#FAF6EE] select-none border-b border-[#38322B]">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md bg-[#F5A623] flex items-center justify-center text-[#1E2A5E] font-bold text-[10px] shadow-xs">
+          <div className="w-5 h-5 rounded-md bg-[#C88A35] flex items-center justify-center text-[#2B2520] font-bold text-[10px] shadow-xs">
             橋
           </div>
           <span className="font-semibold text-xs tracking-wide font-serif-jp flex items-center gap-1.5 flex-wrap">
             <span>燈台文庫 橋i</span>
-            <span className="text-[10px] font-bold text-amber-300 bg-amber-400/20 px-1.5 py-0.5 rounded tracking-wide">
+            <span className="text-[10px] font-bold text-[#2B2520] bg-[#DECFA9] px-1.5 py-0.5 rounded tracking-wide">
               とうだいぶんこ
             </span>
-            <span className="text-white/40">•</span>
-            <span className="text-white/80 font-normal">Windows Panels Hierarchy Explorer</span>
+            <span className="text-[#8E8373]">•</span>
+            <span className="text-[#DECFA9] font-normal">Windows Panels Hierarchy Explorer</span>
           </span>
         </div>
 
@@ -481,17 +481,17 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
           </div>
 
           {/* Breadcrumb address path bar */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex-1 min-w-0 overflow-x-auto no-scrollbar text-xs">
-            <HardDrive className="w-3.5 h-3.5 text-[#0097B2] shrink-0" />
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF6EE] dark:bg-[#1E1A17] border border-[#EAE2D2] dark:border-[#38322B] flex-1 min-w-0 overflow-x-auto no-scrollbar text-xs">
+            <HardDrive className="w-3.5 h-3.5 text-[#C88A35] shrink-0" />
             {breadcrumbs.map((crumb, idx) => (
               <React.Fragment key={crumb.id + idx}>
-                {idx > 0 && <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />}
+                {idx > 0 && <ChevronRight className="w-3 h-3 text-[#8E8373] shrink-0" />}
                 <button
                   onClick={() => navigateToNode(crumb.id)}
                   className={`hover:underline truncate shrink-0 font-medium ${
                     idx === breadcrumbs.length - 1
-                      ? 'text-[#1E2A5E] dark:text-amber-400 font-bold'
-                      : 'text-slate-600 dark:text-slate-400'
+                      ? 'text-[#2B2520] dark:text-[#FAF6EE] font-bold'
+                      : 'text-[#736859] dark:text-[#A89D8E]'
                   }`}
                 >
                   {crumb.label}
@@ -505,18 +505,18 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
         <div className="flex items-center gap-2 shrink-0">
           {/* Quick search input */}
           <div className="relative w-48 sm:w-64">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-[#8E8373] absolute left-2.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search in folder..."
-              className="w-full pl-8 pr-7 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-[#1E2A5E] dark:text-white outline-none focus:ring-1 focus:ring-[#0097B2]"
+              className="w-full pl-8 pr-7 py-1.5 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-xs text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-1 focus:ring-[#C88A35]"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8E8373] hover:text-[#2B2520] text-xs"
               >
                 ✕
               </button>
@@ -524,13 +524,13 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
           </div>
 
           {/* View mode toggle */}
-          <div className="flex items-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-0.5">
+          <div className="flex items-center bg-[#FAF6EE] dark:bg-[#1E1A17] border border-[#EAE2D2] dark:border-[#38322B] rounded-xl p-0.5">
             <button
               onClick={() => setViewStyle('tiles')}
               className={`p-1.5 rounded-lg transition ${
                 viewStyle === 'tiles'
-                  ? 'bg-white dark:bg-slate-700 text-[#1E2A5E] dark:text-white shadow-xs'
-                  : 'text-slate-400 hover:text-slate-700 dark:hover:text-white'
+                  ? 'bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs font-bold'
+                  : 'text-[#8E8373] hover:text-[#2B2520] dark:hover:text-[#FAF6EE]'
               }`}
               title="Large Tiles / Cover Cards"
             >
@@ -540,8 +540,8 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
               onClick={() => setViewStyle('details')}
               className={`p-1.5 rounded-lg transition ${
                 viewStyle === 'details'
-                  ? 'bg-white dark:bg-slate-700 text-[#1E2A5E] dark:text-white shadow-xs'
-                  : 'text-slate-400 hover:text-slate-700 dark:hover:text-white'
+                  ? 'bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs font-bold'
+                  : 'text-[#8E8373] hover:text-[#2B2520] dark:hover:text-[#FAF6EE]'
               }`}
               title="Explorer Details List"
             >
@@ -553,7 +553,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
           {currentRole === 'admin' && (
             <button
               onClick={onOpenUpload}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1E2A5E] dark:bg-amber-400 hover:bg-[#2A3B82] text-white dark:text-[#1E2A5E] text-xs font-bold shadow-xs transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white text-xs font-bold shadow-2xs transition active:scale-95"
             >
               <Plus className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Upload Folders</span>
@@ -576,7 +576,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                 className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider px-2 py-1.5 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
               >
                 <div className="flex items-center gap-1.5">
-                  <Bookmark className="w-3.5 h-3.5 text-[#F5A623]" />
+                  <Bookmark className="w-3.5 h-3.5 text-[#C88A35]" />
                   <span>Quick Access</span>
                 </div>
                 {expandedNodes['quick-access'] ? (
@@ -592,12 +592,12 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                     onClick={() => navigateToNode('all-books')}
                     className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl transition ${
                       selectedNodeId === 'all-books'
-                        ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold shadow-xs'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/80'
+                        ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold shadow-2xs'
+                        : 'text-[#5C5348] dark:text-[#DDD3BC] hover:bg-[#EAE2D2]/60 dark:hover:bg-[#2D2823]/80'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <BookOpen className="w-3.5 h-3.5" />
+                      <BookOpen className="w-3.5 h-3.5 text-[#C88A35]" />
                       <span>All Documents</span>
                     </div>
                     <span className="text-[10px] opacity-75 font-mono">({books.length})</span>
@@ -607,15 +607,15 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                     onClick={() => navigateToNode('available-books')}
                     className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl transition ${
                       selectedNodeId === 'available-books'
-                        ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold shadow-xs'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/80'
+                        ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold shadow-2xs'
+                        : 'text-[#5C5348] dark:text-[#DDD3BC] hover:bg-[#EAE2D2]/60 dark:hover:bg-[#2D2823]/80'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#4A6B53]" />
                       <span>Available (貸出可)</span>
                     </div>
-                    <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                    <span className="text-[10px] font-mono text-[#4A6B53] font-bold">
                       ({availableCount})
                     </span>
                   </button>
@@ -624,12 +624,12 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                     onClick={() => navigateToNode('borrowed-books')}
                     className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl transition ${
                       selectedNodeId === 'borrowed-books'
-                        ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold shadow-xs'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/80'
+                        ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold shadow-2xs'
+                        : 'text-[#5C5348] dark:text-[#DDD3BC] hover:bg-[#EAE2D2]/60 dark:hover:bg-[#2D2823]/80'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <Clock className="w-3.5 h-3.5 text-[#0097B2]" />
+                      <Clock className="w-3.5 h-3.5 text-[#C88A35]" />
                       <span>Borrowed (貸出中)</span>
                     </div>
                     <span className="text-[10px] font-mono font-bold">({borrowedCount})</span>
@@ -679,7 +679,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                 className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider px-2 py-1.5 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
               >
                 <div className="flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-[#0097B2]" />
+                  <Layers className="w-3.5 h-3.5 text-[#C88A35]" />
                   <span>Topic Library Panels</span>
                 </div>
                 {expandedNodes['topics-root'] ? (
@@ -700,9 +700,9 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                     >
                       <div className="flex items-center gap-1.5">
                         {expandedNodes['ai-group'] ? (
-                          <FolderOpen className="w-3.5 h-3.5 text-amber-500" />
+                          <FolderOpen className="w-3.5 h-3.5 text-[#C88A35]" />
                         ) : (
-                          <Folder className="w-3.5 h-3.5 text-amber-500" />
+                          <Folder className="w-3.5 h-3.5 text-[#C88A35]" />
                         )}
                         <span className="font-semibold text-[11px]">Artificial Intelligence</span>
                       </div>
@@ -718,7 +718,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                             onClick={() => navigateToNode(node.id)}
                             className={`w-full flex items-center justify-between px-2 py-1 rounded-lg text-left transition ${
                               selectedNodeId === node.id
-                                ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold'
+                                ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold'
                                 : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                             }`}
                           >
@@ -756,7 +756,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                             onClick={() => navigateToNode(node.id)}
                             className={`w-full flex items-center justify-between px-2 py-1 rounded-lg text-left transition ${
                               selectedNodeId === node.id
-                                ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold'
+                                ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold'
                                 : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                             }`}
                           >
@@ -794,7 +794,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                             onClick={() => navigateToNode(node.id)}
                             className={`w-full flex items-center justify-between px-2 py-1 rounded-lg text-left transition ${
                               selectedNodeId === node.id
-                                ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold'
+                                ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold'
                                 : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                             }`}
                           >
@@ -832,7 +832,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                             onClick={() => navigateToNode(node.id)}
                             className={`w-full flex items-center justify-between px-2 py-1 rounded-lg text-left transition ${
                               selectedNodeId === node.id
-                                ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold'
+                                ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold'
                                 : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                             }`}
                           >
@@ -853,7 +853,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                           onClick={() => navigateToNode(node.id)}
                           className={`w-full flex items-center justify-between px-2 py-1 rounded-lg text-left transition ${
                             selectedNodeId === node.id
-                              ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold'
+                              ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold'
                               : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                           }`}
                         >
@@ -863,7 +863,6 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                       ))}
                     </div>
                   )}
-
                 </div>
               )}
             </div>
@@ -875,7 +874,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                 className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider px-2 py-1.5 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
               >
                 <div className="flex items-center gap-1.5">
-                  <Folder className="w-3.5 h-3.5 text-[#0097B2]" />
+                  <Folder className="w-3.5 h-3.5 text-[#C88A35]" />
                   <span>Folder Directory Tree</span>
                 </div>
                 {expandedNodes['folders-root'] ? (
@@ -898,12 +897,12 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                           onClick={() => navigateToNode(node.id)}
                           className={`w-full flex items-center justify-between px-2 py-1 rounded-lg text-left transition ${
                             selectedNodeId === node.id
-                              ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold'
+                              ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold'
                               : 'text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                           }`}
                         >
                           <div className="flex items-center gap-1.5 truncate">
-                            <Folder className="w-3 h-3 text-[#F5A623] shrink-0" />
+                            <Folder className="w-3 h-3 text-[#C88A35] shrink-0" />
                             <span className="truncate">{node.name}</span>
                           </div>
                           <span className="text-[10px] opacity-75 font-mono shrink-0 ml-1">
@@ -920,12 +919,12 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                                 onClick={() => navigateToNode(subNode.id)}
                                 className={`w-full flex items-center justify-between px-2 py-1 rounded-lg text-left transition ${
                                   selectedNodeId === subNode.id
-                                    ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold'
+                                    ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold'
                                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                                 }`}
                               >
                                 <div className="flex items-center gap-1.5 truncate">
-                                  <Folder className="w-2.5 h-2.5 text-amber-400 shrink-0" />
+                                  <Folder className="w-2.5 h-2.5 text-[#C88A35] shrink-0" />
                                   <span className="truncate text-[11px]">{subNode.name}</span>
                                 </div>
                                 <span className="text-[9px] opacity-75 font-mono shrink-0 ml-1">
@@ -949,7 +948,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                 className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider px-2 py-1.5 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
               >
                 <div className="flex items-center gap-1.5">
-                  <Laptop className="w-3.5 h-3.5 text-indigo-500" />
+                  <Laptop className="w-3.5 h-3.5 text-[#BD3A2B]" />
                   <span>Equipment (Gundams)</span>
                 </div>
                 {expandedNodes['equipment-root'] ? (
@@ -972,15 +971,15 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                         onClick={() => navigateToNode(`eq-${eqId}`)}
                         className={`w-full flex items-center justify-between px-2 py-1 rounded-lg text-left transition ${
                           selectedNodeId === `eq-${eqId}`
-                            ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] font-bold'
+                            ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] font-bold'
                             : 'text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                         }`}
                       >
                         <div className="flex items-center gap-1.5 truncate">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#0097B2]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#BD3A2B]" />
                           <span className="truncate">{data.name}</span>
                         </div>
-                        <span className="text-[10px] font-mono font-bold text-[#0097B2]">
+                        <span className="text-[10px] font-mono font-bold text-[#BD3A2B]">
                           {data.count} reading
                         </span>
                       </button>
@@ -1029,8 +1028,8 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                   onClick={() => setStatusFilter('borrowed')}
                   className={`px-2 py-0.5 rounded-md font-semibold text-[11px] transition ${
                     statusFilter === 'borrowed'
-                      ? 'bg-[#0097B2] text-white'
-                      : 'text-[#0097B2] hover:bg-[#0097B2]/10'
+                      ? 'bg-[#BD3A2B] text-white'
+                      : 'text-[#BD3A2B] hover:bg-[#BD3A2B]/10'
                   }`}
                 >
                   Borrowed
@@ -1040,11 +1039,11 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
 
             {/* Sorting selector */}
             <div className="flex items-center gap-2">
-              <span className="text-slate-400 text-[11px]">Sort:</span>
+              <span className="text-[#8E8373] text-[11px]">Sort:</span>
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as any)}
-                className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1 text-xs outline-none"
+                className="bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] rounded-lg px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-[#C88A35]"
               >
                 <option value="name">Name</option>
                 <option value="author">Author</option>
@@ -1054,7 +1053,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
               </select>
               <button
                 onClick={() => setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'))}
-                className="px-1.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-[11px] font-mono text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="px-1.5 py-1 rounded-lg border border-[#EAE2D2] dark:border-[#38322B] text-[11px] font-mono text-[#5C5348] dark:text-[#DDD3BC] hover:bg-[#F5EFE3] dark:hover:bg-[#201C19]"
                 title="Toggle Sort Order"
               >
                 {sortOrder === 'asc' ? '▲ ASC' : '▼ DESC'}
@@ -1066,17 +1065,17 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
           <div className="flex-1 overflow-y-auto p-4">
             {displayedBooks.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center p-8 text-slate-400">
-                <Folder className="w-12 h-12 text-slate-300 dark:text-slate-700 mb-2 stroke-1" />
-                <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">
+                <Folder className="w-12 h-12 text-[#DECFA9] dark:text-[#38322B] mb-2 stroke-1" />
+                <p className="text-sm font-semibold text-[#2B2520] dark:text-[#FAF6EE]">
                   This folder is empty
                 </p>
-                <p className="text-xs text-slate-400 mt-1 max-w-sm">
+                <p className="text-xs text-[#8E8373] mt-1 max-w-sm">
                   No PDF or Word books match the current filters or folder path.
                 </p>
                 {currentRole === 'admin' && (
                   <button
                     onClick={onOpenUpload}
-                    className="mt-4 px-3 py-1.5 rounded-xl bg-[#1E2A5E] text-white text-xs font-bold shadow-xs hover:bg-[#2A3B82]"
+                    className="mt-4 px-3.5 py-1.5 rounded-xl bg-[#BD3A2B] text-white text-xs font-bold shadow-2xs hover:bg-[#A83225] transition active:scale-95"
                   >
                     Upload Documents to this Folder
                   </button>
@@ -1096,12 +1095,12 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                       onDoubleClick={() => onViewBookDetails(book)}
                       className={`group relative flex flex-col rounded-2xl p-3 border transition-all cursor-pointer select-none ${
                         isSelected
-                          ? 'border-[#0097B2] bg-[#0097B2]/5 dark:bg-[#0097B2]/10 ring-2 ring-[#0097B2]/50 shadow-md'
-                          : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-xs'
+                          ? 'border-[#C88A35] bg-[#C88A35]/5 dark:bg-[#C88A35]/10 ring-2 ring-[#C88A35]/50 shadow-md'
+                          : 'border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] hover:border-[#DECFA9] dark:hover:border-[#5C5348] hover:shadow-2xs'
                       }`}
                     >
                       {/* Cover Thumbnail */}
-                      <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-900 shadow-sm mb-2.5">
+                      <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-[#FAF6EE] dark:bg-[#171513] shadow-xs mb-2.5">
                         {book.coverUrl ? (
                           <img
                             src={book.coverUrl}
@@ -1109,8 +1108,8 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                           />
                         ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1E2A5E] to-[#0F172A] text-white p-3 text-center">
-                            <BookOpen className="w-8 h-8 text-[#F5A623] mb-2 opacity-80" />
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-[#2B2520] text-[#FAF6EE] p-3 text-center">
+                            <BookOpen className="w-8 h-8 text-[#C88A35] mb-2 opacity-80" />
                             <span className="text-[10px] font-bold line-clamp-2">{book.title}</span>
                           </div>
                         )}
@@ -1119,7 +1118,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                         <div className="absolute top-2 right-2">
                           <span
                             className={`px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wider text-white shadow-xs ${
-                              isWord ? 'bg-[#185ABD]' : 'bg-[#DC2626]'
+                              isWord ? 'bg-[#185ABD]' : 'bg-[#BD3A2B]'
                             }`}
                           >
                             {isWord ? 'DOCX' : 'PDF'}
@@ -1129,11 +1128,11 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                         {/* Status Chip */}
                         <div className="absolute bottom-2 left-2">
                           {book.status === 'available' ? (
-                            <span className="px-2 py-0.5 rounded-full bg-emerald-600/90 text-white text-[9px] font-bold shadow-xs">
+                            <span className="px-2 py-0.5 rounded-full bg-[#4A6B53]/95 text-white text-[9px] font-bold shadow-xs">
                               貸出可 Available
                             </span>
                           ) : (
-                            <span className="px-2 py-0.5 rounded-full bg-[#1E2A5E]/90 text-amber-300 text-[9px] font-bold shadow-xs">
+                            <span className="px-2 py-0.5 rounded-full bg-[#2B2520]/90 text-[#DECFA9] text-[9px] font-bold shadow-xs">
                               {book.borrowedByName || 'Borrowed'}
                             </span>
                           )}
@@ -1143,16 +1142,16 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                       {/* Info Block */}
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
-                          <h4 className="font-bold text-xs text-[#1E2A5E] dark:text-white line-clamp-2 leading-tight mb-1" title={book.title}>
+                          <h4 className="font-bold text-xs text-[#2B2520] dark:text-[#FAF6EE] line-clamp-2 leading-tight mb-1" title={book.title}>
                             {book.title}
                           </h4>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                          <p className="text-[11px] text-[#736859] dark:text-[#A89D8E] truncate">
                             {book.author}
                           </p>
                         </div>
 
-                        <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] text-slate-400">
-                          <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700/60 font-semibold truncate max-w-[90px]">
+                        <div className="mt-2.5 pt-2 border-t border-[#EAE2D2] dark:border-[#38322B] flex items-center justify-between text-[10px] text-[#8E8373]">
+                          <span className="px-1.5 py-0.5 rounded bg-[#FAF6EE] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] font-semibold truncate max-w-[90px]">
                             {book.topic}
                           </span>
                           <span className="font-mono">{formatBytes(book.fileSize)}</span>
@@ -1190,52 +1189,52 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                           onDoubleClick={() => onViewBookDetails(book)}
                           className={`cursor-pointer transition ${
                             isSelected
-                              ? 'bg-[#0097B2]/10 dark:bg-[#0097B2]/20 font-medium'
-                              : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                              ? 'bg-[#C88A35]/10 dark:bg-[#C88A35]/20 font-medium'
+                              : 'hover:bg-[#FAF6EE]/50 dark:hover:bg-[#201C19]/50'
                           }`}
                         >
                           <td className="py-2.5 px-3">
                             <div className="flex items-center gap-2 max-w-xs sm:max-w-md truncate">
                               <span
                                 className={`p-1 rounded text-[10px] font-bold text-white shrink-0 ${
-                                  isWord ? 'bg-[#185ABD]' : 'bg-[#DC2626]'
+                                  isWord ? 'bg-[#185ABD]' : 'bg-[#BD3A2B]'
                                 }`}
                               >
                                 {isWord ? 'DOCX' : 'PDF'}
                               </span>
-                              <span className="font-semibold text-slate-800 dark:text-slate-100 truncate">
+                              <span className="font-semibold text-[#2B2520] dark:text-[#FAF6EE] truncate">
                                 {book.title}
                               </span>
                             </div>
                           </td>
-                          <td className="py-2.5 px-3 uppercase text-[11px] font-mono text-slate-500">
+                          <td className="py-2.5 px-3 uppercase text-[11px] font-mono text-[#736859]">
                             {isWord ? 'Word' : 'PDF'}
                           </td>
-                          <td className="py-2.5 px-3 text-slate-600 dark:text-slate-300 truncate max-w-[140px]">
+                          <td className="py-2.5 px-3 text-[#5C5348] dark:text-[#DDD3BC] truncate max-w-[140px]">
                             {book.author}
                           </td>
                           <td className="py-2.5 px-3">
-                            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-semibold text-slate-700 dark:text-slate-300">
+                            <span className="px-2 py-0.5 rounded-full bg-[#FAF6EE] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] text-[11px] font-semibold text-[#5C5348] dark:text-[#DDD3BC]">
                               {book.topic}
                             </span>
                           </td>
-                          <td className="py-2.5 px-3 text-[11px] font-mono text-slate-400 truncate max-w-[150px]">
+                          <td className="py-2.5 px-3 text-[11px] font-mono text-[#8E8373] truncate max-w-[150px]">
                             {book.folderPath || 'Root'}
                           </td>
                           <td className="py-2.5 px-3">
                             {book.status === 'available' ? (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#4A6B53]">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#4A6B53]" />
                                 Available
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0097B2]">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#0097B2]" />
+                              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#BD3A2B]">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#BD3A2B]" />
                                 {book.borrowedByName || 'On Loan'}
                               </span>
                             )}
                           </td>
-                          <td className="py-2.5 px-3 text-right font-mono text-[11px] text-slate-400">
+                          <td className="py-2.5 px-3 text-right font-mono text-[11px] text-[#8E8373]">
                             {formatBytes(book.fileSize)}
                           </td>
                           <td className="py-2.5 px-3 text-right">
@@ -1246,7 +1245,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                                     e.stopPropagation();
                                     onLendBook(book);
                                   }}
-                                  className="px-2 py-1 rounded bg-[#1E2A5E] text-white text-[10px] font-bold hover:bg-[#2A3B82]"
+                                  className="px-2.5 py-1 rounded bg-[#BD3A2B] hover:bg-[#A83225] text-white text-[10px] font-bold shadow-2xs transition"
                                 >
                                   Prestar
                                 </button>
@@ -1298,8 +1297,8 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-[#1E2A5E] text-white p-4 text-center">
-                      <BookOpen className="w-10 h-10 text-[#F5A623] mb-2" />
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-[#2B2520] text-[#FAF6EE] p-4 text-center">
+                      <BookOpen className="w-10 h-10 text-[#C88A35] mb-2" />
                       <span className="text-xs font-bold">{selectedBook.title}</span>
                     </div>
                   )}
@@ -1307,7 +1306,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                   {/* Document Format Badge */}
                   <span
                     className={`absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-bold text-white shadow-xs ${
-                      selectedBook.fileType === 'docx' ? 'bg-[#185ABD]' : 'bg-[#DC2626]'
+                      selectedBook.fileType === 'docx' ? 'bg-[#185ABD]' : 'bg-[#BD3A2B]'
                     }`}
                   >
                     {selectedBook.fileType === 'docx' ? 'WORD DOCX' : 'PDF DOCUMENT'}
@@ -1316,25 +1315,25 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
 
                 {/* Title & Metadata */}
                 <div className="text-center space-y-1">
-                  <h3 className="font-bold text-sm text-[#1E2A5E] dark:text-white leading-snug">
+                  <h3 className="font-bold text-sm text-[#2B2520] dark:text-[#FAF6EE] leading-snug">
                     {selectedBook.title}
                   </h3>
-                  <p className="text-xs text-[#0097B2] font-medium">
+                  <p className="text-xs text-[#736859] dark:text-[#A89D8E] font-medium">
                     著: {selectedBook.author}
                   </p>
-                  <p className="text-[10px] text-slate-400 font-mono">
+                  <p className="text-[10px] text-[#8E8373] font-mono">
                     {selectedBook.fileName || 'document.pdf'}
                   </p>
                 </div>
 
                 {/* AI Classification Card */}
-                <div className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-2 shadow-xs">
+                <div className="p-3 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] space-y-2 shadow-2xs">
                   <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-1.5 font-bold text-[11px] text-[#1E2A5E] dark:text-amber-400">
-                      <Sparkles className="w-3.5 h-3.5 text-[#F5A623]" />
+                    <span className="flex items-center gap-1.5 font-bold text-[11px] text-[#2B2520] dark:text-[#FAF6EE]">
+                      <Sparkles className="w-3.5 h-3.5 text-[#C88A35]" />
                       <span>Gemini AI Classification</span>
                     </span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 font-bold">
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#FAF6EE] dark:bg-[#171513] text-[#C88A35] border border-[#EAE2D2] dark:border-[#38322B] font-bold">
                       {Math.round((selectedBook.confidence || 0.95) * 100)}% Confidence
                     </span>
                   </div>
@@ -1411,7 +1410,7 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                         貸出可 Available
                       </span>
                     ) : (
-                      <span className="px-2 py-0.5 rounded-full bg-[#1E2A5E] text-white font-bold text-[10px]">
+                      <span className="px-2 py-0.5 rounded-full bg-[#2B2520] text-[#FAF6EE] font-bold text-[10px]">
                         貸出中 Borrowed
                       </span>
                     )}
@@ -1420,14 +1419,14 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                   {selectedBook.status === 'borrowed' && (
                     <div className="text-[11px] space-y-1 mb-3">
                       <div className="flex justify-between">
-                        <span className="text-slate-500">Equipo:</span>
-                        <span className="font-bold text-[#1E2A5E] dark:text-amber-400">
+                        <span className="text-[#8E8373]">Equipo:</span>
+                        <span className="font-bold text-[#2B2520] dark:text-[#FAF6EE]">
                           {selectedBook.borrowedByName}
                         </span>
                       </div>
                       {selectedBook.dueDate && (
                         <div className="flex justify-between">
-                          <span className="text-slate-500">Due Date:</span>
+                          <span className="text-[#8E8373]">Due Date:</span>
                           <span className="font-mono font-semibold">
                             {new Date(selectedBook.dueDate).toLocaleDateString()}
                           </span>
@@ -1441,14 +1440,14 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
                     {selectedBook.status === 'available' ? (
                       <button
                         onClick={() => onLendBook(selectedBook)}
-                        className="w-full py-2 rounded-xl bg-[#1E2A5E] dark:bg-amber-400 hover:bg-[#2A3B82] text-white dark:text-[#1E2A5E] font-bold text-xs shadow-xs transition"
+                        className="w-full py-2 rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white font-bold text-xs shadow-2xs transition active:scale-95"
                       >
                         Prestar a un Equipo (Lend)
                       </button>
                     ) : (
                       <button
                         onClick={() => onReturnBook(selectedBook)}
-                        className="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition"
+                        className="w-full py-2 rounded-xl bg-[#4A6B53] hover:bg-[#3D5A45] text-white font-bold text-xs shadow-2xs transition active:scale-95"
                       >
                         Devolver Libro (Return)
                       </button>
@@ -1478,8 +1477,8 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
 
       </div>
 
-      {/* ── WINDOWS BOTTOM STATUS BAR ── */}
-      <div className="border-t border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-4 py-2 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 select-none gap-2">
+      {/* ── WINDOWS BOTTOM STATUS BAR (Japanese Native Palette) ── */}
+      <div className="border-t border-[#EAE2D2] dark:border-[#38322B] bg-[#F5EFE3] dark:bg-[#1E1A17] px-4 py-2 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#736859] dark:text-[#A89D8E] select-none gap-2">
         <div className="flex items-center gap-4">
           <span>{displayedBooks.length} items</span>
           {selectedBook && (
@@ -1491,11 +1490,11 @@ export const WindowsPanelsExplorer: React.FC<WindowsPanelsExplorerProps> = ({
 
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="w-2 h-2 rounded-full bg-[#4A6B53]" />
             <span>貸出可能 (Available): <strong>{availableCount}</strong></span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#0097B2]" />
+            <span className="w-2 h-2 rounded-full bg-[#BD3A2B]" />
             <span>貸出中 (Borrowed): <strong>{borrowedCount}</strong></span>
           </span>
           <span className="hidden md:inline font-mono">

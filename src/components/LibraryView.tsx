@@ -117,32 +117,32 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 animate-in fade-in">
       
       {/* ── TOP VIEW SWITCHER & TITLE BAR ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-3xl bg-white dark:bg-slate-800 border border-[#1E2A5E]/10 dark:border-slate-700/60 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
         <div>
-          <h2 className="text-lg font-bold text-[#1E2A5E] dark:text-white flex items-center gap-2 font-serif-jp">
+          <h2 className="text-lg font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-2 font-serif-jp">
             <span>燈台文庫 蔵書一覧</span>
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#0097B2]/10 text-[#0097B2] dark:text-[#38BDF8] font-medium tracking-wide">
+            <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#F5EFE3] text-[#736859] dark:bg-[#2B2520] dark:text-[#DDD3BC] font-medium tracking-wide">
               とうだいぶんこ
             </span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-[#1E2A5E] text-white font-sans font-bold">
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#2B2520] text-[#FAF6EE] dark:bg-[#38322B] font-sans font-bold">
               {books.length} Books
             </span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-[#736859] dark:text-[#A89F91] mt-0.5">
             Organized with Windows Panels Hierarchy, topic directories, and real-time loan tracking.
           </p>
         </div>
 
         {/* View Switcher: Windows Panels vs Shelves vs Table */}
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="text-xs font-semibold text-slate-400 hidden md:inline">View:</span>
-          <div className="flex items-center bg-slate-100 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600 rounded-2xl p-1">
+          <span className="text-xs font-semibold text-[#8E8373] hidden md:inline">View:</span>
+          <div className="flex items-center bg-[#F5EFE3] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] rounded-2xl p-1">
             <button
               onClick={() => setViewMode('windows')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
                 viewMode === 'windows'
-                  ? 'bg-[#1E2A5E] text-white shadow-xs dark:bg-amber-400 dark:text-[#1E2A5E]'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-[#1E2A5E] dark:hover:text-white'
+                  ? 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
+                  : 'text-[#5C5348] dark:text-[#DDD3BC] hover:text-[#2B2520] dark:hover:text-white'
               }`}
             >
               <FolderTree className="w-3.5 h-3.5" />
@@ -153,8 +153,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
               onClick={() => setViewMode('shelf')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
                 viewMode === 'shelf'
-                  ? 'bg-[#1E2A5E] text-white shadow-xs dark:bg-amber-400 dark:text-[#1E2A5E]'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-[#1E2A5E] dark:hover:text-white'
+                  ? 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
+                  : 'text-[#5C5348] dark:text-[#DDD3BC] hover:text-[#2B2520] dark:hover:text-white'
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
@@ -165,8 +165,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
               onClick={() => setViewMode('table')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
                 viewMode === 'table'
-                  ? 'bg-[#1E2A5E] text-white shadow-xs dark:bg-amber-400 dark:text-[#1E2A5E]'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-[#1E2A5E] dark:hover:text-white'
+                  ? 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
+                  : 'text-[#5C5348] dark:text-[#DDD3BC] hover:text-[#2B2520] dark:hover:text-white'
               }`}
             >
               <List className="w-3.5 h-3.5" />
@@ -196,18 +196,18 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
           <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
             {/* Search input */}
             <div className="relative flex-1 max-w-xl">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#8E8373] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t.searchPlaceholder}
-                className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs sm:text-sm text-[#1E2A5E] dark:text-white shadow-xs outline-none focus:ring-2 focus:ring-[#1E2A5E] transition"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-xs sm:text-sm text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs outline-none focus:ring-2 focus:ring-[#C88A35] transition"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8E8373] hover:text-[#2B2520] text-xs"
                 >
                   ✕
                 </button>
@@ -247,8 +247,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
               onClick={() => setSelectedTopic('all')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition active:scale-95 ${
                 selectedTopic === 'all'
-                  ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] shadow-xs'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-slate-400'
+                  ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] shadow-2xs'
+                  : 'bg-[#FFFFFF] dark:bg-[#201C19] text-[#5C5348] dark:text-[#DDD3BC] border border-[#EAE2D2] dark:border-[#38322B] hover:border-[#C88A35]'
               }`}
             >
               {t.allTopics} ({books.length})
@@ -262,11 +262,11 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                 }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center gap-1 active:scale-95 ${
                   statusFilter === 'needsReview'
-                    ? 'bg-amber-500 text-white shadow-xs'
-                    : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-700'
+                    ? 'bg-[#C88A35] text-white shadow-2xs'
+                    : 'bg-[#FAF6EE] dark:bg-[#2B2520] text-[#C88A35] border border-[#DECFA9] dark:border-[#5C5348]'
                 }`}
               >
-                <AlertCircle className="w-3.5 h-3.5 text-amber-500" />
+                <AlertCircle className="w-3.5 h-3.5 text-[#C88A35]" />
                 <span>Unsorted ({needsReviewCount})</span>
               </button>
             )}
@@ -281,8 +281,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                   onClick={() => setSelectedTopic(topic)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition active:scale-95 ${
                     selectedTopic === topic
-                      ? 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E] shadow-xs'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-slate-400'
+                      ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] shadow-2xs'
+                      : 'bg-[#FFFFFF] dark:bg-[#201C19] text-[#5C5348] dark:text-[#DDD3BC] border border-[#EAE2D2] dark:border-[#38322B] hover:border-[#C88A35]'
                   }`}
                 >
                   <span>{topic}</span>
@@ -293,12 +293,12 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
           </div>
 
           {/* Catalog Count Indicator */}
-          <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+          <div className="flex items-center justify-between text-xs text-[#8E8373] px-1">
             <span>{t.booksCount.replace('{count}', String(filteredBooks.length))}</span>
             {currentRole === 'admin' && (
               <button
                 onClick={onOpenUpload}
-                className="text-xs font-bold text-[#0097B2] hover:underline flex items-center gap-1"
+                className="text-xs font-bold text-[#BD3A2B] hover:underline flex items-center gap-1"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Upload Folders / Files</span>
@@ -308,20 +308,20 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 
           {/* Empty State or Content */}
           {filteredBooks.length === 0 ? (
-            <div className="p-12 sm:p-16 rounded-3xl bg-white dark:bg-slate-800 border border-dashed border-slate-300 dark:border-slate-700 text-center max-w-lg mx-auto">
-              <BookOpen className="w-12 h-12 text-[#F5A623] mx-auto mb-3 opacity-80" />
-              <h3 className="text-base sm:text-lg font-bold text-[#1E2A5E] dark:text-white mb-1">
+            <div className="p-12 sm:p-16 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-dashed border-[#DDD3BC] dark:border-[#38322B] text-center max-w-lg mx-auto">
+              <BookOpen className="w-12 h-12 text-[#C88A35] mx-auto mb-3 opacity-80" />
+              <h3 className="text-base sm:text-lg font-bold text-[#2B2520] dark:text-[#FAF6EE] mb-1">
                 {t.noBooksFound}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">
+              <p className="text-xs text-[#736859] dark:text-[#A89F91] mb-5">
                 {t.noBooksFoundSub}
               </p>
               {currentRole === 'admin' && (
                 <button
                   onClick={onOpenUpload}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white text-xs font-bold shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white text-xs font-bold shadow-2xs transition active:scale-95"
                 >
-                  <Plus className="w-4 h-4 text-[#F5A623]" />
+                  <Plus className="w-4 h-4 text-white" />
                   <span>{t.startBatchUpload}</span>
                 </button>
               )}

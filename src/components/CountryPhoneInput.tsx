@@ -93,16 +93,16 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
             value={selectedCountry.code}
             disabled={disabled}
             onChange={(e) => handleCountryChange(e.target.value)}
-            className="appearance-none bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-xs font-semibold rounded-xl pl-2.5 pr-7 py-2.5 outline-none cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition"
+            className="appearance-none bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] text-xs font-semibold rounded-xl pl-2.5 pr-7 py-2.5 outline-none cursor-pointer hover:bg-[#F5EFE3] transition"
             title="Select Country / Code"
           >
             {COUNTRIES.map((c) => (
-              <option key={c.code} value={c.code}>
+              <option key={c.code} value={c.code} className="dark:bg-[#201C19]">
                 {c.flag} {c.code} ({c.dialCode}) - {c.name}
               </option>
             ))}
           </select>
-          <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-500">
+          <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[#736859]">
             <ChevronDown className="w-3.5 h-3.5" />
           </div>
         </div>
@@ -116,17 +116,17 @@ export const CountryPhoneInput: React.FC<CountryPhoneInputProps> = ({
             value={getLocalNumber()}
             onChange={(e) => handleNumberChange(e.target.value)}
             placeholder={placeholder}
-            className="w-full text-xs bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:ring-2 focus:ring-[#0097B2] font-mono"
+            className="w-full text-xs bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] rounded-xl px-3 py-2.5 text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-2 focus:ring-[#C88A35] font-mono"
           />
         </div>
       </div>
 
       {/* Country Indicator Badge */}
-      <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 px-1">
+      <div className="flex items-center justify-between text-[11px] text-[#736859] dark:text-[#A89D8E] px-1">
         <span className="flex items-center gap-1.5">
-          <Globe className="w-3 h-3 text-[#0097B2]" />
+          <Globe className="w-3 h-3 text-[#C88A35]" />
           <span>Country:</span>
-          <strong className="text-slate-700 dark:text-slate-200 font-semibold">
+          <strong className="text-[#2B2520] dark:text-[#FAF6EE] font-semibold">
             {selectedCountry.flag} {selectedCountry.name} ({selectedCountry.dialCode})
           </strong>
         </span>

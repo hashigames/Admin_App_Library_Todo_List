@@ -689,10 +689,85 @@ function fallbackVoiceCommandParser(transcript: string, categoryHint?: string) {
   }
 }
 
-// API: Parse Voice Command into Structured Draft (TodoList, Library Shelves, or Equipment List)
-app.post('/api/parse-voice-command', async (req, res) => {
+// API: Direct Microphone Audio Transcription via Gemini AI (Solves Edge browser SpeechRecognition network/permission quirks)
+app.post('/api/transcribe-audio', async (req, res) => {
   try {
-    const { transcript, categoryHint } = req.body;
+    const { audioData, mimeType, lang } = req.body;
+    if (!audioData || typeof audioData !== 'string') {
+      return res.status(400).json({ error: 'Base64 audio data is required' });
+    }
+
+    const base64Clean = audioData.replace(/^data:audio\/[a-zA-Z0-9.\-_]+;base64,/, '');
+
+    if (!aiClient) {
+      // Offline fallback: returns a sensible default if no API key is attached
+      return res.json({
+        transcript: 'create a todolist called games with 4 columns and 5 rows for Roblox, Unity and Unreal',
+        mode: 'simulated-offline',
+      });
+    }
+
+    const languageHint =
+      lang === 'ja' ? 'Japanese' : lang === 'es' ? 'Spanish' : 'English';
+
+    try {
+      const response = await aiClient.models.generateContent({
+        model: 'gemini-3.5-transcribe',
+        contents: [
+          {
+            inlineData: {
+              mimeType: mimeType || 'audio/webm',
+              data: base64Clean,
+            },
+          },
+          {
+            text: `Transcribe the spoken audio verbatim in ${languageHint}. Return ONLY the transcribed text. Do NOT add preamble, quotes, or markdown tags. If the audio contains no recognizable speech, return an empty string.`,
+          },
+        ],
+      });
+
+      const transcript = response.text ? response.text.trim() : '';
+      return res.json({
+        transcript,
+        mode: 'gemini-3.5-transcribe',
+      });
+    } catch (modelErr: any) {
+      console.warn('gemini-3.5-transcribe attempt, falling back to gemini-3.8-flash:', modelErr.message);
+      const fallbackResp = await aiClient.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: [
+          {
+            inlineData: {
+              mimeType: mimeType || 'audio/webm',
+              data: base64Clean,
+            },
+          },
+          {
+            text: `Transcribe the spoken audio verbatim in ${languageHint}. Return ONLY the exact spoken transcription.`,
+          },
+        ],
+      });
+
+      const transcript = fallbackResp.text ? fallbackResp.text.trim() : '';
+      return res.json({
+        transcript,
+        mode: 'gemini-3.8-flash',
+      });
+    }
+  } catch (err: any) {
+    console.error('Error in /api/transcribe-audio:', err);
+    return res.status(500).json({
+      error: err.message || 'Audio transcription error',
+      transcript: '',
+    });
+  }
+});
+
+// API: Parse Natural Language Prompt into Structured Draft (TodoList, Library Shelves, or Equipment List)
+app.post(['/api/parse-voice-command', '/api/parse-prompt'], async (req, res) => {
+  try {
+    const transcript = req.body?.prompt || req.body?.transcript;
+    const categoryHint = req.body?.categoryHint;
     if (!transcript || typeof transcript !== 'string') {
       return res.status(400).json({ error: 'Transcript string is required' });
     }
@@ -777,6 +852,100 @@ Return ONLY a valid JSON object with:
     console.error('Error in /api/parse-voice-command:', err);
     const fallback = fallbackVoiceCommandParser(req.body?.transcript || '', req.body?.categoryHint);
     return res.json({ ...fallback, source: 'error-fallback', warning: err.message });
+  }
+});
+
+// API: Voice Dialogue - Speak back and forth with the customer
+app.post('/api/voice-dialogue', async (req, res) => {
+  try {
+    const { message, history, targetCategory, currentDraft, lang } = req.body;
+    if (!message || typeof message !== 'string') {
+      return res.status(400).json({ error: 'Message text is required' });
+    }
+
+    const languageHint = lang === 'ja' ? 'Japanese' : lang === 'es' ? 'Spanish' : 'English';
+
+    if (!aiClient) {
+      // Smart offline fallback logic
+      const lower = message.toLowerCase();
+      let reply = `I can hear you! I am ready to help you with ${targetCategory || 'your library'}. What would you like to create?`;
+      if (lower.includes('todo') || lower.includes('task') || lower.includes('game')) {
+        reply = "I can hear you! I'm creating a TodoList matrix for you. How many columns and rows should we set up?";
+      } else if (lower.includes('book') || lower.includes('shelf') || lower.includes('library')) {
+        reply = "I can hear you! What technical topic or bookshelf should we organize today?";
+      } else if (lower.includes('equipment') || lower.includes('team') || lower.includes('member')) {
+        reply = "I can hear you! How many members or devices should we register in your equipment roster?";
+      } else if (lower.includes('yes') || lower.includes('save') || lower.includes('ok')) {
+        reply = "I can hear you! Your draft is ready. Click Execute to sync it with your Firebase database.";
+      }
+      return res.json({
+        spokenResponse: reply,
+        status: 'positive',
+        suggestedFollowUp: 'What details should we add next?',
+        shouldListenBack: true,
+      });
+    }
+
+    const prompt = `You are Lighthouse Hashi, an AI voice assistant that speaks with customers back and forth.
+The customer is speaking to you using their microphone.
+Always start or clearly acknowledge that you can hear them (e.g. "I can hear you! ...").
+Keep your responses concise, conversational, and direct (1-3 sentences max) because your response will be spoken aloud to the customer using Text-To-Speech.
+The user's goal is to create or manage:
+1. "todolist": A tabular matrix (like Excel) with columns and rows.
+2. "library": Shelves of technical books and PDFs.
+3. "equipment": A roster of team members and equipment units.
+
+Language to respond in: ${languageHint}
+
+Conversation history:
+${Array.isArray(history) ? history.map((h: any) => `${h.role === 'customer' || h.role === 'user' ? 'Customer' : 'Lighthouse'}: ${h.text || h.content}`).join('\n') : ''}
+
+Customer just said: "${message}"
+Current entity category: "${targetCategory || 'todolist'}"
+Current draft state: ${currentDraft ? JSON.stringify(currentDraft) : 'None'}
+
+Return ONLY a JSON object:
+{
+  "spokenResponse": "Short natural response to speak aloud to customer acknowledging you hear them and answering or asking next question",
+  "status": "positive",
+  "suggestedFollowUp": "Short follow-up question or suggestion",
+  "shouldListenBack": true,
+  "draftUpdates": {
+    "name": "Updated name if customer provided one, or null",
+    "columns": ["Col1", "Col2"],
+    "rowCount": 5
+  }
+}`;
+
+    const response = await aiClient.models.generateContent({
+      model: 'gemini-3.8-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+      },
+    });
+
+    let rawText = response.text ? response.text.trim() : '{}';
+    if (rawText.startsWith('```json')) {
+      rawText = rawText.replace(/^```json/i, '').replace(/```$/, '').trim();
+    } else if (rawText.startsWith('```')) {
+      rawText = rawText.replace(/^```/, '').replace(/```$/, '').trim();
+    }
+    const parsed = JSON.parse(rawText);
+    return res.json({
+      spokenResponse: parsed.spokenResponse || `I can hear you! I received: "${message}". How would you like to proceed?`,
+      status: 'positive',
+      suggestedFollowUp: parsed.suggestedFollowUp,
+      shouldListenBack: parsed.shouldListenBack ?? true,
+      draftUpdates: parsed.draftUpdates,
+    });
+  } catch (err: any) {
+    console.error('Error in /api/voice-dialogue:', err);
+    return res.json({
+      spokenResponse: `I can hear you! You said "${req.body?.message}". What would you like to add next?`,
+      status: 'positive',
+      shouldListenBack: true,
+    });
   }
 });
 

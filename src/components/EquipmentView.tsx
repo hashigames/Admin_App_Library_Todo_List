@@ -87,17 +87,17 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in">
       {/* Top Header & Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-white dark:bg-slate-800 border border-[#1E2A5E]/10 dark:border-slate-700/60 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="p-1.5 rounded-lg bg-[#1E2A5E] text-white">
-              <Laptop className="w-4 h-4 text-[#0097B2]" />
+            <span className="p-1.5 rounded-lg bg-[#2B2520] text-white">
+              <Laptop className="w-4 h-4 text-[#C88A35]" />
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#1E2A5E] dark:text-white font-serif-jp">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
               {t.equipmentTitle}
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-xs sm:text-sm text-[#736859] dark:text-[#A89D8E]">
             {t.equipmentSubtitle}
           </p>
         </div>
@@ -107,7 +107,7 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
             <button
               onClick={handleSeed}
               disabled={isSeeding}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750 transition"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-[#EAE2D2] dark:border-[#38322B] text-[#5C5348] dark:text-[#DDD3BC] hover:bg-[#FAF6EE] dark:hover:bg-[#201C19] transition"
             >
               <RotateCcw className={`w-3.5 h-3.5 ${isSeeding ? 'animate-spin' : ''}`} />
               <span>{isSeeding ? t.loading : t.seedGundamBtn}</span>
@@ -115,9 +115,9 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
 
             <button
               onClick={() => setShowAddModal(true)}
-              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white shadow-md transition active:scale-98"
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition active:scale-95"
             >
-              <Plus className="w-4 h-4 text-[#F5A623]" />
+              <Plus className="w-4 h-4 text-white" />
               <span>{t.addEquipmentBtn}</span>
             </button>
           </div>
@@ -143,38 +143,38 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
           return (
             <div
               key={eq.id}
-              className={`p-5 rounded-3xl bg-white dark:bg-slate-800 border transition-all duration-300 flex flex-col justify-between hover:shadow-lg ${
+              className={`p-5 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border transition-all duration-300 flex flex-col justify-between hover:shadow-md ${
                 isCurrentActive
-                  ? 'border-[#0097B2] ring-2 ring-[#0097B2]/20'
-                  : 'border-slate-200 dark:border-slate-700/60'
+                  ? 'border-[#C88A35] ring-2 ring-[#C88A35]/20 shadow-xs'
+                  : 'border-[#EAE2D2] dark:border-[#38322B]'
               }`}
             >
               <div>
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1E2A5E] to-[#0F4C81] text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                    <div className="w-12 h-12 rounded-2xl bg-[#2B2520] text-[#FAF6EE] border border-[#38322B] flex items-center justify-center font-bold text-lg shadow-2xs">
                       {eq.name.substring(0, 2).toUpperCase()}
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <h3 className="font-bold text-base text-[#1E2A5E] dark:text-white">
+                        <h3 className="font-bold text-base text-[#2B2520] dark:text-[#FAF6EE]">
                           {eq.name}
                         </h3>
                         {eq.role === 'admin' && (
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200">
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#DECFA9] text-[#2B2520]">
                             Admin
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-400 font-mono">
+                      <p className="text-xs text-[#8E8373] font-mono">
                         {eq.email || `${eq.name.toLowerCase()}@internal`}
                       </p>
                     </div>
                   </div>
 
                   {isCurrentActive && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#0097B2]/10 text-[#0097B2]">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#BD3A2B] text-white">
                       Active
                     </span>
                   )}
@@ -182,29 +182,29 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
 
                 {/* Notes badge */}
                 {eq.notes && (
-                  <p className="text-xs text-slate-500 dark:text-slate-400 italic mb-4 line-clamp-1">
+                  <p className="text-xs text-[#736859] dark:text-[#A89D8E] italic mb-4 line-clamp-1">
                     {eq.notes}
                   </p>
                 )}
 
                 {/* Currently Borrowed Box */}
-                <div className="p-3.5 rounded-2xl bg-[#FAF7F0] dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 mb-4">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="p-3.5 rounded-2xl bg-[#FAF6EE] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] mb-4">
+                  <span className="text-[10px] font-bold text-[#8E8373] uppercase tracking-wider block mb-1">
                     {t.currentlyBorrowedLabel}
                   </span>
                   {currentBook ? (
                     <div>
                       <div
                         onClick={() => onViewBook(currentBook)}
-                        className="font-bold text-xs text-[#1E2A5E] dark:text-amber-300 hover:underline cursor-pointer line-clamp-1"
+                        className="font-bold text-xs text-[#2B2520] dark:text-[#FAF6EE] hover:text-[#BD3A2B] hover:underline cursor-pointer line-clamp-1"
                       >
                         {currentBook.title}
                       </div>
-                      <div className="flex items-center justify-between text-[11px] mt-1 text-slate-500">
+                      <div className="flex items-center justify-between text-[11px] mt-1 text-[#736859]">
                         <span>Due: {new Date(currentBook.dueDate!).toLocaleDateString()}</span>
                         <span
                           className={`font-bold ${
-                            isOverdue ? 'text-[#DC2626]' : 'text-[#0097B2]'
+                            isOverdue ? 'text-[#BD3A2B]' : 'text-[#4A6B53]'
                           }`}
                         >
                           {isOverdue ? 'Overdue!' : `${daysLeft}d left`}
@@ -212,21 +212,21 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
                       </div>
                     </div>
                   ) : (
-                    <span className="text-xs text-slate-400 italic">No book borrowed right now</span>
+                    <span className="text-xs text-[#8E8373] italic">No book borrowed right now</span>
                   )}
                 </div>
 
                 {/* Statistics Row */}
-                <div className="grid grid-cols-2 gap-2 text-center text-xs py-2 border-t border-slate-100 dark:border-slate-700/60">
+                <div className="grid grid-cols-2 gap-2 text-center text-xs py-2 border-t border-[#EAE2D2] dark:border-[#38322B]">
                   <div>
-                    <span className="text-slate-400 text-[11px] block">{t.totalBooksReadLabel}</span>
-                    <span className="font-bold text-sm text-[#1E2A5E] dark:text-white">
+                    <span className="text-[#8E8373] text-[11px] block">{t.totalBooksReadLabel}</span>
+                    <span className="font-bold text-sm text-[#2B2520] dark:text-[#FAF6EE]">
                       {completedLoans + (currentBook ? 1 : 0)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-400 text-[11px] block">History Count</span>
-                    <span className="font-bold text-sm text-slate-700 dark:text-slate-300">
+                    <span className="text-[#8E8373] text-[11px] block">History Count</span>
+                    <span className="font-bold text-sm text-[#5C5348] dark:text-[#DDD3BC]">
                       {eqLoans.length}
                     </span>
                   </div>
@@ -234,10 +234,10 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center gap-2 mt-2">
+              <div className="pt-3 border-t border-[#EAE2D2] dark:border-[#38322B] flex items-center gap-2 mt-2">
                 <button
                   onClick={() => setSelectedEquipmentForProfile(eq)}
-                  className="flex-1 py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+                  className="flex-1 py-2 px-3 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] text-xs font-semibold text-[#5C5348] dark:text-[#DDD3BC] hover:bg-[#FAF6EE] dark:hover:bg-[#201C19]"
                 >
                   View History
                 </button>
@@ -245,7 +245,7 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
                 {!isCurrentActive && (
                   <button
                     onClick={() => onSelectEquipment(eq.id)}
-                    className="py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-xs font-semibold text-[#1E2A5E] dark:text-white"
+                    className="py-2 px-3 rounded-xl bg-[#FAF6EE] dark:bg-[#171513] hover:bg-[#EAE2D2] border border-[#EAE2D2] dark:border-[#38322B] text-xs font-semibold text-[#2B2520] dark:text-[#FAF6EE]"
                   >
                     Select
                   </button>
@@ -259,24 +259,24 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
       {/* Equipment Profile & Loan History Modal */}
       {selectedEquipmentForProfile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="relative w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[85vh]">
-            <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 bg-[#FAF7F0] dark:bg-slate-800/60">
+          <div className="relative w-full max-w-xl bg-[#FAF6EE] dark:bg-[#171513] rounded-3xl shadow-2xl border border-[#EAE2D2] dark:border-[#38322B] overflow-hidden flex flex-col max-h-[85vh]">
+            <div className="flex items-center justify-between p-6 border-b border-[#EAE2D2] dark:border-[#38322B] bg-[#F5EFE3] dark:bg-[#201C19]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#1E2A5E] text-white flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-[#2B2520] text-[#FAF6EE] flex items-center justify-center font-bold">
                   {selectedEquipmentForProfile.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-[#1E2A5E] dark:text-white">
+                  <h2 className="text-lg font-bold text-[#2B2520] dark:text-[#FAF6EE]">
                     {selectedEquipmentForProfile.name}
                   </h2>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[#8E8373]">
                     {selectedEquipmentForProfile.notes || 'Hardware Station'}
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedEquipmentForProfile(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600"
+                className="p-1.5 rounded-lg text-[#8E8373] hover:text-[#2B2520] dark:hover:text-[#FAF6EE]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -285,12 +285,12 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
             <div className="p-6 overflow-y-auto space-y-5">
               {/* Borrowing History */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#8E8373] mb-3">
                   {t.borrowingHistoryLabel}
                 </h3>
 
                 {loans.filter(l => l.userId === selectedEquipmentForProfile.id).length === 0 ? (
-                  <p className="text-xs text-slate-400 italic py-4 text-center">
+                  <p className="text-xs text-[#8E8373] italic py-4 text-center">
                     {t.noLoansHistory}
                   </p>
                 ) : (
@@ -303,16 +303,16 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
                         return (
                           <div
                             key={loan.id}
-                            className="p-3.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between"
+                            className="p-3.5 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] flex items-center justify-between"
                           >
                             <div>
                               <div
                                 onClick={() => associatedBook && onViewBook(associatedBook)}
-                                className="font-bold text-xs text-[#1E2A5E] dark:text-white hover:underline cursor-pointer"
+                                className="font-bold text-xs text-[#2B2520] dark:text-[#FAF6EE] hover:text-[#BD3A2B] hover:underline cursor-pointer"
                               >
                                 {loan.bookTitle}
                               </div>
-                              <div className="text-[11px] text-slate-400">
+                              <div className="text-[11px] text-[#8E8373]">
                                 Borrowed on: {new Date(loan.borrowedAt).toLocaleDateString()}
                               </div>
                             </div>
@@ -320,10 +320,10 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
                             <span
                               className={`text-xs font-bold ${
                                 loan.status === 'returned'
-                                  ? 'text-emerald-600'
+                                  ? 'text-[#4A6B53]'
                                   : loan.status === 'overdue'
-                                  ? 'text-[#DC2626]'
-                                  : 'text-[#0097B2]'
+                                  ? 'text-[#BD3A2B]'
+                                  : 'text-[#C88A35]'
                               }`}
                             >
                               {loan.status.toUpperCase()}
@@ -342,14 +342,14 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
       {/* Add Equipment Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-5">
+          <div className="relative w-full max-w-md bg-[#FAF6EE] dark:bg-[#171513] rounded-3xl shadow-2xl border border-[#EAE2D2] dark:border-[#38322B] p-6 space-y-5">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-[#1E2A5E] dark:text-white">
+              <h2 className="text-lg font-bold text-[#2B2520] dark:text-[#FAF6EE]">
                 {t.addEquipmentBtn}
               </h2>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-[#8E8373] hover:text-[#2B2520]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -357,7 +357,7 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
 
             <form onSubmit={handleCreate} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase block mb-1">
+                <label className="text-xs font-bold text-[#5C5348] dark:text-[#DDD3BC] uppercase block mb-1">
                   {t.equipmentName} *
                 </label>
                 <input
@@ -366,12 +366,12 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
                   value={newName}
                   onChange={e => setNewName(e.target.value)}
                   placeholder="e.g. GundamAegis, Workstation-Alpha"
-                  className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-[#1E2A5E] dark:text-white"
+                  className="w-full px-3.5 py-2 text-xs rounded-xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-1 focus:ring-[#C88A35]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase block mb-1">
+                <label className="text-xs font-bold text-[#5C5348] dark:text-[#DDD3BC] uppercase block mb-1">
                   {t.equipmentEmail}
                 </label>
                 <input
@@ -379,12 +379,12 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
                   value={newEmail}
                   onChange={e => setNewEmail(e.target.value)}
                   placeholder="optional email"
-                  className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-[#1E2A5E] dark:text-white"
+                  className="w-full px-3.5 py-2 text-xs rounded-xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-1 focus:ring-[#C88A35]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase block mb-1">
+                <label className="text-xs font-bold text-[#5C5348] dark:text-[#DDD3BC] uppercase block mb-1">
                   Hardware Notes
                 </label>
                 <input
@@ -392,7 +392,7 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
                   value={newNotes}
                   onChange={e => setNewNotes(e.target.value)}
                   placeholder="e.g. RTX 4090 Workstation • RAG Pipeline Node"
-                  className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-[#1E2A5E] dark:text-white"
+                  className="w-full px-3.5 py-2 text-xs rounded-xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-1 focus:ring-[#C88A35]"
                 />
               </div>
 
@@ -400,14 +400,14 @@ export const EquipmentView: React.FC<EquipmentViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 text-xs text-slate-500 font-bold"
+                  className="px-4 py-2 text-xs text-[#8E8373] font-bold"
                 >
                   {t.cancel}
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2 text-xs font-bold rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white"
+                  className="px-5 py-2 text-xs font-bold rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition active:scale-95"
                 >
                   {isSubmitting ? t.loading : t.createEquipment}
                 </button>

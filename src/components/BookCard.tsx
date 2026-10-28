@@ -50,7 +50,7 @@ export const BookCard: React.FC<BookCardProps> = ({
     generateCoverThumbnail(book.title, book.author, book.topic, book.subTags);
 
   return (
-    <div className="group relative flex flex-col bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-[#1E2A5E]/10 dark:border-slate-700/60 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+    <div className="group relative flex flex-col bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl overflow-hidden border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
       {/* Book Cover Frame */}
       <div
         onClick={() => onViewDetails(book)}
@@ -100,7 +100,7 @@ export const BookCard: React.FC<BookCardProps> = ({
               <span>{t.overdueWarning.replace('{days}', String(Math.abs(daysDiff)))}</span>
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#1E2A5E]/90 dark:bg-amber-500/90 text-white dark:text-[#1E2A5E] shadow-md backdrop-blur-xs">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#2B2520]/90 dark:bg-[#C88A35]/90 text-[#FAF6EE] dark:text-[#2B2520] shadow-md backdrop-blur-xs">
               <Clock className="w-3 h-3" />
               <span>{t.borrowed}</span>
             </span>
@@ -108,8 +108,8 @@ export const BookCard: React.FC<BookCardProps> = ({
         </div>
 
         {/* Quick view hover icon */}
-        <div className="absolute inset-0 bg-[#1E2A5E]/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-          <span className="px-3.5 py-2 rounded-lg bg-white/95 text-[#1E2A5E] font-bold text-xs shadow-lg flex items-center gap-1.5 transform scale-90 group-hover:scale-100 transition-transform">
+        <div className="absolute inset-0 bg-[#2B2520]/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+          <span className="px-3.5 py-2 rounded-lg bg-[#FAF6EE] text-[#2B2520] font-bold text-xs shadow-lg flex items-center gap-1.5 transform scale-90 group-hover:scale-100 transition-transform">
             <BookOpen className="w-3.5 h-3.5" />
             <span>{t.viewDetails}</span>
           </span>
@@ -121,13 +121,13 @@ export const BookCard: React.FC<BookCardProps> = ({
         <div>
           {/* Topic & SubTags */}
           <div className="flex flex-wrap items-center gap-1.5 mb-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase bg-slate-100 dark:bg-slate-700 text-[#1E2A5E] dark:text-amber-300">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase bg-[#F5EFE3] dark:bg-[#2B2520] text-[#736859] dark:text-[#EAE2D2] border border-[#EAE2D2] dark:border-[#38322B]">
               {book.topic}
             </span>
             {book.subTags?.slice(0, 2).map((st, i) => (
               <span
                 key={i}
-                className="px-1.5 py-0.5 rounded text-[10px] bg-slate-50 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400"
+                className="px-1.5 py-0.5 rounded text-[10px] bg-[#FAF6EE] dark:bg-[#171513] text-[#736859] dark:text-[#A89D8E]"
               >
                 #{st}
               </span>
@@ -137,32 +137,32 @@ export const BookCard: React.FC<BookCardProps> = ({
           {/* Book Title */}
           <h3
             onClick={() => onViewDetails(book)}
-            className="font-bold text-[#1E2A5E] dark:text-slate-100 text-sm line-clamp-2 hover:text-[#0097B2] cursor-pointer mb-1 leading-snug"
+            className="font-bold text-[#2B2520] dark:text-[#FAF6EE] text-sm line-clamp-2 hover:text-[#BD3A2B] cursor-pointer mb-1 leading-snug"
           >
             {book.title}
           </h3>
 
           {/* Author */}
-          <p className="text-xs text-slate-500 dark:text-slate-400 italic mb-2 line-clamp-1">
+          <p className="text-xs text-[#736859] dark:text-[#A89D8E] italic mb-2 line-clamp-1">
             {book.author}
           </p>
         </div>
 
         {/* Borrowing Context & Actions */}
-        <div className="pt-3 border-t border-slate-100 dark:border-slate-700/60 mt-2">
+        <div className="pt-3 border-t border-[#EAE2D2] dark:border-[#38322B] mt-2">
           {book.status === 'borrowed' ? (
             <div className="mb-2.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-500 dark:text-slate-400 font-medium">
+                <span className="text-[#736859] dark:text-[#A89D8E] font-medium">
                   {book.borrowedByName}
                 </span>
                 <span
                   className={`font-bold ${
                     isOverdue
-                      ? 'text-[#DC2626]'
+                      ? 'text-[#BD3A2B]'
                       : daysDiff <= 3
-                      ? 'text-amber-600'
-                      : 'text-slate-600 dark:text-slate-300'
+                      ? 'text-[#C88A35]'
+                      : 'text-[#2B2520] dark:text-[#FAF6EE]'
                   }`}
                 >
                   {isOverdue
@@ -183,11 +183,11 @@ export const BookCard: React.FC<BookCardProps> = ({
                 disabled={currentRole !== 'admin'}
                 className={`w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold transition active:scale-98 ${
                   currentRole === 'admin'
-                    ? 'bg-[#1E2A5E] hover:bg-[#2A3B82] text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                    ? 'bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] shadow-2xs'
+                    : 'bg-[#F5EFE3] text-[#A89D8E] cursor-not-allowed'
                 }`}
               >
-                <ArrowRight className="w-3.5 h-3.5 text-[#F5A623]" />
+                <ArrowRight className="w-3.5 h-3.5 text-[#C88A35]" />
                 <span>{t.quickLend}</span>
               </button>
             ) : (
@@ -196,8 +196,8 @@ export const BookCard: React.FC<BookCardProps> = ({
                 disabled={currentRole !== 'admin'}
                 className={`w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold transition active:scale-98 ${
                   currentRole === 'admin'
-                    ? 'bg-[#0097B2] hover:bg-[#008299] text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                    ? 'bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs'
+                    : 'bg-[#F5EFE3] text-[#A89D8E] cursor-not-allowed'
                 }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
@@ -208,7 +208,7 @@ export const BookCard: React.FC<BookCardProps> = ({
             <button
               onClick={() => onViewDetails(book)}
               title={t.viewDetails}
-              className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+              className="p-2 rounded-lg border border-[#EAE2D2] dark:border-[#38322B] text-[#736859] dark:text-[#FAF6EE] hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />
             </button>

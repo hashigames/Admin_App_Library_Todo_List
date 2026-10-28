@@ -31,6 +31,11 @@ import {
   ExternalLink,
   AlertTriangle,
   Globe,
+  Keyboard,
+  HelpCircle,
+  ZoomIn,
+  ZoomOut,
+  Columns,
 } from 'lucide-react';
 import { DynamicDatabase, TodoListColumn, TodoListRow, Language } from '../types';
 import {
@@ -104,6 +109,9 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
   // Active cell tracking
   const [activeCell, setActiveCell] = useState<{ rowId: string; colId: string } | null>(null);
 
+  // Keyboard navigation & CRUD instructions modal
+  const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState<boolean>(false);
+
   // New Database form state
   const [newDbForm, setNewDbForm] = useState({
     name: 'Employers_Colombia',
@@ -149,6 +157,128 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
     setDatabases(prev => prev.map(d => (d.id === updated.id ? updated : d)));
   };
 
+  // Zoom state (percentages: 50%, 65%, 75%, 85%, 100%, 115%, 125%, 150%)
+  const [matrixZoom, setMatrixZoom] = useState<number>(100);
+  const [columnDensity, setColumnDensity] = useState<'compact' | 'normal' | 'spacious'>('normal');
+
+  // Interactive Column Resizing state
+  const [resizingCol, setResizingCol] = useState<{
+    colId: string;
+    startX: number;
+    startWidth: number;
+  } | null>(null);
+
+  // Column resize event listeners for drag-to-resize
+  useEffect(() => {
+    if (!resizingCol) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaX = e.clientX - resizingCol.startX;
+      // Allow diminishing column width down to 60px (very compact for multi-column matrices) up to 500px
+      const newWidth = Math.max(60, Math.min(500, Math.round(resizingCol.startWidth + deltaX)));
+
+      updateActiveDb(prev => ({
+        ...prev,
+        columns: prev.columns.map(c =>
+          c.id === resizingCol.colId ? { ...c, width: newWidth } : c
+        ),
+      }));
+    };
+
+    const handleMouseUp = () => {
+      setResizingCol(null);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [resizingCol]);
+
+  // Start column resize on drag handle mousedown
+  const handleStartResize = (e: React.MouseEvent, colId: string, currentWidth: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setResizingCol({
+      colId,
+      startX: e.clientX,
+      startWidth: currentWidth,
+    });
+  };
+
+  // Zoom handlers
+  const handleZoomIn = () => {
+    setMatrixZoom(prev => Math.min(150, prev + (prev < 100 ? 15 : 25)));
+  };
+
+  const handleZoomOut = () => {
+    setMatrixZoom(prev => Math.max(50, prev - (prev <= 100 ? 15 : 25)));
+  };
+
+  const handleResetZoom = () => {
+    setMatrixZoom(100);
+  };
+
+  // Auto Fit Full Matrix (calculates ideal zoom to view full matrix on screen)
+  const handleFitMatrixToScreen = () => {
+    if (!activeDb) return;
+    const numCols = activeDb.columns.length;
+    if (numCols <= 4) {
+      setMatrixZoom(100);
+      setColumnDensity('normal');
+    } else if (numCols <= 7) {
+      setMatrixZoom(85);
+      setColumnDensity('compact');
+    } else if (numCols <= 10) {
+      setMatrixZoom(75);
+      setColumnDensity('compact');
+    } else if (numCols <= 14) {
+      setMatrixZoom(65);
+      setColumnDensity('compact');
+    } else {
+      setMatrixZoom(50);
+      setColumnDensity('compact');
+    }
+    onShowToast(`Auto-fitted ${numCols} columns to screen!`, 'info');
+  };
+
+  // Quick diminish / expand all column widths
+  const handleToggleColumnDensity = () => {
+    if (!activeDb) return;
+    if (columnDensity === 'compact') {
+      setColumnDensity('normal');
+      updateActiveDb(prev => ({
+        ...prev,
+        columns: prev.columns.map(c => ({
+          ...c,
+          width: isUrlColumn(c) ? 240 : 170,
+        })),
+      }));
+      onShowToast('Reset columns to standard width (170px)', 'info');
+    } else {
+      setColumnDensity('compact');
+      updateActiveDb(prev => ({
+        ...prev,
+        columns: prev.columns.map(c => ({
+          ...c,
+          width: isUrlColumn(c) ? 130 : 95,
+        })),
+      }));
+      onShowToast('Diminished all columns to compact width (95px) to fit full matrix', 'info');
+    }
+  };
+
+  // Get effective column width
+  const getEffectiveColWidth = (col: TodoListColumn) => {
+    if (col.width) return col.width;
+    const isUrl = isUrlColumn(col);
+    if (columnDensity === 'compact') return isUrl ? 130 : 95;
+    if (columnDensity === 'spacious') return isUrl ? 280 : 220;
+    return isUrl ? 240 : 170;
+  };
+
   // Cell change handler
   const handleCellChange = (rowId: string, colId: string, value: string) => {
     updateActiveDb(prev => ({
@@ -160,7 +290,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
   };
 
   // Add row
-  const handleAddRow = (count = 1) => {
+  const handleAddRow = (count = 1, silent = false) => {
     if (!activeDb) return;
     updateActiveDb(prev => {
       const newRows: TodoListRow[] = [];
@@ -178,7 +308,9 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
         rows: [...prev.rows, ...newRows],
       };
     });
-    onShowToast(`Added ${count} row(s) to ${activeDb.name}`, 'info');
+    if (!silent) {
+      onShowToast(`Added ${count} row(s) to ${activeDb.name}`, 'info');
+    }
   };
 
   // Delete row
@@ -375,6 +507,147 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
     });
   }, [activeDb, searchQuery]);
 
+  // Focus helper for seamless matrix keyboard navigation
+  const focusCell = (targetRowIdx: number, targetColIdx: number) => {
+    if (!activeDb) return;
+    const targetRow = filteredRows[targetRowIdx];
+    const targetCol = activeDb.columns[targetColIdx];
+    if (targetRow && targetCol) {
+      setActiveCell({ rowId: targetRow.id, colId: targetCol.id });
+    }
+    setTimeout(() => {
+      const el = document.getElementById(`matrix-cell-${targetRowIdx}-${targetColIdx}`) as HTMLInputElement | null;
+      if (el) {
+        el.focus();
+        el.select();
+        el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+      }
+    }, 25);
+  };
+
+  // Matrix cell keydown handler (Tab, Shift+Tab, Arrows, Enter, Escape)
+  const handleCellKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    rIdx: number,
+    cIdx: number,
+    row: TodoListRow,
+    col: TodoListColumn
+  ) => {
+    if (!activeDb) return;
+    const numRows = filteredRows.length;
+    const numCols = activeDb.columns.length;
+
+    // 1. TAB (Move Column to Column)
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      if (e.shiftKey) {
+        // Shift + Tab: Move to previous column
+        if (cIdx > 0) {
+          focusCell(rIdx, cIdx - 1);
+        } else if (rIdx > 0) {
+          // Wrap to last column of previous row
+          focusCell(rIdx - 1, numCols - 1);
+        }
+      } else {
+        // Tab: Move to next column
+        if (cIdx < numCols - 1) {
+          focusCell(rIdx, cIdx + 1);
+        } else if (rIdx < numRows - 1) {
+          // Wrap to first column of next row
+          focusCell(rIdx + 1, 0);
+        } else {
+          // At the very last cell of the table -> Automatically add a new row & focus col 0!
+          handleAddRow(1, true);
+          setTimeout(() => {
+            focusCell(numRows, 0);
+          }, 50);
+          onShowToast('Auto-expanded matrix with new row (Renglón)', 'info');
+        }
+      }
+      return;
+    }
+
+    // 2. ENTER (Move Row to Row in same column, or create row at bottom)
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (e.shiftKey) {
+        // Shift + Enter: Move up in same column
+        if (rIdx > 0) {
+          focusCell(rIdx - 1, cIdx);
+        }
+      } else {
+        // Enter: Move down in same column
+        if (rIdx < numRows - 1) {
+          focusCell(rIdx + 1, cIdx);
+        } else {
+          // At the bottom of the table -> Automatically add a new row & focus same column!
+          handleAddRow(1, true);
+          setTimeout(() => {
+            focusCell(numRows, cIdx);
+          }, 50);
+          onShowToast('Auto-expanded matrix with new row (Renglón)', 'info');
+        }
+      }
+      return;
+    }
+
+    // 3. ARROW KEYS
+    // Arrow Up: Move to row above in same column
+    if (e.key === 'ArrowUp') {
+      if (rIdx > 0) {
+        e.preventDefault();
+        focusCell(rIdx - 1, cIdx);
+      }
+      return;
+    }
+
+    // Arrow Down: Move to row below in same column
+    if (e.key === 'ArrowDown') {
+      if (rIdx < numRows - 1) {
+        e.preventDefault();
+        focusCell(rIdx + 1, cIdx);
+      }
+      return;
+    }
+
+    // Arrow Left: if cursor is at start of input, move to previous column
+    if (e.key === 'ArrowLeft') {
+      const input = e.currentTarget;
+      if (input.selectionStart === 0 && input.selectionEnd === 0) {
+        if (cIdx > 0) {
+          e.preventDefault();
+          focusCell(rIdx, cIdx - 1);
+        } else if (rIdx > 0) {
+          e.preventDefault();
+          focusCell(rIdx - 1, numCols - 1);
+        }
+      }
+      return;
+    }
+
+    // Arrow Right: if cursor is at end of input, move to next column
+    if (e.key === 'ArrowRight') {
+      const input = e.currentTarget;
+      if (input.selectionStart === input.value.length && input.selectionEnd === input.value.length) {
+        if (cIdx < numCols - 1) {
+          e.preventDefault();
+          focusCell(rIdx, cIdx + 1);
+        } else if (rIdx < numRows - 1) {
+          e.preventDefault();
+          focusCell(rIdx + 1, 0);
+        }
+      }
+      return;
+    }
+
+    // 4. ESCAPE (Blur current cell)
+    if (e.key === 'Escape') {
+      e.currentTarget.blur();
+      setActiveCell(null);
+      return;
+    }
+  };
+
   // Quick stats
   const totalCells = (activeDb?.rows.length || 0) * (activeDb?.columns.length || 0);
   const filledCells = activeDb
@@ -394,28 +667,28 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
   if (isMinimized) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-3">
-        <div className="p-3 bg-linear-to-r from-[#1E2A5E] to-[#0097B2] text-white rounded-2xl shadow-md flex items-center justify-between">
+        <div className="p-3 bg-[#2B2520] text-[#FAF6EE] rounded-2xl shadow-md flex items-center justify-between border border-[#DECFA9] dark:border-[#38322B]">
           <div className="flex items-center gap-3">
             {onOpenHamburger && (
               <button
                 onClick={onOpenHamburger}
-                className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition"
+                className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer"
                 title="Open Main Menu Drawer"
               >
-                <Menu className="w-4 h-4" />
+                <Menu className="w-4 h-4 text-[#C88A35]" />
               </button>
             )}
-            <Table2 className="w-4 h-4 text-amber-300" />
+            <Table2 className="w-4 h-4 text-[#C88A35]" />
             <span className="font-bold text-sm">TodoList Matrix (Minimized)</span>
             {activeDb && (
-              <span className="text-xs bg-white/20 px-2 py-0.5 rounded-md font-mono">
+              <span className="text-xs bg-white/15 px-2 py-0.5 rounded-md font-mono text-[#FAF6EE]">
                 {activeDb.name} ({activeDb.columns.length} cols × {activeDb.rows.length} rows)
               </span>
             )}
           </div>
           <button
             onClick={() => setIsMinimized(false)}
-            className="flex items-center gap-1.5 px-3 py-1 bg-white/20 hover:bg-white/30 rounded-xl text-xs font-bold transition"
+            className="flex items-center gap-1.5 px-3 py-1 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-bold transition cursor-pointer"
           >
             <Maximize2 className="w-3.5 h-3.5" />
             <span>Expand Panel</span>
@@ -429,36 +702,36 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
     <div
       className={`transition-all duration-300 ${
         isMaximized
-          ? 'fixed inset-0 z-40 bg-[#FAF7F0] dark:bg-[#0B1120] overflow-y-auto p-4 sm:p-8'
+          ? 'fixed inset-0 z-40 bg-[#FAF6EE] dark:bg-[#171513] overflow-y-auto p-4 sm:p-8'
           : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'
       } space-y-6`}
     >
       {/* Top Banner / Title Bar */}
-      <div className="bg-white dark:bg-[#0F172A] rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl p-5 border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             {onOpenHamburger && (
               <button
                 onClick={onOpenHamburger}
-                className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-[#1E2A5E] dark:text-slate-200 transition mr-1"
+                className="p-2 rounded-xl bg-[#F5EFE3] dark:bg-[#2B2520] hover:bg-[#EAE2D2] text-[#2B2520] dark:text-[#FAF6EE] transition mr-1 cursor-pointer"
                 title="Open Main Menu Hamburger Drawer"
               >
-                <Menu className="w-5 h-5" />
+                <Menu className="w-5 h-5 text-[#C88A35]" />
               </button>
             )}
-            <span className="p-2 rounded-xl bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E]">
-              <Table2 className="w-5 h-5" />
+            <span className="p-2 rounded-xl bg-[#2B2520] text-[#FAF6EE] shadow-2xs">
+              <Table2 className="w-5 h-5 text-[#C88A35]" />
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-[#1E2A5E] dark:text-white font-serif-jp">
+                <h1 className="text-xl font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
                   TodoList & Dynamic Tabular Matrix
                 </h1>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#4A6B53]/15 text-[#324D3B] dark:bg-[#4A6B53]/30 dark:text-[#7EB38B] border border-[#4A6B53]/40">
                   Interactive Database
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
                 Create custom lists and tabular databases (e.g. Employers_Colombia), edit like Excel, save to Persistent Firebase, and export to Excel/PDF with email alerts.
               </p>
             </div>
@@ -472,7 +745,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <select
                 value={activeDbId}
                 onChange={e => setActiveDbId(e.target.value)}
-                className="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-[#1E2A5E] dark:text-slate-200 text-xs font-semibold rounded-xl px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="bg-[#F5EFE3] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] text-xs font-semibold rounded-xl px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
               >
                 {databases.map(d => (
                   <option key={d.id} value={d.id}>
@@ -485,7 +758,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
 
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#0097B2] hover:bg-[#008299] text-white shadow-sm transition-transform active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition-transform active:scale-95 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Create New Database</span>
@@ -518,7 +791,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
             <div className="space-y-2">
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <Database className="w-4 h-4 text-[#1E2A5E] dark:text-amber-400" />
+                  <Database className="w-4 h-4 text-[#C88A35]" />
                   <input
                     type="text"
                     value={activeDb.name}
@@ -526,7 +799,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                       const newName = e.target.value;
                       updateActiveDb(prev => ({ ...prev, name: newName }));
                     }}
-                    className="text-base font-bold text-[#1E2A5E] dark:text-white bg-transparent border-b border-transparent hover:border-slate-400 focus:border-[#0097B2] focus:outline-none px-1 rounded transition-colors"
+                    className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] bg-transparent border-b border-transparent hover:border-[#DECFA9] focus:border-[#C88A35] focus:outline-none px-1 rounded transition-colors"
                     title="Click to rename database"
                   />
                 </div>
@@ -535,8 +808,8 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 <span
                   className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
                     activeDb.isSavedInFirebase
-                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
-                      : 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300'
+                      ? 'bg-[#4A6B53]/15 text-[#324D3B] dark:bg-[#4A6B53]/30 dark:text-[#7EB38B] border border-[#4A6B53]/40'
+                      : 'bg-[#C88A35]/15 text-[#8A5A18] dark:bg-[#C88A35]/30 dark:text-[#DECFA9] border border-[#C88A35]/30'
                   }`}
                 >
                   <CheckCircle2 className="w-3 h-3" />
@@ -548,8 +821,8 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                   <span
                     className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
                       isOverdue
-                        ? 'bg-red-100 text-red-800 dark:bg-red-950/60 dark:text-red-300'
-                        : 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300'
+                        ? 'bg-[#BD3A2B]/15 text-[#BD3A2B] dark:text-[#FF8D80] border border-[#BD3A2B]/30'
+                        : 'bg-[#C88A35]/15 text-[#8A5A18] dark:text-[#DECFA9] border border-[#C88A35]/30'
                     }`}
                   >
                     <Calendar className="w-3 h-3" />
@@ -561,9 +834,9 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               </div>
 
               {/* Author & Contact Info */}
-              <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 flex-wrap">
+              <div className="flex items-center gap-4 text-xs text-[#736859] dark:text-[#A89D8E] flex-wrap">
                 <span className="flex items-center gap-1">
-                  <User className="w-3.5 h-3.5 text-slate-400" />
+                  <User className="w-3.5 h-3.5 text-[#A89D8E]" />
                   Author:{' '}
                   <input
                     type="text"
@@ -573,12 +846,12 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                       updateActiveDb(prev => ({ ...prev, author: val }));
                     }}
                     placeholder="Author name"
-                    className="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-[#0097B2] text-slate-700 dark:text-slate-200 font-medium focus:outline-none px-1"
+                    className="bg-transparent border-b border-transparent hover:border-[#DECFA9] focus:border-[#C88A35] text-[#2B2520] dark:text-[#FAF6EE] font-medium focus:outline-none px-1"
                   />
                 </span>
 
                 <span className="flex items-center gap-1">
-                  <Mail className="w-3.5 h-3.5 text-slate-400" />
+                  <Mail className="w-3.5 h-3.5 text-[#A89D8E]" />
                   <input
                     type="text"
                     value={activeDb.authorEmail || ''}
@@ -588,12 +861,12 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                     }}
                     placeholder="Contact Email(s) - comma separated"
                     title="Separate multiple emails with commas (,)"
-                    className="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-[#0097B2] text-slate-700 dark:text-slate-200 font-medium focus:outline-none px-1 text-xs"
+                    className="bg-transparent border-b border-transparent hover:border-[#DECFA9] focus:border-[#C88A35] text-[#2B2520] dark:text-[#FAF6EE] font-medium focus:outline-none px-1 text-xs"
                   />
                 </span>
 
                 <span className="flex items-center gap-1">
-                  <Smartphone className="w-3.5 h-3.5 text-slate-400" />
+                  <Smartphone className="w-3.5 h-3.5 text-[#A89D8E]" />
                   <input
                     type="text"
                     value={activeDb.authorPhone || ''}
@@ -602,12 +875,12 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                       updateActiveDb(prev => ({ ...prev, authorPhone: val }));
                     }}
                     placeholder="Cellphone / SMS"
-                    className="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-[#0097B2] text-slate-700 dark:text-slate-200 font-medium focus:outline-none px-1 text-xs"
+                    className="bg-transparent border-b border-transparent hover:border-[#DECFA9] focus:border-[#C88A35] text-[#2B2520] dark:text-[#FAF6EE] font-medium focus:outline-none px-1 text-xs"
                   />
                 </span>
 
                 <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
+                  <Clock className="w-3.5 h-3.5 text-[#A89D8E]" />
                   Deadline:{' '}
                   <input
                     type="datetime-local"
@@ -616,7 +889,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                       const val = e.target.value;
                       updateActiveDb(prev => ({ ...prev, deadline: val }));
                     }}
-                    className="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-[#0097B2] text-slate-700 dark:text-slate-200 font-medium focus:outline-none px-1 text-xs"
+                    className="bg-transparent border-b border-transparent hover:border-[#DECFA9] focus:border-[#C88A35] text-[#2B2520] dark:text-[#FAF6EE] font-medium focus:outline-none px-1 text-xs"
                   />
                 </span>
               </div>
@@ -628,17 +901,17 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <button
                 onClick={handleSaveToFirebase}
                 disabled={isSaving}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#1E2A5E] hover:bg-[#162047] text-white shadow-sm dark:bg-amber-400 dark:text-[#1E2A5E] transition-transform active:scale-95 disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] shadow-sm transition-transform active:scale-95 disabled:opacity-50 cursor-pointer"
                 title="Save database and matrix state into Persistent Firebase"
               >
-                <Save className="w-3.5 h-3.5" />
+                <Save className="w-3.5 h-3.5 text-[#C88A35]" />
                 <span>{isSaving ? 'Saving...' : 'Save to Firebase'}</span>
               </button>
 
               {/* Share Matrix to Customer / Team (Email & SMS) */}
               <button
                 onClick={() => setIsShareModalOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#0097B2] hover:bg-[#008299] text-white shadow-sm transition-transform active:scale-95 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition-transform active:scale-95 cursor-pointer"
                 title="Share this TodoList to Customer or Team via Email (multi-recipient, comma-separated) or Cellphone SMS / WhatsApp"
               >
                 <Share2 className="w-3.5 h-3.5" />
@@ -705,25 +978,25 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               {/* + Add Column */}
               <button
                 onClick={handleOpenAddColumn}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#F5EFE3] dark:bg-[#201C19] hover:bg-[#EAE2D2] text-[#2B2520] dark:text-[#FAF6EE] transition-colors cursor-pointer"
               >
-                <Plus className="w-3 h-3 text-[#0097B2]" />
+                <Plus className="w-3 h-3 text-[#C88A35]" />
                 <span>Add Column</span>
               </button>
 
               {/* + Add Row (Renglón) */}
               <button
                 onClick={() => handleAddRow(1)}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#F5EFE3] dark:bg-[#201C19] hover:bg-[#EAE2D2] text-[#2B2520] dark:text-[#FAF6EE] transition-colors cursor-pointer"
               >
-                <Plus className="w-3 h-3 text-emerald-600" />
+                <Plus className="w-3 h-3 text-[#4A6B53]" />
                 <span>Add Row (Renglón)</span>
               </button>
 
               {/* + Add 5 Rows */}
               <button
                 onClick={() => handleAddRow(5)}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium text-[#736859] dark:text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white hover:bg-[#F5EFE3] dark:hover:bg-[#201C19] transition-colors cursor-pointer"
                 title="Add 5 rows at once"
               >
                 <span>+5 Rows</span>
@@ -732,27 +1005,99 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               {/* + Add 10 Rows */}
               <button
                 onClick={() => handleAddRow(10)}
-                className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium text-[#736859] dark:text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white hover:bg-[#F5EFE3] dark:hover:bg-[#201C19] transition-colors cursor-pointer"
                 title="Add 10 rows at once"
               >
                 <span>+10 Rows</span>
               </button>
             </div>
 
+            {/* Matrix Zoom In/Out & Column Diminish Controls */}
+            <div className="flex items-center gap-1.5 bg-[#FAF6EE] dark:bg-[#1E1A17] p-1 rounded-xl border border-[#DECFA9] dark:border-[#38322B] flex-wrap">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#736859] dark:text-[#A89D8E] px-1 flex items-center gap-1">
+                <ZoomIn className="w-3.5 h-3.5 text-[#C88A35]" />
+                <span className="hidden xl:inline">Zoom:</span>
+              </span>
+
+              {/* Zoom Out Button */}
+              <button
+                type="button"
+                onClick={handleZoomOut}
+                disabled={matrixZoom <= 50}
+                className="p-1 rounded-lg bg-white dark:bg-[#2B2520] hover:bg-[#F5EFE3] text-[#2B2520] dark:text-[#FAF6EE] border border-[#DECFA9] dark:border-[#4A4135] disabled:opacity-40 transition shadow-2xs cursor-pointer"
+                title="Zoom Out (Visualize full matrix with many columns)"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+
+              {/* Zoom Percentage Reset */}
+              <button
+                type="button"
+                onClick={handleResetZoom}
+                className="px-2 py-0.5 rounded-lg bg-white dark:bg-[#2B2520] text-xs font-mono font-bold text-[#2B2520] dark:text-[#FAF6EE] border border-[#DECFA9] dark:border-[#4A4135] hover:border-[#BD3A2B] transition shadow-2xs cursor-pointer"
+                title="Click to reset zoom to 100%"
+              >
+                {matrixZoom}%
+              </button>
+
+              {/* Zoom In Button */}
+              <button
+                type="button"
+                onClick={handleZoomIn}
+                disabled={matrixZoom >= 150}
+                className="p-1 rounded-lg bg-white dark:bg-[#2B2520] hover:bg-[#F5EFE3] text-[#2B2520] dark:text-[#FAF6EE] border border-[#DECFA9] dark:border-[#4A4135] disabled:opacity-40 transition shadow-2xs cursor-pointer"
+                title="Zoom In"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+
+              <div className="h-4 w-px bg-[#DECFA9] dark:bg-[#4A4135] mx-0.5" />
+
+              {/* Auto-Fit Full Matrix Button */}
+              <button
+                type="button"
+                onClick={handleFitMatrixToScreen}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#C88A35]/15 hover:bg-[#C88A35]/25 text-[#8A5A18] dark:text-[#DECFA9] border border-[#C88A35]/30 text-[11px] font-bold transition shadow-2xs cursor-pointer"
+                title="Auto-calculate zoom to visualize entire matrix on screen without horizontal scrolling"
+              >
+                <Maximize2 className="w-3 h-3 text-[#C88A35]" />
+                <span>Fit Matrix</span>
+              </button>
+
+              {/* Diminish Columns Width Preset */}
+              <button
+                type="button"
+                onClick={handleToggleColumnDensity}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition shadow-2xs cursor-pointer ${
+                  columnDensity === 'compact'
+                    ? 'bg-[#BD3A2B] text-white border-[#BD3A2B]'
+                    : 'bg-white dark:bg-[#2B2520] hover:bg-[#F5EFE3] text-[#2B2520] dark:text-[#FAF6EE] border-[#DECFA9] dark:border-[#4A4135]'
+                }`}
+                title={
+                  columnDensity === 'compact'
+                    ? 'Switch back to standard column widths (170px)'
+                    : 'Diminish all columns to compact size (95px) to fit matrices with many columns'
+                }
+              >
+                <Columns className="w-3 h-3" />
+                <span>{columnDensity === 'compact' ? 'Reset Widths' : 'Diminish Cols'}</span>
+              </button>
+            </div>
+
             {/* In-table Search */}
             <div className="relative w-full sm:w-64">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#A89D8E]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search cell values..."
-                className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-1 focus:ring-[#0097B2] text-slate-800 dark:text-slate-200"
+                className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-[#FAF6EE] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] focus:outline-none focus:ring-1 focus:ring-[#C88A35] text-[#2B2520] dark:text-[#FAF6EE]"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#A89D8E] hover:text-[#2B2520] cursor-pointer"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -760,76 +1105,150 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
             </div>
           </div>
 
+          {/* ── KEYBOARD NAVIGATION & CRUD INSTRUCTIONS BAR ── */}
+          <div className="px-4 py-2.5 bg-[#FAF6EE] dark:bg-[#1C1815] border-b border-[#EAE2D2] dark:border-[#38322B] flex flex-wrap items-center justify-between gap-2.5 text-xs">
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 font-bold text-[#BD3A2B] text-xs">
+                <Keyboard className="w-4 h-4" />
+                <span>Matrix Navigation:</span>
+              </div>
+
+              <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-[#736859] dark:text-[#A89D8E]">
+                <span className="inline-flex items-center gap-1 bg-[#FFFFFF] dark:bg-[#25201C] px-2 py-0.5 rounded-lg border border-[#DECFA9] dark:border-[#4A4135] shadow-2xs font-medium text-[#2B2520] dark:text-[#FAF6EE]">
+                  <kbd className="font-mono font-bold text-[10px] text-[#BD3A2B]">Tab</kbd> Next Col
+                </span>
+
+                <span className="inline-flex items-center gap-1 bg-[#FFFFFF] dark:bg-[#25201C] px-2 py-0.5 rounded-lg border border-[#DECFA9] dark:border-[#4A4135] shadow-2xs font-medium text-[#2B2520] dark:text-[#FAF6EE]">
+                  <kbd className="font-mono font-bold text-[10px] text-[#BD3A2B]">Shift+Tab</kbd> Prev Col
+                </span>
+
+                <span className="inline-flex items-center gap-1 bg-[#FFFFFF] dark:bg-[#25201C] px-2 py-0.5 rounded-lg border border-[#DECFA9] dark:border-[#4A4135] shadow-2xs font-medium text-[#2B2520] dark:text-[#FAF6EE]">
+                  <kbd className="font-mono font-bold text-[10px] text-[#BD3A2B]">Enter</kbd> / <kbd className="font-mono font-bold text-[10px]">↓</kbd> Next Row
+                </span>
+
+                <span className="inline-flex items-center gap-1 bg-[#FFFFFF] dark:bg-[#25201C] px-2 py-0.5 rounded-lg border border-[#DECFA9] dark:border-[#4A4135] shadow-2xs font-medium text-[#2B2520] dark:text-[#FAF6EE]">
+                  <kbd className="font-mono font-bold text-[10px] text-[#BD3A2B]">Shift+Enter</kbd> / <kbd className="font-mono font-bold text-[10px]">↑</kbd> Prev Row
+                </span>
+
+                <span className="inline-flex items-center gap-1 bg-[#FFFFFF] dark:bg-[#25201C] px-2 py-0.5 rounded-lg border border-[#DECFA9] dark:border-[#4A4135] shadow-2xs font-medium text-[#2B2520] dark:text-[#FAF6EE]">
+                  <kbd className="font-mono font-bold text-[10px]">←</kbd> <kbd className="font-mono font-bold text-[10px]">→</kbd> Cell Move
+                </span>
+
+                <span className="inline-flex items-center gap-1 bg-[#FFFFFF] dark:bg-[#25201C] px-2 py-0.5 rounded-lg border border-[#DECFA9] dark:border-[#4A4135] shadow-2xs font-medium text-[#2B2520] dark:text-[#FAF6EE]">
+                  <kbd className="font-mono font-bold text-[10px]">Esc</kbd> Exit
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="hidden lg:inline text-[11px] text-[#8A5A18] dark:text-[#DECFA9] font-medium bg-[#F5EFE3] dark:bg-[#2B2520] px-2 py-0.5 rounded-md border border-[#DECFA9]/50 dark:border-[#4A4135]">
+                💡 Tab on last cell auto-creates new row
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsShortcutsModalOpen(true)}
+                className="flex items-center gap-1 text-[11px] font-bold text-[#BD3A2B] hover:text-[#A83225] hover:underline cursor-pointer"
+                title="View full matrix navigation & CRUD instructions"
+              >
+                <HelpCircle className="w-3.5 h-3.5" />
+                <span>CRUD Instructions</span>
+              </button>
+            </div>
+          </div>
+
           {/* Interactive Excel-like Spreadsheet Table */}
           <div className="overflow-x-auto max-h-[620px] overflow-y-auto relative no-scrollbar">
-            <table className="w-full border-collapse text-left text-xs">
-              {/* Sticky Table Header */}
-              <thead className="bg-[#FAF7F0] dark:bg-slate-900 sticky top-0 z-20 border-b border-slate-300 dark:border-slate-700 shadow-xs">
-                <tr>
-                  {/* Row index indicator header */}
-                  <th className="w-12 px-2 py-2.5 text-center text-[10px] font-bold text-slate-400 uppercase tracking-wider border-r border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-950/80 sticky left-0 z-30">
-                    #
-                  </th>
+            <div
+              style={{ zoom: `${matrixZoom}%` }}
+              className="min-w-full inline-block align-top transition-all origin-top-left"
+            >
+              <table className="w-full border-collapse text-left text-xs">
+                {/* Sticky Table Header */}
+                <thead className="bg-[#FAF6EE] dark:bg-[#171513] sticky top-0 z-20 border-b border-[#DECFA9] dark:border-[#38322B] shadow-2xs">
+                  <tr>
+                    {/* Row index indicator header */}
+                    <th className="w-12 px-2 py-2.5 text-center text-[10px] font-bold text-[#A89D8E] uppercase tracking-wider border-r border-[#EAE2D2] dark:border-[#38322B] bg-[#F5EFE3] dark:bg-[#201C19] sticky left-0 z-30">
+                      #
+                    </th>
 
-                  {/* Column Headers */}
-                  {activeDb.columns.map((col, cIdx) => {
-                    const isColUrl = isUrlColumn(col);
-                    return (
-                      <th
-                        key={col.id}
-                        style={{ minWidth: `${col.width || (isColUrl ? 240 : 180)}px` }}
-                        className="px-3 py-2 text-xs font-bold text-[#1E2A5E] dark:text-amber-300 border-r border-slate-200 dark:border-slate-800 group relative"
-                      >
-                        <div className="flex items-center justify-between gap-1">
-                          <div className="flex items-center gap-1.5 truncate">
-                            {isColUrl && (
-                              <span title="Hyperlink URL Column (Links are clickable)">
-                                <Link className="w-3.5 h-3.5 text-[#0097B2] shrink-0" />
+                    {/* Column Headers with Interactive Resize Divider */}
+                    {activeDb.columns.map((col, cIdx) => {
+                      const isColUrl = isUrlColumn(col);
+                      const colWidth = getEffectiveColWidth(col);
+                      return (
+                        <th
+                          key={col.id}
+                          style={{ width: `${colWidth}px`, minWidth: `${colWidth}px` }}
+                          className="px-3 py-2 text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE] border-r border-[#EAE2D2] dark:border-[#38322B] group relative select-none"
+                        >
+                          <div className="flex items-center justify-between gap-1">
+                            <div className="flex items-center gap-1.5 truncate">
+                              {isColUrl && (
+                                <span title="Hyperlink URL Column (Links are clickable)">
+                                  <Link className="w-3.5 h-3.5 text-[#C88A35] shrink-0" />
+                                </span>
+                              )}
+                              <span className="truncate" title={col.name}>
+                                {col.name || `Col ${cIdx + 1}`}
                               </span>
-                            )}
-                            <span className="truncate" title={col.name}>
-                              {col.name || `Col ${cIdx + 1}`}
-                            </span>
-                            {isColUrl && (
-                              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#0097B2]/10 text-[#0097B2] border border-[#0097B2]/30">
-                                URL
-                              </span>
-                            )}
-                          </div>
+                              {isColUrl && (
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#C88A35]/15 text-[#8A5A18] dark:text-[#DECFA9] border border-[#C88A35]/30">
+                                  URL
+                                </span>
+                              )}
+                            </div>
 
-                          <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button
-                              onClick={() => {
-                                setColumnToRename(col);
-                                setNewColumnTitle(col.name);
-                                setNewColumnType(col.type || (isColUrl ? 'url' : 'text'));
-                                setIsRenameColModalOpen(true);
-                              }}
-                              className="p-1 text-slate-400 hover:text-[#0097B2] rounded transition-colors"
-                              title="Configure / Rename Column"
-                            >
-                              <Edit2 className="w-3 h-3" />
-                            </button>
-                            {activeDb.columns.length > 1 && (
+                            <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
-                                onClick={() => handleDeleteColumn(col.id)}
-                                className="p-1 text-slate-400 hover:text-red-500 rounded transition-colors"
-                                title="Delete Column"
+                                onClick={() => {
+                                  setColumnToRename(col);
+                                  setNewColumnTitle(col.name);
+                                  setNewColumnType(col.type || (isColUrl ? 'url' : 'text'));
+                                  setIsRenameColModalOpen(true);
+                                }}
+                                className="p-1 text-[#A89D8E] hover:text-[#C88A35] rounded transition-colors cursor-pointer"
+                                title="Configure / Rename Column"
                               >
-                                <Trash2 className="w-3 h-3" />
+                                <Edit2 className="w-3 h-3" />
                               </button>
-                            )}
+                              {activeDb.columns.length > 1 && (
+                                <button
+                                  onClick={() => handleDeleteColumn(col.id)}
+                                  className="p-1 text-[#A89D8E] hover:text-[#BD3A2B] rounded transition-colors cursor-pointer"
+                                  title="Delete Column"
+                                >
+                                  <Trash2 className="w-3 h-3" />
+                                </button>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      </th>
-                    );
-                  })}
+
+                          {/* Interactive Column Divider Resize Handle (drag to diminish / expand width) */}
+                          <div
+                            onMouseDown={e => handleStartResize(e, col.id, colWidth)}
+                            onDoubleClick={() => {
+                              updateActiveDb(prev => ({
+                                ...prev,
+                                columns: prev.columns.map(c =>
+                                  c.id === col.id ? { ...c, width: undefined } : c
+                                ),
+                              }));
+                              onShowToast(`Reset "${col.name}" to default width`, 'info');
+                            }}
+                            className="absolute right-0 top-0 bottom-0 w-2.5 cursor-col-resize hover:bg-[#C88A35] active:bg-[#BD3A2B] z-30 flex items-center justify-center group/divider"
+                            title="Drag to diminish or expand column width. Double-click to reset."
+                          >
+                            <div className="w-0.5 h-3.5 bg-transparent group-hover/divider:bg-white" />
+                          </div>
+                        </th>
+                      );
+                    })}
 
                   {/* Add Column quick button in header */}
-                  <th className="w-10 px-2 py-2 text-center border-r border-slate-200 dark:border-slate-800">
+                  <th className="w-10 px-2 py-2 text-center border-r border-[#EAE2D2] dark:border-[#38322B]">
                     <button
                       onClick={handleOpenAddColumn}
-                      className="p-1 rounded text-slate-400 hover:text-[#0097B2] hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                      className="p-1 rounded text-[#A89D8E] hover:text-[#C88A35] hover:bg-[#F5EFE3] dark:hover:bg-[#201C19] transition-colors cursor-pointer"
                       title="Add another column"
                     >
                       <Plus className="w-3.5 h-3.5" />
@@ -861,7 +1280,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                       </td>
 
                       {/* Cell inputs & clickable hyperlinks */}
-                      {activeDb.columns.map(col => {
+                      {activeDb.columns.map((col, cIdx) => {
                         const cellVal = row.cells[col.id] || '';
                         const isFocused =
                           activeCell?.rowId === row.id && activeCell?.colId === col.id;
@@ -877,121 +1296,65 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                             cellVal.startsWith('https://') ||
                             cellVal.startsWith('www.'));
 
+                        const colWidth = getEffectiveColWidth(col);
                         return (
                           <td
                             key={col.id}
-                            className={`p-0 border-r border-slate-200 dark:border-slate-800 transition-colors relative ${
+                            style={{ width: `${colWidth}px`, minWidth: `${colWidth}px` }}
+                            className={`p-0 border-r border-[#EAE2D2] dark:border-[#38322B] transition-colors relative ${
                               hasUrlError
-                                ? 'ring-2 ring-red-500 bg-red-50/60 dark:bg-red-950/40'
+                                ? 'ring-2 ring-[#BD3A2B] bg-[#BD3A2B]/10'
                                 : isFocused
-                                ? 'ring-2 ring-[#0097B2] ring-inset bg-blue-50/30 dark:bg-blue-950/20'
+                                ? 'ring-2 ring-[#C88A35] ring-inset bg-[#FAF6EE] dark:bg-[#171513]'
                                 : ''
                             }`}
                           >
-                            {isFocused ? (
-                              /* Focused Cell: Input with Quick External Link & Validation Warning */
-                              <div className="relative flex items-center w-full">
-                                <input
-                                  type="text"
-                                  autoFocus
-                                  value={cellVal}
-                                  onFocus={() => setActiveCell({ rowId: row.id, colId: col.id })}
-                                  onBlur={() => {
-                                    handleCellBlur(row.id, col, cellVal, rIdx);
-                                    setActiveCell(null);
-                                  }}
-                                  onKeyDown={e => {
-                                    if (e.key === 'Enter') {
-                                      handleCellBlur(row.id, col, cellVal, rIdx);
-                                      setActiveCell(null);
-                                    }
-                                  }}
-                                  onChange={e => handleCellChange(row.id, col.id, e.target.value)}
-                                  placeholder={isColUrl ? 'https://example.com' : '-'}
-                                  className={`w-full px-3 py-2 text-xs text-slate-800 dark:text-slate-100 bg-transparent focus:outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600 ${
-                                    isColUrl ? 'font-mono' : ''
-                                  }`}
-                                />
-                                {isClickableUrl && (
-                                  <a
-                                    href={ensureHttpUrl(cellVal)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onMouseDown={e => e.preventDefault()}
-                                    className="mr-2 p-1 text-[#0097B2] hover:text-[#008199] hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition shrink-0"
-                                    title={`Test / Open Hyperlink: ${ensureHttpUrl(cellVal)}`}
-                                  >
-                                    <ExternalLink className="w-3.5 h-3.5" />
-                                  </a>
-                                )}
-                                {hasUrlError && (
-                                  <button
-                                    type="button"
-                                    onMouseDown={e => {
-                                      e.preventDefault();
-                                      handleCellBlur(row.id, col, cellVal, rIdx);
-                                    }}
-                                    className="mr-2 p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-950/50 rounded transition shrink-0"
-                                    title="Invalid URL format link! Click to see alert."
-                                  >
-                                    <AlertTriangle className="w-3.5 h-3.5" />
-                                  </button>
-                                )}
-                              </div>
-                            ) : isClickableUrl ? (
-                              /* Not focused & Valid URL: Render as Clickable Hyperlink! */
-                              <div
-                                onClick={() => setActiveCell({ rowId: row.id, colId: col.id })}
-                                className="flex items-center justify-between px-3 py-1.5 group/url cursor-pointer hover:bg-sky-50/60 dark:hover:bg-slate-800/60 transition-colors"
-                              >
+                            <div className="relative flex items-center w-full group/cell">
+                              <input
+                                id={`matrix-cell-${rIdx}-${cIdx}`}
+                                type="text"
+                                value={cellVal}
+                                onFocus={() => setActiveCell({ rowId: row.id, colId: col.id })}
+                                onBlur={() => {
+                                  handleCellBlur(row.id, col, cellVal, rIdx);
+                                }}
+                                onKeyDown={e => handleCellKeyDown(e, rIdx, cIdx, row, col)}
+                                onChange={e => handleCellChange(row.id, col.id, e.target.value)}
+                                placeholder={isColUrl ? 'https://example.com' : '-'}
+                                className={`w-full px-3 py-2 text-xs text-[#2B2520] dark:text-[#FAF6EE] bg-transparent focus:outline-none placeholder:text-[#A89D8E] ${
+                                  isColUrl ? 'font-mono' : ''
+                                } ${isClickableUrl && !isFocused ? 'text-[#C88A35] font-medium underline decoration-dotted' : ''}`}
+                              />
+                              {isClickableUrl && (
                                 <a
                                   href={ensureHttpUrl(cellVal)}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  onClick={e => {
-                                    e.stopPropagation();
-                                  }}
-                                  className="flex items-center gap-1.5 text-xs text-[#0097B2] dark:text-[#38BDF8] hover:text-[#007085] hover:underline font-mono font-medium truncate py-0.5"
-                                  title={`Click to open link in new tab: ${ensureHttpUrl(cellVal)}`}
+                                  tabIndex={-1}
+                                  onMouseDown={e => e.preventDefault()}
+                                  className={`mr-2 p-1 text-[#C88A35] hover:text-[#BD3A2B] hover:bg-[#F5EFE3] dark:hover:bg-[#201C19] rounded transition shrink-0 cursor-pointer ${
+                                    isFocused ? 'opacity-100' : 'opacity-0 group-hover/cell:opacity-100'
+                                  }`}
+                                  title={`Open Hyperlink: ${ensureHttpUrl(cellVal)}`}
                                 >
-                                  <ExternalLink className="w-3.5 h-3.5 shrink-0 text-[#0097B2]" />
-                                  <span className="truncate">{cellVal}</span>
+                                  <ExternalLink className="w-3.5 h-3.5" />
                                 </a>
+                              )}
+                              {hasUrlError && (
                                 <button
                                   type="button"
-                                  onClick={e => {
-                                    e.stopPropagation();
-                                    setActiveCell({ rowId: row.id, colId: col.id });
+                                  tabIndex={-1}
+                                  onMouseDown={e => {
+                                    e.preventDefault();
+                                    handleCellBlur(row.id, col, cellVal, rIdx);
                                   }}
-                                  className="opacity-0 group-hover/url:opacity-100 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition shrink-0"
-                                  title="Edit cell"
+                                  className="mr-2 p-1 text-[#BD3A2B] hover:bg-[#BD3A2B]/10 rounded transition shrink-0 cursor-pointer"
+                                  title="Invalid URL format link! Click to see alert."
                                 >
-                                  <Edit2 className="w-3 h-3" />
+                                  <AlertTriangle className="w-3.5 h-3.5" />
                                 </button>
-                              </div>
-                            ) : hasUrlError ? (
-                              /* Not focused & Invalid URL format: Warning Display */
-                              <div
-                                onClick={() => setActiveCell({ rowId: row.id, colId: col.id })}
-                                className="flex items-center justify-between px-3 py-2 cursor-pointer text-red-600 dark:text-red-400 font-mono text-xs"
-                                title="Invalid URL format link! Click to correct."
-                              >
-                                <span className="truncate underline decoration-wavy decoration-red-500">
-                                  {cellVal}
-                                </span>
-                                <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-red-500 ml-1" />
-                              </div>
-                            ) : (
-                              /* Regular cell text */
-                              <input
-                                type="text"
-                                value={cellVal}
-                                onFocus={() => setActiveCell({ rowId: row.id, colId: col.id })}
-                                onChange={e => handleCellChange(row.id, col.id, e.target.value)}
-                                placeholder="-"
-                                className="w-full px-3 py-2 text-xs text-slate-800 dark:text-slate-100 bg-transparent focus:outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
-                              />
-                            )}
+                              )}
+                            </div>
                           </td>
                         );
                       })}
@@ -1014,13 +1377,14 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 )}
               </tbody>
             </table>
+            </div>
           </div>
 
           {/* Quick Add Bottom Row Strip */}
           <div className="p-2.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500">
             <button
               onClick={() => handleAddRow(1)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#1E2A5E] dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#2B2520] dark:text-[#FAF6EE] hover:bg-[#EAE2D2] dark:hover:bg-[#38322B] transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>+ Add new row (renglón {activeDb.rows.length + 1})</span>
@@ -1051,7 +1415,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
           </p>
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="mt-4 px-4 py-2 rounded-xl text-xs font-bold bg-[#0097B2] hover:bg-[#008299] text-white"
+            className="mt-4 px-4 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs cursor-pointer"
           >
             Create New Database
           </button>
@@ -1061,24 +1425,24 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
       {/* MODAL 1: Create New Database Wizard */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white dark:bg-[#0F172A] rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+          <div className="bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-[#EAE2D2] dark:border-[#38322B] space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#EAE2D2] dark:border-[#38322B] pb-3">
               <div className="flex items-center gap-2">
-                <span className="p-2 rounded-xl bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E]">
-                  <Database className="w-4 h-4" />
+                <span className="p-2 rounded-xl bg-[#2B2520] text-[#FAF6EE]">
+                  <Database className="w-4 h-4 text-[#C88A35]" />
                 </span>
                 <div>
-                  <h3 className="text-base font-bold text-[#1E2A5E] dark:text-white">
+                  <h3 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
                     Create New Dynamic Database (TodoList)
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
                     Define database name, matrix dimensions, column headers, author, and deadline.
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+                className="p-1.5 text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white rounded-lg cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1086,7 +1450,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
 
             {/* Quick Templates */}
             <div>
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-[#736859] dark:text-[#A89D8E]">
                 Quick Template Presets
               </label>
               <div className="grid grid-cols-2 gap-2 mt-1.5">
@@ -1105,10 +1469,10 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                       columnTypes: ['text', 'text', 'number'],
                     });
                   }}
-                  className="p-2.5 rounded-xl border border-[#0097B2]/40 bg-[#0097B2]/5 hover:bg-[#0097B2]/10 text-left transition-colors"
+                  className="p-2.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#F5EFE3] dark:bg-[#171513] hover:bg-[#EAE2D2] text-left transition-colors cursor-pointer"
                 >
-                  <p className="text-xs font-bold text-[#0097B2]">Employers_Colombia</p>
-                  <p className="text-[11px] text-slate-500">3 cols × 20 rows (Employee directory)</p>
+                  <p className="text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE]">Employers_Colombia</p>
+                  <p className="text-[11px] text-[#736859] dark:text-[#A89D8E]">3 cols × 20 rows (Employee directory)</p>
                 </button>
 
                 <button
@@ -1126,12 +1490,12 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                       columnTypes: ['text', 'text', 'status', 'text'],
                     });
                   }}
-                  className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 text-left transition-colors"
+                  className="p-2.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] hover:bg-[#F5EFE3] dark:hover:bg-[#171513] text-left transition-colors cursor-pointer"
                 >
-                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                  <p className="text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE]">
                     Inspection Matrix
                   </p>
-                  <p className="text-[11px] text-slate-500">4 cols × 10 rows (Status audit)</p>
+                  <p className="text-[11px] text-[#736859] dark:text-[#A89D8E]">4 cols × 10 rows (Status audit)</p>
                 </button>
 
                 <button
@@ -1154,13 +1518,13 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                       columnTypes: ['text', 'url', 'text', 'url'],
                     });
                   }}
-                  className="col-span-2 p-2.5 rounded-xl border border-sky-300 dark:border-sky-800 bg-sky-50/50 dark:bg-sky-950/20 hover:bg-sky-50 dark:hover:bg-sky-950/40 text-left transition-colors"
+                  className="col-span-2 p-2.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#F5EFE3] dark:bg-[#171513] hover:bg-[#EAE2D2] text-left transition-colors cursor-pointer"
                 >
-                  <p className="text-xs font-bold text-[#0097B2] flex items-center gap-1.5">
+                  <p className="text-xs font-bold text-[#C88A35] flex items-center gap-1.5">
                     <Link className="w-3.5 h-3.5" />
                     <span>Game_Production_Engines (Hyperlinks & URLs)</span>
                   </p>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-[#736859] dark:text-[#A89D8E]">
                     4 cols × 5 rows (Roblox, Unity, Unreal, Phaser, WebGL with clickable URLs)
                   </p>
                 </button>
@@ -1169,7 +1533,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
 
             {/* Database Name */}
             <div>
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-200">
+              <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                 Database / List Name *
               </label>
               <input
@@ -1177,14 +1541,14 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 value={newDbForm.name}
                 onChange={e => setNewDbForm({ ...newDbForm, name: e.target.value })}
                 placeholder="e.g. Employers_Colombia"
-                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
               />
             </div>
 
             {/* Author & Contact Info */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-200">
+                <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                   Author (Creator) *
                 </label>
                 <input
@@ -1192,12 +1556,12 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                   value={newDbForm.author}
                   onChange={e => setNewDbForm({ ...newDbForm, author: e.target.value })}
                   placeholder="e.g. Carolina Herrera"
-                  className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                  className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-200">
+                <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                   Author Email(s) (Alerts) - comma separated
                 </label>
                 <input
@@ -1205,7 +1569,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                   value={newDbForm.authorEmail}
                   onChange={e => setNewDbForm({ ...newDbForm, authorEmail: e.target.value })}
                   placeholder="andreramiers@gmail.com, team@company.com"
-                  className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                  className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
                 />
               </div>
             </div>
@@ -1213,7 +1577,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
             {/* Cellphone & Deadline */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-200">
+                <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                   Author Cellphone (Indicate Country)
                 </label>
                 <CountryPhoneInput
@@ -1224,14 +1588,14 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-200">
+                <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                   Deadline / Fecha Límite
                 </label>
                 <input
                   type="datetime-local"
                   value={newDbForm.deadline}
                   onChange={e => setNewDbForm({ ...newDbForm, deadline: e.target.value })}
-                  className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                  className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
                 />
               </div>
             </div>
@@ -1340,7 +1704,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <button
                 type="button"
                 onClick={handleCreateNewDatabase}
-                className="px-4 py-2 rounded-xl text-xs font-bold bg-[#1E2A5E] hover:bg-[#162047] text-white dark:bg-amber-400 dark:text-[#1E2A5E] shadow-sm"
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-xs transition active:scale-95"
               >
                 Create Database Matrix
               </button>
@@ -1354,22 +1718,22 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
       {/* MODAL 4: Rename & Configure Column Dialog */}
       {isRenameColModalOpen && columnToRename && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white dark:bg-[#0F172A] rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-3.5">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
-              <h3 className="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-1.5">
-                <Edit2 className="w-4 h-4 text-[#0097B2]" />
+          <div className="bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-[#DECFA9] dark:border-[#38322B] space-y-3.5">
+            <div className="flex items-center justify-between border-b border-[#EAE2D2] dark:border-[#38322B] pb-2">
+              <h3 className="text-sm font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5 font-serif-jp">
+                <Edit2 className="w-4 h-4 text-[#C88A35]" />
                 <span>Configure & Rename Column</span>
               </h3>
               <button
                 onClick={() => setIsRenameColModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                 Column Name / Header
               </label>
               <input
@@ -1377,19 +1741,19 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 value={newColumnTitle}
                 onChange={e => setNewColumnTitle(e.target.value)}
                 placeholder="Column Name"
-                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
                 autoFocus
               />
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                 Column Data Type
               </label>
               <select
                 value={newColumnType}
                 onChange={e => setNewColumnType(e.target.value as any)}
-                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
               >
                 <option value="text">Text (General)</option>
                 <option value="url">🔗 URL / Hyperlink (Clickable Web Links)</option>
@@ -1398,22 +1762,22 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 <option value="status">Status / Category</option>
               </select>
               {newColumnType === 'url' && (
-                <p className="text-[11px] text-[#0097B2] mt-1 font-medium">
+                <p className="text-[11px] text-[#C88A35] mt-1 font-medium">
                   Cells in this column will be rendered as clickable hyperlinks with URL format validation.
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#EAE2D2] dark:border-[#38322B]">
               <button
                 onClick={() => setIsRenameColModalOpen(false)}
-                className="px-3 py-1.5 text-xs text-slate-500 hover:text-slate-700"
+                className="px-3 py-1.5 text-xs text-[#736859] hover:text-[#2B2520] cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRenameColumnSubmit}
-                className="px-3.5 py-1.5 text-xs font-bold bg-[#0097B2] text-white rounded-lg hover:bg-[#008299] shadow-xs"
+                className="px-3.5 py-1.5 text-xs font-bold bg-[#BD3A2B] text-white rounded-lg hover:bg-[#A83225] shadow-2xs cursor-pointer"
               >
                 Save Column
               </button>
@@ -1434,22 +1798,22 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
       {/* MODAL 6: Add Column Dialog */}
       {isAddColModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white dark:bg-[#0F172A] rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-3.5">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
-              <h3 className="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-1.5">
-                <Plus className="w-4 h-4 text-[#0097B2]" />
+          <div className="bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-[#DECFA9] dark:border-[#38322B] space-y-3.5">
+            <div className="flex items-center justify-between border-b border-[#EAE2D2] dark:border-[#38322B] pb-2">
+              <h3 className="text-sm font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5 font-serif-jp">
+                <Plus className="w-4 h-4 text-[#C88A35]" />
                 <span>Add New Column</span>
               </h3>
               <button
                 onClick={() => setIsAddColModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                 Column Name
               </label>
               <input
@@ -1467,19 +1831,19 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                   }
                 }}
                 placeholder="e.g. Documentation URL or Reference Link"
-                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
                 autoFocus
               />
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E]">
                 Column Data Type
               </label>
               <select
                 value={newAddColType}
                 onChange={e => setNewAddColType(e.target.value as any)}
-                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0097B2]"
+                className="w-full mt-1 px-3 py-2 text-xs rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
               >
                 <option value="text">Text (General)</option>
                 <option value="url">🔗 URL / Hyperlink (Clickable Web Links)</option>
@@ -1488,22 +1852,22 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 <option value="status">Status / Category</option>
               </select>
               {newAddColType === 'url' && (
-                <p className="text-[11px] text-[#0097B2] mt-1 font-medium">
+                <p className="text-[11px] text-[#C88A35] mt-1 font-medium">
                   Enforces valid hyperlink URLs and enables direct click-to-open links.
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#EAE2D2] dark:border-[#38322B]">
               <button
                 onClick={() => setIsAddColModalOpen(false)}
-                className="px-3 py-1.5 text-xs text-slate-500 hover:text-slate-700"
+                className="px-3 py-1.5 text-xs text-[#736859] hover:text-[#2B2520] cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleAddColumnSubmit}
-                className="px-3.5 py-1.5 text-xs font-bold bg-[#0097B2] text-white rounded-lg hover:bg-[#008299] shadow-xs"
+                className="px-3.5 py-1.5 text-xs font-bold bg-[#BD3A2B] text-white rounded-lg hover:bg-[#A83225] shadow-2xs cursor-pointer"
               >
                 Add Column
               </button>
@@ -1515,32 +1879,32 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
       {/* MODAL 7: URL Format Validation Alert */}
       {urlAlertModal && urlAlertModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-[#0F172A] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-red-200 dark:border-red-900/60 space-y-4">
+          <div className="bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#BD3A2B]/40 space-y-4">
             <div className="flex items-start gap-3">
-              <span className="p-2.5 rounded-xl bg-red-100 text-red-600 dark:bg-red-950/60 dark:text-red-400 shrink-0">
+              <span className="p-2.5 rounded-xl bg-[#BD3A2B]/15 text-[#BD3A2B] shrink-0">
                 <AlertTriangle className="w-5 h-5" />
               </span>
               <div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                <h3 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
                   URL Format Validation Alert
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                <p className="text-xs text-[#736859] dark:text-[#A89D8E] mt-0.5">
                   The value in column <strong>&quot;{urlAlertModal.columnName}&quot;</strong> (Row {urlAlertModal.rowNumber}) is not a valid URL format link.
                 </p>
               </div>
             </div>
 
-            <div className="p-3 bg-red-50/70 dark:bg-red-950/30 rounded-xl border border-red-200 dark:border-red-800 space-y-2">
+            <div className="p-3 bg-[#BD3A2B]/10 dark:bg-[#BD3A2B]/20 rounded-xl border border-[#BD3A2B]/30 space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-red-900 dark:text-red-200">Entered Value:</span>
-                <span className="font-mono bg-white dark:bg-slate-900 px-2 py-0.5 rounded text-red-600 font-bold border border-red-200 dark:border-red-800">
+                <span className="font-semibold text-[#BD3A2B] dark:text-[#FF8D80]">Entered Value:</span>
+                <span className="font-mono bg-[#FFFFFF] dark:bg-[#171513] px-2 py-0.5 rounded text-[#BD3A2B] font-bold border border-[#BD3A2B]/30">
                   {urlAlertModal.enteredValue}
                 </span>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-300">
+              <p className="text-xs text-[#5C5348] dark:text-[#DECFA9]">
                 It must be a valid hyperlink URL so people can click and open the link:
               </p>
-              <ul className="text-xs font-mono text-[#0097B2] space-y-0.5 list-disc pl-4">
+              <ul className="text-xs font-mono text-[#C88A35] space-y-0.5 list-disc pl-4">
                 <li>https://create.roblox.com</li>
                 <li>https://unity.com</li>
                 <li>https://unrealengine.com</li>
@@ -1548,7 +1912,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               </ul>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#EAE2D2] dark:border-[#38322B]">
               {!urlAlertModal.enteredValue.includes(' ') && urlAlertModal.enteredValue.includes('.') && (
                 <button
                   type="button"
@@ -1558,7 +1922,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                     setUrlAlertModal(null);
                     onShowToast(`Auto-corrected to "${fixed}"`, 'success');
                   }}
-                  className="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#0097B2] hover:bg-[#008199] text-white transition"
+                  className="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#C88A35] hover:bg-[#B3792A] text-white transition shadow-2xs cursor-pointer"
                 >
                   Auto-fix to https://
                 </button>
@@ -1579,6 +1943,124 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                 className="px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
               >
                 Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 8: Matrix Keyboard Navigation & CRUD Instructions Dialog */}
+      {isShortcutsModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-[#DECFA9] dark:border-[#38322B] space-y-4">
+            <div className="flex items-center justify-between border-b border-[#EAE2D2] dark:border-[#38322B] pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-[#BD3A2B] text-white">
+                  <Keyboard className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
+                    Matrix Navigation &amp; CRUD Instructions
+                  </h3>
+                  <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
+                    Fast keyboard shortcuts to accelerate matrix creation and editing
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsShortcutsModalOpen(false)}
+                className="p-1 rounded-lg text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs max-h-[60vh] overflow-y-auto pr-1">
+              {/* Section 1: Fluid Keyboard Navigation */}
+              <div className="p-3.5 rounded-xl bg-[#FAF6EE] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] space-y-2.5">
+                <h4 className="font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+                  <ArrowUpDown className="w-3.5 h-3.5 text-[#C88A35]" />
+                  <span>Column-to-Column &amp; Row Shortcuts</span>
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B]">
+                    <span className="text-[#736859] dark:text-[#A89D8E]">Move to next column:</span>
+                    <kbd className="px-2 py-0.5 rounded bg-[#FAF6EE] dark:bg-[#2B2520] font-mono font-bold text-[#BD3A2B] border border-[#DECFA9]">Tab</kbd>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B]">
+                    <span className="text-[#736859] dark:text-[#A89D8E]">Move to prev column:</span>
+                    <kbd className="px-2 py-0.5 rounded bg-[#FAF6EE] dark:bg-[#2B2520] font-mono font-bold text-[#BD3A2B] border border-[#DECFA9]">Shift + Tab</kbd>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B]">
+                    <span className="text-[#736859] dark:text-[#A89D8E]">Move to row below:</span>
+                    <kbd className="px-2 py-0.5 rounded bg-[#FAF6EE] dark:bg-[#2B2520] font-mono font-bold text-[#BD3A2B] border border-[#DECFA9]">Enter / ↓</kbd>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B]">
+                    <span className="text-[#736859] dark:text-[#A89D8E]">Move to row above:</span>
+                    <kbd className="px-2 py-0.5 rounded bg-[#FAF6EE] dark:bg-[#2B2520] font-mono font-bold text-[#BD3A2B] border border-[#DECFA9]">Shift+Enter / ↑</kbd>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B]">
+                    <span className="text-[#736859] dark:text-[#A89D8E]">Navigate inside cell/col:</span>
+                    <kbd className="px-2 py-0.5 rounded bg-[#FAF6EE] dark:bg-[#2B2520] font-mono font-bold border border-[#DECFA9]">←  →</kbd>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B]">
+                    <span className="text-[#736859] dark:text-[#A89D8E]">Deselect / blur cell:</span>
+                    <kbd className="px-2 py-0.5 rounded bg-[#FAF6EE] dark:bg-[#2B2520] font-mono font-bold border border-[#DECFA9]">Esc</kbd>
+                  </div>
+                </div>
+                <div className="p-2 rounded-lg bg-[#C88A35]/10 border border-[#C88A35]/30 text-[11px] text-[#8A5A18] dark:text-[#DECFA9]">
+                  ⚡ <strong>Auto-Expansion:</strong> Pressing <strong>Tab</strong> on the last cell of any matrix automatically creates a new row (renglón) and moves your cursor to Column 1!
+                </div>
+              </div>
+
+              {/* Section 2: Matrix CRUD Guide */}
+              <div className="p-3.5 rounded-xl bg-[#FAF6EE] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] space-y-2">
+                <h4 className="font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+                  <Database className="w-3.5 h-3.5 text-[#BD3A2B]" />
+                  <span>Matrix CRUD Operations (Create, Read, Update, Delete)</span>
+                </h4>
+                <ul className="space-y-1.5 text-[11px] text-[#5C5348] dark:text-[#D5CCA8] list-disc pl-4">
+                  <li><strong>Create:</strong> Click <em>&quot;+ Add Database&quot;</em> in the sidebar or use <em>&quot;+ Add Row&quot;</em> / <em>&quot;+ Add Column&quot;</em> to dynamically construct tables.</li>
+                  <li><strong>Read:</strong> Filter any text instantly across columns and rows with the search bar.</li>
+                  <li><strong>Update:</strong> Click or Tab into any cell to edit values inline. Hyperlinks display clickable icons with automatic URL validation.</li>
+                  <li><strong>Delete:</strong> Hover over the row index number <code>#</code> on the left to reveal the red trash icon and delete any row. Click column headers to configure or delete columns.</li>
+                </ul>
+              </div>
+
+              {/* Section 3: Column Resizing & Zoom (Excel-style) */}
+              <div className="p-3.5 rounded-xl bg-[#FAF6EE] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] space-y-2.5">
+                <h4 className="font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+                  <ZoomIn className="w-3.5 h-3.5 text-[#C88A35]" />
+                  <span>Column Resizing &amp; Matrix Zoom Controls</span>
+                </h4>
+                <div className="space-y-2 text-[11px] text-[#5C5348] dark:text-[#D5CCA8]">
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#BD3A2B] shrink-0">↔ Resize / Diminish Columns:</span>
+                    <span>Hover over any column divider line in the header and drag left or right to diminish (shrink) or expand column width. Double-click the divider to reset to default.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#C88A35] shrink-0">🔍 Zoom In &amp; Out (50% - 150%):</span>
+                    <span>Use the <strong>[-]</strong> and <strong>[+]</strong> zoom buttons in the top bar to scale wide matrices down so all columns fit within view at once. Click the % badge to reset to 100%.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#2B2520] dark:text-[#FAF6EE] shrink-0">📐 Fit Matrix:</span>
+                    <span>Click <strong>&quot;Fit Matrix&quot;</strong> to automatically calculate the optimal zoom percentage based on your matrix column count so the entire table fits your screen.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#736859] dark:text-[#A89D8E] shrink-0">📦 Diminish Cols:</span>
+                    <span>Toggle <strong>&quot;Diminish Cols&quot;</strong> to instantly compress all column widths to a compact 95px size for dense multi-column inspection.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end pt-2 border-t border-[#EAE2D2] dark:border-[#38322B]">
+              <button
+                type="button"
+                onClick={() => setIsShortcutsModalOpen(false)}
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-xs transition cursor-pointer"
+              >
+                Got It, Start Navigating
               </button>
             </div>
           </div>

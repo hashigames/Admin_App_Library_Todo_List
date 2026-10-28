@@ -22,15 +22,15 @@ export const Toast: React.FC<ToastProps> = ({ toasts, onDismiss }) => {
           key={toast.id}
           className={`pointer-events-auto flex items-center justify-between p-3.5 rounded-2xl shadow-xl border backdrop-blur-md transition-all animate-in slide-in-from-bottom-2 ${
             toast.type === 'error'
-              ? 'bg-rose-900/90 text-white border-rose-700'
-              : 'bg-[#1E2A5E]/95 text-white border-[#1E2A5E]'
+              ? 'bg-[#BD3A2B]/95 text-white border-[#BD3A2B]'
+              : 'bg-[#2B2520]/95 text-[#FAF6EE] border-[#38322B]'
           }`}
         >
           <div className="flex items-center gap-2.5 text-xs font-semibold">
             {toast.type === 'error' ? (
-              <AlertCircle className="w-4 h-4 text-rose-300 shrink-0" />
+              <AlertCircle className="w-4 h-4 text-rose-200 shrink-0" />
             ) : (
-              <CheckCircle2 className="w-4 h-4 text-[#F5A623] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#C88A35] shrink-0" />
             )}
             <span>{toast.message}</span>
           </div>

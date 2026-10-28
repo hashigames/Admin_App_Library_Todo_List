@@ -66,10 +66,10 @@ export function buildDatabasePdfDoc(database: DynamicDatabase): jsPDF {
   let cursorY = margin;
 
   // Header Banner
-  doc.setFillColor(30, 42, 94); // Navy #1E2A5E
+  doc.setFillColor(43, 37, 32); // Japanese Sumi #2B2520
   doc.rect(margin, cursorY, pageWidth - margin * 2, 44, 'F');
 
-  doc.setTextColor(255, 255, 255);
+  doc.setTextColor(250, 246, 238); // Washi cream #FAF6EE
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.text('LIGHTHOUSE HASHI LIBRARY - TABULAR DATABASE', margin + 14, cursorY + 26);
@@ -77,17 +77,17 @@ export function buildDatabasePdfDoc(database: DynamicDatabase): jsPDF {
   cursorY += 56;
 
   // Database Info Card
-  doc.setFillColor(245, 247, 250);
+  doc.setFillColor(245, 239, 227); // Cream surface #F5EFE3
   doc.roundedRect(margin, cursorY, pageWidth - margin * 2, 60, 4, 4, 'F');
-  doc.setDrawColor(220, 226, 235);
+  doc.setDrawColor(234, 226, 210); // Cream border #EAE2D2
   doc.roundedRect(margin, cursorY, pageWidth - margin * 2, 60, 4, 4, 'D');
 
-  doc.setTextColor(30, 42, 94);
+  doc.setTextColor(43, 37, 32);
   doc.setFontSize(13);
   doc.setFont('helvetica', 'bold');
   doc.text(database.name, margin + 12, cursorY + 20);
 
-  doc.setTextColor(80, 90, 110);
+  doc.setTextColor(115, 104, 89);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
   doc.text(`Author: ${database.author || 'N/A'}`, margin + 12, cursorY + 36);
@@ -108,7 +108,7 @@ export function buildDatabasePdfDoc(database: DynamicDatabase): jsPDF {
   const colWidth = availableWidth / colCount;
 
   // Table Header
-  doc.setFillColor(0, 151, 178); // Teal #0097B2
+  doc.setFillColor(200, 138, 53); // Kohaku amber #C88A35
   doc.rect(margin, cursorY, availableWidth, 22, 'F');
 
   doc.setTextColor(255, 255, 255);
@@ -395,9 +395,9 @@ export function exportLibraryToPdf(books: Book[], topics: string[]) {
   const pageWidth = doc.internal.pageSize.getWidth();
 
   // Header Banner
-  doc.setFillColor(30, 42, 94); // #1E2A5E
+  doc.setFillColor(43, 37, 32); // #2B2520 Japanese Sumi
   doc.rect(margin, cursorY, pageWidth - margin * 2, 40, 'F');
-  doc.setTextColor(255, 255, 255);
+  doc.setTextColor(250, 246, 238); // #FAF6EE Washi cream
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.text('LIGHTHOUSE HASHI LIBRARY - LIBRARY SHELVES & BOOKS RESUME', margin + 14, cursorY + 25);
@@ -405,9 +405,9 @@ export function exportLibraryToPdf(books: Book[], topics: string[]) {
   cursorY += 50;
 
   // Stats Box
-  doc.setFillColor(245, 247, 250);
+  doc.setFillColor(245, 239, 227); // #F5EFE3 Cream surface
   doc.rect(margin, cursorY, pageWidth - margin * 2, 35, 'F');
-  doc.setTextColor(30, 42, 94);
+  doc.setTextColor(43, 37, 32); // #2B2520 Sumi
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text(`Total Books: ${books.length}  |  Shelves/Topics: ${topics.length}  |  Available: ${books.filter(b => b.status === 'available').length}  |  On Loan: ${books.filter(b => b.status === 'borrowed').length}`, margin + 12, cursorY + 22);

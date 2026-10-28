@@ -73,25 +73,25 @@ export const LendModal: React.FC<LendModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-      <div className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="relative w-full max-w-lg bg-[#FAF6EE] dark:bg-[#171513] rounded-3xl shadow-2xl border border-[#EAE2D2] dark:border-[#38322B] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 bg-[#FAF7F0] dark:bg-slate-800/50">
+        <div className="flex items-center justify-between p-6 border-b border-[#EAE2D2] dark:border-[#38322B] bg-[#F5EFE3] dark:bg-[#201C19]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-[#1E2A5E] text-white">
-              <ArrowRight className="w-5 h-5 text-[#F5A623]" />
+            <div className="p-2 rounded-xl bg-[#2B2520] dark:bg-[#C88A35] text-[#FAF6EE] dark:text-[#2B2520]">
+              <ArrowRight className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-[#1E2A5E] dark:text-white">
+              <h2 className="text-lg font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
                 {t.lendModalTitle}
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
                 LightHouse 橋i • 貸出処理 (Prestar)
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="p-2 rounded-xl text-[#736859] hover:text-[#2B2520] dark:text-[#A89D8E] dark:hover:text-[#FAF6EE] hover:bg-[#EAE2D2] dark:hover:bg-[#2D2823] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -100,17 +100,17 @@ export const LendModal: React.FC<LendModalProps> = ({
         <form onSubmit={handleLend} className="p-6 space-y-5">
           {/* Book Selection */}
           <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-[#736859] dark:text-[#A89D8E] uppercase tracking-wider mb-2">
               {t.bookTitle}
             </label>
             {initialBook ? (
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                <BookOpen className="w-5 h-5 text-[#1E2A5E] dark:text-amber-300 shrink-0" />
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B]">
+                <BookOpen className="w-5 h-5 text-[#C88A35] shrink-0" />
                 <div className="min-w-0">
-                  <div className="font-bold text-sm text-[#1E2A5E] dark:text-white truncate">
+                  <div className="font-bold text-sm text-[#2B2520] dark:text-[#FAF6EE] truncate">
                     {initialBook.title}
                   </div>
-                  <div className="text-xs text-slate-500 italic truncate">
+                  <div className="text-xs text-[#736859] italic truncate">
                     {initialBook.author} • {initialBook.topic}
                   </div>
                 </div>
@@ -119,7 +119,7 @@ export const LendModal: React.FC<LendModalProps> = ({
               <select
                 value={selectedBookId}
                 onChange={e => setSelectedBookId(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold text-[#1E2A5E] dark:text-white outline-none focus:ring-2 focus:ring-[#1E2A5E]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-sm font-semibold text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-2 focus:ring-[#C88A35]"
               >
                 {availableBooks.map(b => (
                   <option key={b.id} value={b.id}>
@@ -132,14 +132,14 @@ export const LendModal: React.FC<LendModalProps> = ({
 
           {/* Equipment Selection */}
           <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-[#736859] dark:text-[#A89D8E] uppercase tracking-wider mb-2">
               {t.selectEquipment}
             </label>
             <div className="relative">
               <select
                 value={selectedEquipmentId}
                 onChange={e => setSelectedEquipmentId(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-bold text-[#1E2A5E] dark:text-white outline-none focus:ring-2 focus:ring-[#1E2A5E]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-sm font-bold text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-2 focus:ring-[#C88A35]"
               >
                 {equipmentList.map(eq => (
                   <option key={eq.id} value={eq.id}>
@@ -153,10 +153,10 @@ export const LendModal: React.FC<LendModalProps> = ({
           {/* Loan Duration */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+              <label className="text-xs font-bold text-[#736859] dark:text-[#A89D8E] uppercase tracking-wider">
                 {t.loanDuration}
               </label>
-              <span className="text-xs font-semibold text-[#0097B2]">
+              <span className="text-xs font-semibold text-[#BD3A2B]">
                 Due: {calculateDueDate().toLocaleDateString()}
               </span>
             </div>
@@ -172,8 +172,8 @@ export const LendModal: React.FC<LendModalProps> = ({
                   }}
                   className={`py-2 px-3 rounded-xl text-xs font-bold border transition ${
                     loanDays === days && !customDate
-                      ? 'bg-[#1E2A5E] text-white border-[#1E2A5E]'
-                      : 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-slate-300'
+                      ? 'bg-[#2B2520] dark:bg-[#C88A35] text-[#FAF6EE] dark:text-[#2B2520] border-[#2B2520] dark:border-[#C88A35]'
+                      : 'bg-[#FFFFFF] dark:bg-[#201C19] text-[#736859] dark:text-[#A89D8E] border-[#EAE2D2] dark:border-[#38322B] hover:bg-[#F5EFE3]'
                   }`}
                 >
                   {t.daysCount.replace('{days}', String(days))}
@@ -184,22 +184,22 @@ export const LendModal: React.FC<LendModalProps> = ({
 
             {/* Custom Due Date optional input */}
             <div className="mt-2.5 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-slate-400" />
+              <Calendar className="w-4 h-4 text-[#736859]" />
               <input
                 type="date"
                 value={customDate}
                 onChange={e => setCustomDate(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}
                 placeholder={t.customDueDate}
-                className="text-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 outline-none"
+                className="text-xs px-3 py-1.5 rounded-lg border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] outline-none"
               />
-              <span className="text-[11px] text-slate-400">or custom date</span>
+              <span className="text-[11px] text-[#736859]">or custom date</span>
             </div>
           </div>
 
           {/* Notes */}
           <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-[#736859] dark:text-[#A89D8E] uppercase tracking-wider mb-2">
               {t.loanNotes}
             </label>
             <input
@@ -207,25 +207,25 @@ export const LendModal: React.FC<LendModalProps> = ({
               value={notes}
               onChange={e => setNotes(e.target.value)}
               placeholder="e.g. Model fine-tuning, prototype pipeline verification"
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-700 dark:text-slate-300 outline-none"
+              className="w-full px-3.5 py-2 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-xs text-[#2B2520] dark:text-[#FAF6EE] outline-none"
             />
           </div>
 
           {/* Actions */}
-          <div className="pt-3 flex items-center justify-end gap-3 border-t border-slate-100 dark:border-slate-800">
+          <div className="pt-3 flex items-center justify-end gap-3 border-t border-[#EAE2D2] dark:border-[#38322B]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-bold rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="px-4 py-2 text-xs font-bold rounded-xl text-[#736859] dark:text-[#A89D8E] hover:bg-[#EAE2D2] dark:hover:bg-[#2D2823] transition-colors"
             >
               {t.cancel}
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !currentBook}
-              className="flex items-center gap-2 px-5 py-2.5 text-xs font-bold rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white shadow-md transition active:scale-98 disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 text-xs font-bold rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-xs transition active:scale-98 disabled:opacity-50"
             >
-              <ArrowRight className="w-4 h-4 text-[#F5A623]" />
+              <ArrowRight className="w-4 h-4" />
               <span>{isSubmitting ? t.loading : t.confirmLend}</span>
             </button>
           </div>

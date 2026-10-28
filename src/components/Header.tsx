@@ -6,12 +6,12 @@ import {
   Shield,
   User,
   Database,
-  Upload,
-  PlusCircle,
   Menu,
   X,
   Laptop,
-  Mic,
+  Upload,
+  PlusCircle,
+  Sparkles,
 } from 'lucide-react';
 import { LighthouseLogo } from './LighthouseLogo';
 import { Language, UserRole, EquipmentUser } from '../types';
@@ -22,8 +22,7 @@ interface HeaderProps {
   onLanguageChange: (lang: Language) => void;
   isDarkMode: boolean;
   onToggleDarkMode: () => void;
-  currentRole: UserRole;
-  onToggleRole: () => void;
+  currentRole?: UserRole;
   equipmentList: EquipmentUser[];
   activeEquipmentId: string;
   onSelectEquipment: (id: string) => void;
@@ -32,7 +31,6 @@ interface HeaderProps {
   onOpenUploadModal: () => void;
   onOpenLendModal: () => void;
   onOpenChatModal: () => void;
-  onOpenVoiceTab?: () => void;
   onOpenHamburger?: () => void;
   firebaseUser: any;
   onGoogleSignIn: () => void;
@@ -44,8 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
   onLanguageChange,
   isDarkMode,
   onToggleDarkMode,
-  currentRole,
-  onToggleRole,
+  currentRole = 'admin',
   equipmentList,
   activeEquipmentId,
   onSelectEquipment,
@@ -54,7 +51,6 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenUploadModal,
   onOpenLendModal,
   onOpenChatModal,
-  onOpenVoiceTab,
   onOpenHamburger,
   firebaseUser,
   onGoogleSignIn,
@@ -73,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FAF7F0]/95 dark:bg-[#0F172A]/95 backdrop-blur-md border-b border-[#1E2A5E]/10 dark:border-slate-800 transition-colors">
+    <header className="sticky top-0 z-40 bg-[#FAF6EE]/95 dark:bg-[#171513]/95 backdrop-blur-md border-b border-[#EAE2D2] dark:border-[#2D2823] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo & Subtitle */}
@@ -83,41 +79,21 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Desktop Controls */}
           <div className="hidden lg:flex items-center gap-3">
-            {/* Quick Actions */}
-            {currentRole === 'admin' ? (
-              <div className="flex items-center gap-2 mr-2">
-                <button
-                  onClick={onOpenUploadModal}
-                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#1E2A5E] hover:bg-[#2A3B82] text-white shadow-sm transition active:scale-95"
-                >
-                  <Upload className="w-3.5 h-3.5 text-[#F5A623]" />
-                  <span>{t.navUpload}</span>
-                </button>
-
-                <button
-                  onClick={onOpenLendModal}
-                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#F5A623] hover:bg-[#E59716] text-[#1E2A5E] shadow-sm transition active:scale-95"
-                >
-                  <PlusCircle className="w-3.5 h-3.5 text-[#1E2A5E]" />
-                  <span>{t.quickLend}</span>
-                </button>
-              </div>
-            ) : null}
 
             {/* Current Active Equipment Switcher */}
-            <div className="relative flex items-center bg-white dark:bg-slate-800 border border-[#1E2A5E]/15 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs shadow-xs">
-              <Laptop className="w-3.5 h-3.5 text-[#0097B2] mr-1.5" />
+            <div className="relative flex items-center bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] rounded-lg px-2.5 py-1.5 text-xs shadow-2xs">
+              <Laptop className="w-3.5 h-3.5 text-[#C88A35] mr-1.5" />
               <div className="flex flex-col">
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                <span className="text-[10px] text-[#736859] dark:text-[#A89D8E] font-medium">
                   {t.activeEquipment}
                 </span>
                 <select
                   value={activeEquipmentId}
                   onChange={e => onSelectEquipment(e.target.value)}
-                  className="bg-transparent font-bold text-[#1E2A5E] dark:text-slate-200 outline-none cursor-pointer pr-4"
+                  className="bg-transparent font-bold text-[#2B2520] dark:text-[#FAF6EE] outline-none cursor-pointer pr-4"
                 >
                   {equipmentList.map(eq => (
-                    <option key={eq.id} value={eq.id} className="dark:bg-slate-800 text-[#1E2A5E] dark:text-white">
+                    <option key={eq.id} value={eq.id} className="dark:bg-[#201C19] text-[#2B2520] dark:text-white">
                       {eq.name} {eq.role === 'admin' ? '★' : ''}
                     </option>
                   ))}
@@ -125,72 +101,27 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             </div>
 
-            {/* Mode Switcher (Admin / Equipment Reader) */}
-            <button
-              onClick={onToggleRole}
-              title={t.switchMode}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border transition ${
-                currentRole === 'admin'
-                  ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-700'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700'
-              }`}
-            >
-              {currentRole === 'admin' ? (
-                <>
-                  <Shield className="w-3.5 h-3.5 text-[#DC2626]" />
-                  <span>{t.adminMode}</span>
-                </>
-              ) : (
-                <>
-                  <User className="w-3.5 h-3.5 text-[#0097B2]" />
-                  <span>{t.userMode}</span>
-                </>
-              )}
-            </button>
-
-            {/* Voice Commands Quick Button */}
-            {onOpenVoiceTab && (
-              <button
-                onClick={onOpenVoiceTab}
-                title="Voice Commands Quick Creation (Microphone)"
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white shadow-xs border border-red-500 transition active:scale-95"
-              >
-                <Mic className="w-3.5 h-3.5 animate-pulse" />
-                <span>Voice Commands</span>
-              </button>
-            )}
-
-            {/* Gemini AI Archivist Chat & Grounding Button */}
-            <button
-              onClick={onOpenChatModal}
-              title="Gemini AI Archivist & Search"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-linear-to-r from-[#1E2A5E] to-[#2A3B82] hover:from-[#2A3B82] hover:to-[#384DA5] text-white shadow-xs border border-white/20 transition active:scale-95"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-ping" />
-              <span>AI Archivist</span>
-            </button>
-
             {/* Google Sign-in / User Profile */}
             {firebaseUser ? (
-              <div className="flex items-center gap-2 pl-1 border-l border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-2 pl-1 border-l border-[#EAE2D2] dark:border-[#38322B]">
                 {firebaseUser.photoURL ? (
                   <img
                     src={firebaseUser.photoURL}
                     alt={firebaseUser.displayName || 'User'}
-                    className="w-7 h-7 rounded-full border border-slate-300 dark:border-slate-600"
+                    className="w-7 h-7 rounded-full border border-[#EAE2D2] dark:border-[#38322B]"
                   />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-[#1E2A5E] text-white flex items-center justify-center text-xs font-bold">
+                  <div className="w-7 h-7 rounded-full bg-[#2B2520] text-[#FAF6EE] flex items-center justify-center text-xs font-bold">
                     {(firebaseUser.displayName || firebaseUser.email || 'U')[0].toUpperCase()}
                   </div>
                 )}
                 <div className="hidden xl:flex flex-col text-left">
-                  <span className="text-[11px] font-bold text-[#1E2A5E] dark:text-white leading-tight">
+                  <span className="text-[11px] font-bold text-[#2B2520] dark:text-white leading-tight">
                     {firebaseUser.displayName || 'Google Member'}
                   </span>
                   <button
                     onClick={onSignOut}
-                    className="text-[10px] text-red-500 hover:underline text-left leading-tight"
+                    className="text-[10px] text-[#BD3A2B] hover:underline text-left leading-tight"
                   >
                     Sign Out
                   </button>
@@ -199,7 +130,7 @@ export const Header: React.FC<HeaderProps> = ({
             ) : (
               <button
                 onClick={onGoogleSignIn}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-slate-800 border border-[#1E2A5E]/20 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-[#1E2A5E] dark:text-slate-200 shadow-xs transition active:scale-95"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs transition active:scale-95"
                 title="Sign in with Google"
               >
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
@@ -228,10 +159,10 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={onOpenFirebaseModal}
               title="Firebase Settings"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-lg bg-white dark:bg-slate-800 border border-[#1E2A5E]/15 dark:border-slate-700 hover:border-[#F5A623] transition"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-lg bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] hover:border-[#C88A35] transition"
             >
-              <Database className="w-3.5 h-3.5 text-[#F5A623]" />
-              <span className="hidden xl:inline text-slate-600 dark:text-slate-300">
+              <Database className="w-3.5 h-3.5 text-[#C88A35]" />
+              <span className="hidden xl:inline text-[#736859] dark:text-[#A89D8E]">
                 {isFirebaseLive ? t.firebaseCloud : t.localMode}
               </span>
               <span
@@ -245,14 +176,14 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="relative">
               <button
                 onClick={() => setLangMenuOpen(!langMenuOpen)}
-                className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-white dark:bg-slate-800 border border-[#1E2A5E]/15 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-[#1E2A5E] dark:text-slate-200 transition"
+                className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] text-[#2B2520] dark:text-[#FAF6EE] transition"
               >
-                <Globe className="w-3.5 h-3.5 text-slate-500" />
+                <Globe className="w-3.5 h-3.5 text-[#736859]" />
                 <span className="uppercase font-bold tracking-wider">{currentLang}</span>
               </button>
 
               {langMenuOpen && (
-                <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 py-1 z-50 animate-in fade-in zoom-in-95">
+                <div className="absolute right-0 mt-2 w-36 bg-[#FFFFFF] dark:bg-[#201C19] rounded-lg shadow-xl border border-[#EAE2D2] dark:border-[#38322B] py-1 z-50 animate-in fade-in zoom-in-95">
                   {languages.map(l => (
                     <button
                       key={l.code}
@@ -260,15 +191,15 @@ export const Header: React.FC<HeaderProps> = ({
                         onLanguageChange(l.code);
                         setLangMenuOpen(false);
                       }}
-                      className={`w-full flex items-center justify-between px-3 py-2 text-xs text-left hover:bg-amber-50 dark:hover:bg-slate-700 ${
-                        currentLang === l.code ? 'font-bold text-[#1E2A5E] dark:text-amber-300 bg-amber-50/50' : 'text-slate-600 dark:text-slate-300'
+                      className={`w-full flex items-center justify-between px-3 py-2 text-xs text-left hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] ${
+                        currentLang === l.code ? 'font-bold text-[#2B2520] dark:text-[#C88A35] bg-[#FAF6EE]' : 'text-[#736859] dark:text-[#A89D8E]'
                       }`}
                     >
                       <span className="flex items-center gap-2">
                         <span>{l.flag}</span>
                         <span>{l.label}</span>
                       </span>
-                      {currentLang === l.code && <span className="text-[#DC2626]">✓</span>}
+                      {currentLang === l.code && <span className="text-[#BD3A2B]">✓</span>}
                     </button>
                   ))}
                 </div>
@@ -278,10 +209,10 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Dark Mode Toggle */}
             <button
               onClick={onToggleDarkMode}
-              className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-[#1E2A5E]/15 dark:border-slate-700 text-[#1E2A5E] dark:text-slate-200 hover:text-[#F5A623] transition"
+              className="p-2 rounded-lg bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] hover:text-[#C88A35] transition"
               aria-label="Toggle theme"
             >
-              {isDarkMode ? <Sun className="w-4 h-4 text-[#F5A623]" /> : <Moon className="w-4 h-4" />}
+              {isDarkMode ? <Sun className="w-4 h-4 text-[#C88A35]" /> : <Moon className="w-4 h-4" />}
             </button>
           </div>
 
@@ -289,19 +220,19 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={() => onLanguageChange(currentLang === 'en' ? 'ja' : currentLang === 'ja' ? 'es' : 'en')}
-              className="px-2 py-1 text-xs font-bold rounded bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 uppercase"
+              className="px-2 py-1 text-xs font-bold rounded bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] uppercase text-[#2B2520] dark:text-[#FAF6EE]"
             >
               {currentLang}
             </button>
             <button
               onClick={onToggleDarkMode}
-              className="p-2 rounded bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700"
+              className="p-2 rounded bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B]"
             >
-              {isDarkMode ? <Sun className="w-4 h-4 text-[#F5A623]" /> : <Moon className="w-4 h-4" />}
+              {isDarkMode ? <Sun className="w-4 h-4 text-[#C88A35]" /> : <Moon className="w-4 h-4 text-[#2B2520]" />}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-[#1E2A5E] text-white"
+              className="p-2 rounded-lg bg-[#2B2520] text-[#FAF6EE]"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -310,40 +241,17 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Mobile Dropdown Panel */}
         {mobileMenuOpen && (
-          <div className="lg:hidden pb-4 pt-2 border-t border-[#1E2A5E]/10 dark:border-slate-800 space-y-3">
+          <div className="lg:hidden pb-4 pt-2 border-t border-[#EAE2D2] dark:border-[#2D2823] space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <button
-                onClick={() => {
-                  onToggleRole();
-                  setMobileMenuOpen(false);
-                }}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded bg-amber-100 dark:bg-slate-800 text-[#1E2A5E] dark:text-amber-300"
-              >
-                <Shield className="w-3.5 h-3.5 text-[#DC2626]" />
-                <span>{currentRole === 'admin' ? t.adminMode : t.userMode}</span>
-              </button>
-
-              {onOpenVoiceTab && (
-                <button
-                  onClick={() => {
-                    onOpenVoiceTab();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded bg-red-600 text-white"
-                >
-                  <Mic className="w-3.5 h-3.5 animate-pulse" />
-                  <span>Voice Commands</span>
-                </button>
-              )}
 
               <button
                 onClick={() => {
                   onOpenChatModal();
                   setMobileMenuOpen(false);
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded bg-[#1E2A5E] text-white"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded bg-[#2B2520] text-[#FAF6EE]"
               >
-                <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-ping" />
+                <span className="w-2 h-2 rounded-full bg-[#C88A35] animate-ping" />
                 <span>AI Archivist</span>
               </button>
 
@@ -363,7 +271,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onGoogleSignIn();
                     setMobileMenuOpen(false);
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-semibold"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] font-semibold text-[#2B2520] dark:text-[#FAF6EE]"
                 >
                   <span>Google Login</span>
                 </button>
@@ -374,21 +282,21 @@ export const Header: React.FC<HeaderProps> = ({
                   onOpenFirebaseModal();
                   setMobileMenuOpen(false);
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-slate-100 dark:bg-slate-800"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE]"
               >
-                <Database className="w-3.5 h-3.5 text-[#F5A623]" />
+                <Database className="w-3.5 h-3.5 text-[#C88A35]" />
                 <span>{isFirebaseLive ? t.firebaseCloud : t.localMode}</span>
               </button>
             </div>
 
             {/* Active Equipment Mobile Selector */}
-            <div className="flex items-center gap-2 bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
-              <Laptop className="w-4 h-4 text-[#0097B2]" />
-              <span className="text-slate-500 font-medium">{t.activeEquipment}:</span>
+            <div className="flex items-center gap-2 bg-[#FFFFFF] dark:bg-[#201C19] p-2 rounded-lg border border-[#EAE2D2] dark:border-[#38322B] text-xs">
+              <Laptop className="w-4 h-4 text-[#C88A35]" />
+              <span className="text-[#736859] font-medium">{t.activeEquipment}:</span>
               <select
                 value={activeEquipmentId}
                 onChange={e => onSelectEquipment(e.target.value)}
-                className="bg-transparent font-bold text-[#1E2A5E] dark:text-white flex-1"
+                className="bg-transparent font-bold text-[#2B2520] dark:text-[#FAF6EE] flex-1"
               >
                 {equipmentList.map(eq => (
                   <option key={eq.id} value={eq.id}>
@@ -405,9 +313,9 @@ export const Header: React.FC<HeaderProps> = ({
                     onOpenUploadModal();
                     setMobileMenuOpen(false);
                   }}
-                  className="flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded bg-[#1E2A5E] text-white"
+                  className="flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded bg-[#2B2520] text-[#FAF6EE]"
                 >
-                  <Upload className="w-3.5 h-3.5 text-[#F5A623]" />
+                  <Upload className="w-3.5 h-3.5 text-[#C88A35]" />
                   <span>{t.navUpload}</span>
                 </button>
                 <button
@@ -415,9 +323,9 @@ export const Header: React.FC<HeaderProps> = ({
                     onOpenLendModal();
                     setMobileMenuOpen(false);
                   }}
-                  className="flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded bg-[#F5A623] text-[#1E2A5E]"
+                  className="flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded bg-[#F5EFE3] text-[#2B2520] border border-[#DECFA9]"
                 >
-                  <PlusCircle className="w-3.5 h-3.5" />
+                  <PlusCircle className="w-3.5 h-3.5 text-[#C88A35]" />
                   <span>{t.quickLend}</span>
                 </button>
               </div>

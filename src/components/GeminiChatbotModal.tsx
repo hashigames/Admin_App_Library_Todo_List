@@ -205,24 +205,24 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-xs animate-in fade-in">
-      <div className="relative w-full max-w-4xl h-[90vh] sm:h-[85vh] bg-[#FAF7F0] dark:bg-slate-900 rounded-3xl shadow-2xl border border-[#1E2A5E]/15 dark:border-slate-800 flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in">
+      <div className="relative w-full max-w-4xl h-[90vh] sm:h-[85vh] bg-[#FAF6EE] dark:bg-[#171513] rounded-3xl shadow-2xl border border-[#DECFA9] dark:border-[#38322B] flex flex-col overflow-hidden">
         {/* Top Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#1E2A5E]/10 dark:border-slate-800 bg-white dark:bg-slate-800/80">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#1E2A5E] text-white flex items-center justify-center shadow-xs">
-              <Bot className="w-5 h-5 text-[#F5A623]" />
+            <div className="w-10 h-10 rounded-2xl bg-[#2B2520] text-[#FAF6EE] flex items-center justify-center shadow-2xs">
+              <Bot className="w-5 h-5 text-[#C88A35]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-sm sm:text-base font-bold text-[#1E2A5E] dark:text-white flex items-center gap-1.5">
+                <h2 className="text-sm sm:text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5 font-serif-jp">
                   <span>Gemini AI Archivist & Search</span>
-                  <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#F5A623]/20 text-[#1E2A5E] dark:text-[#F5A623] border border-[#F5A623]/30">
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#C88A35]/15 text-[#8A5A18] dark:text-[#DECFA9] border border-[#C88A35]/30">
                     {enableSearchGrounding ? 'Google Search Grounding' : taskMode === 'complex' ? 'gemini-3.1-pro-preview' : taskMode === 'fast' ? 'gemini-3.1-flash-lite' : 'gemini-3.5-flash'}
                   </span>
                 </h2>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              <p className="text-[11px] text-[#736859] dark:text-[#A89D8E]">
                 LightHouse 橋i • Intelligent Reference Assistant & Live Web Grounding
               </p>
             </div>
@@ -232,13 +232,13 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
             <button
               onClick={handleClearHistory}
               title="Clear Conversation"
-              className="p-2 text-slate-400 hover:text-red-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className="p-2 text-[#A89D8E] hover:text-[#BD3A2B] rounded-lg hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] transition cursor-pointer"
             >
               <Trash2 className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className="p-2 text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white rounded-lg hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -246,15 +246,15 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
         </div>
 
         {/* Control Sub-Bar: Model speed / task selection & Search Grounding Toggle */}
-        <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-2.5 bg-slate-50/90 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-2.5 bg-[#F5EFE3] dark:bg-[#201C19] border-b border-[#EAE2D2] dark:border-[#38322B] text-xs">
           <div className="flex items-center gap-2 flex-wrap">
             {/* Role Persona */}
-            <div className="flex items-center gap-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1">
-              <span className="text-[10px] text-slate-400 font-semibold uppercase">Role:</span>
+            <div className="flex items-center gap-1 bg-[#FFFFFF] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] rounded-lg px-2 py-1">
+              <span className="text-[10px] text-[#A89D8E] font-semibold uppercase">Role:</span>
               <select
                 value={rolePreset}
                 onChange={e => setRolePreset(e.target.value as any)}
-                className="bg-transparent font-bold text-[#1E2A5E] dark:text-slate-200 outline-none cursor-pointer text-xs"
+                className="bg-transparent font-bold text-[#2B2520] dark:text-[#FAF6EE] outline-none cursor-pointer text-xs"
               >
                 <option value="librarian">Archivist (Librarian)</option>
                 <option value="architect">Systems Architect</option>
@@ -264,13 +264,13 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
 
             {/* Model Task Mode */}
             {!enableSearchGrounding && (
-              <div className="flex items-center rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-0.5">
+              <div className="flex items-center rounded-lg bg-[#FFFFFF] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] p-0.5">
                 <button
                   onClick={() => setTaskMode('fast')}
-                  className={`px-2 py-1 rounded text-[11px] font-semibold transition ${
+                  className={`px-2 py-1 rounded text-[11px] font-semibold transition cursor-pointer ${
                     taskMode === 'fast'
-                      ? 'bg-[#0097B2] text-white shadow-xs'
-                      : 'text-slate-500 hover:text-[#1E2A5E] dark:hover:text-white'
+                      ? 'bg-[#C88A35] text-white shadow-2xs'
+                      : 'text-[#736859] hover:text-[#2B2520] dark:hover:text-white'
                   }`}
                   title="Uses gemini-3.1-flash-lite for rapid responses"
                 >
@@ -278,10 +278,10 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
                 </button>
                 <button
                   onClick={() => setTaskMode('general')}
-                  className={`px-2 py-1 rounded text-[11px] font-semibold transition ${
+                  className={`px-2 py-1 rounded text-[11px] font-semibold transition cursor-pointer ${
                     taskMode === 'general'
-                      ? 'bg-[#1E2A5E] text-white shadow-xs dark:bg-amber-400 dark:text-[#1E2A5E]'
-                      : 'text-slate-500 hover:text-[#1E2A5E] dark:hover:text-white'
+                      ? 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
+                      : 'text-[#736859] hover:text-[#2B2520] dark:hover:text-white'
                   }`}
                   title="Uses gemini-3.5-flash for balanced tasks"
                 >
@@ -289,10 +289,10 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
                 </button>
                 <button
                   onClick={() => setTaskMode('complex')}
-                  className={`px-2 py-1 rounded text-[11px] font-semibold transition ${
+                  className={`px-2 py-1 rounded text-[11px] font-semibold transition cursor-pointer ${
                     taskMode === 'complex'
-                      ? 'bg-[#DC2626] text-white shadow-xs'
-                      : 'text-slate-500 hover:text-[#1E2A5E] dark:hover:text-white'
+                      ? 'bg-[#BD3A2B] text-white shadow-2xs'
+                      : 'text-[#736859] hover:text-[#2B2520] dark:hover:text-white'
                   }`}
                   title="Uses gemini-3.1-pro-preview for deep architectural reasoning"
                 >
@@ -335,8 +335,8 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
                 <div
                   className={`w-8 h-8 rounded-xl shrink-0 flex items-center justify-center text-xs font-bold ${
                     isUser
-                      ? 'bg-[#0097B2] text-white'
-                      : 'bg-[#1E2A5E] text-white dark:bg-amber-400 dark:text-[#1E2A5E]'
+                      ? 'bg-[#BD3A2B] text-white shadow-2xs'
+                      : 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
                   }`}
                 >
                   {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
@@ -344,10 +344,10 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
 
                 <div className="space-y-1.5">
                   <div
-                    className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs ${
+                    className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-2xs ${
                       isUser
-                        ? 'bg-[#1E2A5E] text-white rounded-tr-xs'
-                        : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-[#1E2A5E]/10 dark:border-slate-700/80 rounded-tl-xs whitespace-pre-wrap font-sans'
+                        ? 'bg-[#2B2520] text-[#FAF6EE] rounded-tr-xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
+                        : 'bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] border border-[#EAE2D2] dark:border-[#38322B] rounded-tl-xs whitespace-pre-wrap font-sans'
                     }`}
                   >
                     {msg.content}
@@ -355,9 +355,9 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
 
                   {/* Grounding Sources (Google Search results) */}
                   {msg.groundingSources && msg.groundingSources.length > 0 && (
-                    <div className="p-3 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 text-xs space-y-1.5 animate-in fade-in">
-                      <p className="font-bold text-blue-900 dark:text-blue-300 flex items-center gap-1.5 text-[11px]">
-                        <Globe className="w-3.5 h-3.5 text-blue-600" />
+                    <div className="p-3 rounded-xl bg-[#F5EFE3] dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B] text-xs space-y-1.5 animate-in fade-in">
+                      <p className="font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-1.5 text-[11px]">
+                        <Globe className="w-3.5 h-3.5 text-[#C88A35]" />
                         <span>Google Search Grounding Sources ({msg.groundingSources.length}):</span>
                       </p>
                       <div className="flex flex-wrap gap-1.5">
@@ -367,7 +367,7 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
                             href={source.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 border border-blue-300 dark:border-blue-800 text-[11px] text-blue-700 dark:text-blue-300 hover:underline max-w-[260px] truncate"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FFFFFF] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] text-[11px] text-[#C88A35] hover:text-[#BD3A2B] hover:underline max-w-[260px] truncate"
                           >
                             <ExternalLink className="w-3 h-3 shrink-0" />
                             <span className="truncate">{source.title || source.url}</span>
@@ -378,7 +378,7 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
                   )}
 
                   {/* Metadata footnote */}
-                  <div className="flex items-center gap-2 px-1 text-[10px] text-slate-400">
+                  <div className="flex items-center gap-2 px-1 text-[10px] text-[#A89D8E]">
                     <span>
                       {new Date(msg.timestamp).toLocaleTimeString([], {
                         hour: '2-digit',
@@ -393,11 +393,11 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
           })}
 
           {isSubmitting && (
-            <div className="flex gap-3 max-w-[85%] mr-auto items-center text-xs text-slate-500 animate-pulse">
-              <div className="w-8 h-8 rounded-xl bg-[#1E2A5E] text-white flex items-center justify-center">
-                <Loader2 className="w-4 h-4 animate-spin text-[#F5A623]" />
+            <div className="flex gap-3 max-w-[85%] mr-auto items-center text-xs text-[#736859] animate-pulse">
+              <div className="w-8 h-8 rounded-xl bg-[#2B2520] text-[#FAF6EE] flex items-center justify-center">
+                <Loader2 className="w-4 h-4 animate-spin text-[#C88A35]" />
               </div>
-              <div className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
+              <div className="p-3 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-xs text-[#2B2520] dark:text-[#FAF6EE]">
                 {enableSearchGrounding
                   ? 'Searching Google & grounding factual references...'
                   : taskMode === 'complex'
@@ -411,7 +411,7 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
         {/* Input Bar */}
         <form
           onSubmit={handleSend}
-          className="p-3 sm:p-4 bg-white dark:bg-slate-800 border-t border-[#1E2A5E]/10 dark:border-slate-800 flex items-center gap-2"
+          className="p-3 sm:p-4 bg-[#FFFFFF] dark:bg-[#201C19] border-t border-[#EAE2D2] dark:border-[#38322B] flex items-center gap-2"
         >
           <input
             type="text"
@@ -422,17 +422,17 @@ export const GeminiChatbotModal: React.FC<GeminiChatbotModalProps> = ({
                 ? 'Ask Google Search grounded query (e.g. "What are the latest updates to Google Cloud PCA exam 2026?")...'
                 : 'Ask Gemini about library books, Gundam loans, or tech topics...'
             }
-            className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-[#FAF7F0] dark:bg-slate-900 text-xs sm:text-sm text-[#1E2A5E] dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E2A5E] dark:focus:ring-amber-400"
+            className="flex-1 px-4 py-2.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-xs sm:text-sm text-[#2B2520] dark:text-[#FAF6EE] placeholder-[#A89D8E] focus:outline-none focus:ring-2 focus:ring-[#C88A35]"
           />
           <button
             type="submit"
             disabled={!input.trim() || isSubmitting}
-            className="px-4 py-2.5 rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white disabled:opacity-50 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition active:scale-95 shadow-sm"
+            className="px-4 py-2.5 rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white disabled:opacity-50 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition active:scale-95 shadow-sm cursor-pointer"
           >
             {isSubmitting ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              <Send className="w-4 h-4 text-[#F5A623]" />
+              <Send className="w-4 h-4 text-[#FAF6EE]" />
             )}
             <span className="hidden sm:inline">Send</span>
           </button>

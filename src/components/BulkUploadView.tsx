@@ -483,17 +483,17 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in">
       
       {/* ── HEADER BANNER ── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-white dark:bg-slate-800 border border-[#1E2A5E]/10 dark:border-slate-700/60 shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="p-1.5 rounded-lg bg-[#1E2A5E] text-white">
-              <Sparkles className="w-4 h-4 text-[#F5A623]" />
+            <span className="p-1.5 rounded-lg bg-[#2B2520] text-[#FAF6EE]">
+              <Sparkles className="w-4 h-4 text-[#C88A35]" />
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#1E2A5E] dark:text-white font-serif-jp">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
               {t.bulkUploadTitle}
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-2xl">
+          <p className="text-xs sm:text-sm text-[#736859] dark:text-[#A89D8E] max-w-2xl">
             Upload multiple folders, nested sub-folders, or individual files (PDF & Word DOCX). Gemini AI analyzes content, extracts folder hierarchy, auto-assigns primary topic categories, and suggests folder placement.
           </p>
         </div>
@@ -503,10 +503,10 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
           <button
             onClick={handleLoadDemoFolderTree}
             disabled={isProcessing}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-100 transition shadow-xs"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F5EFE3] dark:bg-[#2B2520] border border-[#DECFA9] dark:border-[#4A4135] text-[#2B2520] dark:text-[#FAF6EE] text-xs font-bold hover:bg-[#EAE2D2] transition shadow-2xs cursor-pointer"
             title="Pre-load nested sample folders containing AI, Cloud, Security and Simulation books"
           >
-            <FolderOpen className="w-3.5 h-3.5 text-amber-600" />
+            <FolderOpen className="w-3.5 h-3.5 text-[#C88A35]" />
             <span>Load Demo Folder Tree</span>
           </button>
 
@@ -517,12 +517,12 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                 value={newTopicInput}
                 onChange={e => setNewTopicInput(e.target.value)}
                 placeholder="New Category..."
-                className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-[#1E2A5E] dark:text-white outline-none"
+                className="px-3 py-1.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#171513] text-xs text-[#2B2520] dark:text-[#FAF6EE] outline-none"
                 autoFocus
               />
               <button
                 type="submit"
-                className="px-3 py-1.5 rounded-xl bg-[#1E2A5E] text-white text-xs font-bold"
+                className="px-3 py-1.5 rounded-xl bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] text-xs font-bold cursor-pointer"
               >
                 Add
               </button>
@@ -537,9 +537,9 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
           ) : (
             <button
               onClick={() => setShowAddTopic(true)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-[#EAE2D2] dark:border-[#38322B] text-xs font-semibold text-[#2B2520] dark:text-[#FAF6EE] hover:bg-[#F5EFE3] dark:hover:bg-[#201C19] transition"
             >
-              <Plus className="w-3.5 h-3.5 text-[#0097B2]" />
+              <Plus className="w-3.5 h-3.5 text-[#C88A35]" />
               <span>{t.addCustomTopic}</span>
             </button>
           )}
@@ -575,8 +575,8 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
         onDrop={handleDrop}
         className={`relative border-2 border-dashed rounded-3xl p-8 sm:p-12 text-center transition-all duration-300 ${
           isDragging
-            ? 'border-[#0097B2] bg-[#0097B2]/5 scale-[0.99]'
-            : 'border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/50 hover:border-[#1E2A5E] dark:hover:border-amber-400 hover:bg-white dark:hover:bg-slate-800'
+            ? 'border-[#BD3A2B] bg-[#BD3A2B]/5 scale-[0.99]'
+            : 'border-[#DECFA9] dark:border-[#38322B] bg-[#FFFFFF]/80 dark:bg-[#201C19]/80 hover:border-[#2B2520] dark:hover:border-[#C88A35] hover:bg-[#FFFFFF] dark:hover:bg-[#201C19]'
         }`}
       >
         {/* Hidden File Picker Input */}
@@ -603,19 +603,19 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
 
         <div className="max-w-xl mx-auto flex flex-col items-center">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F0] dark:bg-slate-700 flex items-center justify-center text-[#1E2A5E] dark:text-amber-300 shadow-xs">
-              <Folder className="w-7 h-7 text-[#F5A623]" />
+            <div className="w-14 h-14 rounded-2xl bg-[#F5EFE3] dark:bg-[#2B2520] flex items-center justify-center text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs">
+              <Folder className="w-7 h-7 text-[#C88A35]" />
             </div>
-            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F0] dark:bg-slate-700 flex items-center justify-center text-[#0097B2] shadow-xs">
+            <div className="w-14 h-14 rounded-2xl bg-[#F5EFE3] dark:bg-[#2B2520] flex items-center justify-center text-[#BD3A2B] shadow-2xs">
               <UploadCloud className="w-7 h-7" />
             </div>
           </div>
 
-          <h3 className="text-base sm:text-lg font-bold text-[#1E2A5E] dark:text-white mb-1">
+          <h3 className="text-base sm:text-lg font-bold text-[#2B2520] dark:text-[#FAF6EE] mb-1">
             Drag & Drop Folders or Documents Here
           </h3>
 
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 max-w-md">
+          <p className="text-xs text-[#736859] dark:text-[#A89D8E] mb-6 max-w-md">
             Drop entire folders (including nested folders and sub-directories) or multiple PDF & Word (.docx) files. The original directory tree will be preserved and classified by Gemini AI.
           </p>
 
@@ -624,18 +624,18 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
             <button
               type="button"
               onClick={() => folderInputRef.current?.click()}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white text-xs font-bold shadow-md transition"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] text-xs font-bold shadow-sm transition cursor-pointer"
             >
-              <FolderOpen className="w-4 h-4 text-[#F5A623]" />
+              <FolderOpen className="w-4 h-4 text-[#C88A35]" />
               <span>Select Folder Tree (Recursive)</span>
             </button>
 
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold shadow-xs transition"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] hover:bg-[#F5EFE3] text-xs font-bold shadow-2xs transition cursor-pointer"
             >
-              <FileText className="w-4 h-4 text-[#0097B2]" />
+              <FileText className="w-4 h-4 text-[#BD3A2B]" />
               <span>Select Multiple PDF / Word Files</span>
             </button>
           </div>
@@ -645,46 +645,46 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
       {/* ── BATCH REVIEW & HIERARCHY CONFIRMATION SECTION ── */}
       {batchItems.length > 0 && (
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
             <div>
-              <h2 className="text-base font-bold text-[#1E2A5E] dark:text-white flex items-center gap-2">
+              <h2 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-2">
                 <span>{t.aiReviewTitle}</span>
-                <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-[#1E2A5E] text-white">
+                <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-[#2B2520] text-[#FAF6EE]">
                   {readyCount}/{batchItems.length}
                 </span>
                 {needsReviewCount > 0 && (
-                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-500 text-white flex items-center gap-1">
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-[#C88A35] text-white flex items-center gap-1">
                     <AlertCircle className="w-3 h-3" />
                     <span>{needsReviewCount} Needs Review</span>
                   </span>
                 )}
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
                 Review assigned categories, folder hierarchy, and tags. You can edit any field before saving to the library.
               </p>
             </div>
 
             {/* Queue View Switcher & Action Buttons */}
             <div className="flex items-center gap-2">
-              <div className="flex items-center bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl p-0.5">
+              <div className="flex items-center bg-[#F5EFE3] dark:bg-[#2B2520] border border-[#DECFA9] dark:border-[#38322B] rounded-xl p-0.5">
                 <button
                   onClick={() => setQueueViewMode('tree')}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer ${
                     queueViewMode === 'tree'
-                      ? 'bg-white dark:bg-slate-800 text-[#1E2A5E] dark:text-white shadow-xs'
-                      : 'text-slate-500 hover:text-slate-800 dark:hover:text-white'
+                      ? 'bg-[#FFFFFF] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs'
+                      : 'text-[#736859] hover:text-[#2B2520] dark:hover:text-white'
                   }`}
                   title="Windows Folder Tree Hierarchy"
                 >
-                  <Folder className="w-3.5 h-3.5 text-[#F5A623]" />
+                  <Folder className="w-3.5 h-3.5 text-[#C88A35]" />
                   <span>Folder Tree</span>
                 </button>
                 <button
                   onClick={() => setQueueViewMode('cards')}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer ${
                     queueViewMode === 'cards'
-                      ? 'bg-white dark:bg-slate-800 text-[#1E2A5E] dark:text-white shadow-xs'
-                      : 'text-slate-500 hover:text-slate-800 dark:hover:text-white'
+                      ? 'bg-[#FFFFFF] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs'
+                      : 'text-[#736859] hover:text-[#2B2520] dark:hover:text-white'
                   }`}
                   title="Detailed Cards"
                 >
@@ -695,7 +695,7 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
 
               <button
                 onClick={() => setBatchItems([])}
-                className="px-3 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"
+                className="px-3 py-2 rounded-xl text-xs font-bold text-[#736859] hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] cursor-pointer"
               >
                 {t.discardBatch}
               </button>
@@ -703,9 +703,9 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
               <button
                 onClick={handleApproveAll}
                 disabled={isProcessing || readyCount === 0}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E2A5E] hover:bg-[#2A3B82] text-white text-xs font-bold shadow-md disabled:opacity-50 transition"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] text-white text-xs font-bold shadow-sm disabled:opacity-50 transition cursor-pointer"
               >
-                <CheckCircle2 className="w-4 h-4 text-[#F5A623]" />
+                <CheckCircle2 className="w-4 h-4 text-[#C88A35]" />
                 <span>{t.approveAndSaveAll} ({readyCount})</span>
               </button>
             </div>
@@ -730,8 +730,8 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                       }
                       className="flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-850 border-b border-slate-200 dark:border-slate-700 cursor-pointer select-none hover:bg-slate-100/70"
                     >
-                      <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-100 font-mono">
-                        <FolderOpen className="w-4 h-4 text-[#F5A623]" />
+                      <div className="flex items-center gap-2 text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE] font-mono">
+                        <FolderOpen className="w-4 h-4 text-[#C88A35]" />
                         <span>{folderPath}</span>
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-sans">
                           {items.length} items
@@ -798,9 +798,9 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
 
                                   {/* Progress or status */}
                                   {item.status !== 'ready' && (
-                                    <div className="w-full max-w-xs bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                                    <div className="w-full max-w-xs bg-[#EAE2D2] dark:bg-[#38322B] h-1.5 rounded-full overflow-hidden">
                                       <div
-                                        className="bg-[#0097B2] h-full transition-all duration-300"
+                                        className="bg-[#C88A35] h-full transition-all duration-300"
                                         style={{ width: `${item.progress}%` }}
                                       />
                                     </div>
@@ -813,10 +813,10 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                                 {cls ? (
                                   <div className="flex items-center gap-2">
                                     <div className="text-right">
-                                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#1E2A5E] text-white text-[11px] font-bold">
+                                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#2B2520] text-[#FAF6EE] text-[11px] font-bold">
                                         {cls.topic}
                                       </span>
-                                      <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                                      <div className="text-[10px] text-[#A89D8E] font-mono mt-0.5">
                                         {Math.round(cls.confidence * 100)}% match
                                       </div>
                                     </div>
@@ -825,7 +825,7 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                                     <select
                                       value={cls.topic}
                                       onChange={e => handleUpdateItem(item.id, 'topic', e.target.value)}
-                                      className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-xs bg-white dark:bg-slate-900 outline-none"
+                                      className="px-2 py-1 rounded-lg border border-[#DECFA9] dark:border-[#38322B] text-xs bg-[#FFFFFF] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] outline-none"
                                     >
                                       {existingTopics.map(t => (
                                         <option key={t} value={t}>
@@ -835,14 +835,14 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                                     </select>
                                   </div>
                                 ) : (
-                                  <span className="text-xs text-slate-400 animate-pulse">
+                                  <span className="text-xs text-[#A89D8E] animate-pulse">
                                     Analyzing with Gemini AI...
                                   </span>
                                 )}
 
                                 <button
                                   onClick={() => handleRemoveItem(item.id)}
-                                  className="p-1.5 text-slate-400 hover:text-rose-500 rounded-lg"
+                                  className="p-1.5 text-[#A89D8E] hover:text-[#BD3A2B] rounded-lg cursor-pointer"
                                   title="Remove from queue"
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -867,15 +867,15 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                 return (
                   <div
                     key={item.id}
-                    className={`p-4 rounded-2xl bg-white dark:bg-slate-800 border transition-all ${
+                    className={`p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#201C19] border transition-all ${
                       cls?.needsReview
-                        ? 'border-amber-300 dark:border-amber-700/60 bg-amber-50/20'
-                        : 'border-slate-200 dark:border-slate-700'
+                        ? 'border-[#C88A35] dark:border-[#C88A35]/60 bg-[#C88A35]/5'
+                        : 'border-[#EAE2D2] dark:border-[#38322B]'
                     }`}
                   >
                     <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
                       {/* Cover thumbnail */}
-                      <div className="w-16 h-22 rounded-lg overflow-hidden bg-slate-100 shrink-0 relative shadow-sm">
+                      <div className="w-16 h-22 rounded-lg overflow-hidden bg-[#F5EFE3] dark:bg-[#2B2520] shrink-0 relative shadow-2xs">
                         {item.coverDataUrl ? (
                           <img
                             src={item.coverDataUrl}
@@ -883,13 +883,13 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-slate-400">
+                          <div className="w-full h-full flex items-center justify-center text-[#A89D8E]">
                             <FileText className="w-6 h-6 animate-pulse" />
                           </div>
                         )}
                         <span
                           className={`absolute top-1 right-1 px-1 rounded text-[8px] font-bold text-white ${
-                            isWord ? 'bg-[#185ABD]' : 'bg-[#DC2626]'
+                            isWord ? 'bg-[#185ABD]' : 'bg-[#BD3A2B]'
                           }`}
                         >
                           {isWord ? 'DOCX' : 'PDF'}
@@ -900,24 +900,24 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                       <div className="flex-1 min-w-0 space-y-2 w-full">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-mono text-slate-500 truncate max-w-xs">
+                            <span className="text-xs font-mono text-[#736859] dark:text-[#A89D8E] truncate max-w-xs">
                               {item.relativePath || item.file.name}
                             </span>
-                            <span className="text-[10px] text-slate-400">
+                            <span className="text-[10px] text-[#A89D8E]">
                               ({(item.file.size / 1024 / 1024).toFixed(1)} MB)
                             </span>
                           </div>
 
                           {cls && (
                             <div className="flex items-center gap-2">
-                              <span className="text-[11px] font-semibold text-slate-500">
+                              <span className="text-[11px] font-semibold text-[#736859] dark:text-[#A89D8E]">
                                 {t.confidenceScore}:
                               </span>
                               <span
                                 className={`px-2 py-0.5 rounded text-xs font-bold ${
                                   cls.confidence > 0.8
-                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                                    : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                                    ? 'bg-[#4A6B53]/15 text-[#324D3B] dark:bg-[#4A6B53]/30 dark:text-[#7EB38B]'
+                                    : 'bg-[#C88A35]/15 text-[#8A5A18] dark:bg-[#C88A35]/30 dark:text-[#DECFA9]'
                                 }`}
                               >
                                 {Math.round(cls.confidence * 100)}%
@@ -934,21 +934,21 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                             onChange={e => handleUpdateItem(item.id, 'title', e.target.value)}
                             disabled={!cls}
                             placeholder="Book Title"
-                            className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-xs sm:text-sm font-bold text-[#1E2A5E] dark:text-white outline-none focus:ring-1 focus:ring-[#1E2A5E]"
+                            className="w-full px-3 py-1.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-xs sm:text-sm font-bold text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-1 focus:ring-[#C88A35]"
                           />
                         </div>
 
                         {/* Topic & Author Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                           <div>
-                            <label className="text-[10px] text-slate-400 font-semibold mb-0.5 block">
+                            <label className="text-[10px] text-[#A89D8E] font-semibold mb-0.5 block">
                               {t.primaryTopic}
                             </label>
                             <select
                               value={cls?.topic || 'Other'}
                               onChange={e => handleUpdateItem(item.id, 'topic', e.target.value)}
                               disabled={!cls}
-                              className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-semibold text-[#1E2A5E] dark:text-white outline-none"
+                              className="w-full px-3 py-1.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] font-semibold text-[#2B2520] dark:text-[#FAF6EE] outline-none"
                             >
                               {existingTopics.map(topic => (
                                 <option key={topic} value={topic}>
@@ -959,7 +959,7 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                           </div>
 
                           <div>
-                            <label className="text-[10px] text-slate-400 font-semibold mb-0.5 block">
+                            <label className="text-[10px] text-[#A89D8E] font-semibold mb-0.5 block">
                               {t.author}
                             </label>
                             <input
@@ -968,7 +968,7 @@ export const BulkUploadView: React.FC<BulkUploadViewProps> = ({
                               onChange={e => handleUpdateItem(item.id, 'author', e.target.value)}
                               disabled={!cls}
                               placeholder="Author name"
-                              className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-[#1E2A5E] dark:text-white outline-none"
+                              className="w-full px-3 py-1.5 rounded-xl border border-[#DECFA9] dark:border-[#38322B] bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] outline-none"
                             />
                           </div>
                         </div>

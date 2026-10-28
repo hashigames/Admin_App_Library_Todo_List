@@ -7,7 +7,6 @@ import {
   Settings,
   Bot,
   Table2,
-  Mic,
   Menu,
   X,
   Plus,
@@ -17,7 +16,7 @@ import {
 import { Language } from '../types';
 import { translations } from '../i18n/translations';
 
-export type TabKey = 'library' | 'loans' | 'upload' | 'equipment' | 'todolist' | 'voice' | 'chat' | 'settings';
+export type TabKey = 'library' | 'loans' | 'upload' | 'equipment' | 'todolist' | 'chat' | 'settings';
 
 interface NavigationTabsProps {
   activeTab: TabKey;
@@ -29,9 +28,9 @@ interface NavigationTabsProps {
   onOpenHamburger?: () => void;
 }
 
-// Clean default workspace: Library, TodoList, Equipment, Voice Commands, Settings
-// Auxiliary panels (loans, upload, chat) are deleted by default to avoid clutter
-const DEFAULT_VISIBLE_PANELS: TabKey[] = ['library', 'todolist', 'equipment', 'voice', 'settings'];
+// Clean default workspace: Library, TodoList, Equipment, Settings
+// Auxiliary panels (loans, upload, chat) are optional
+const DEFAULT_VISIBLE_PANELS: TabKey[] = ['library', 'todolist', 'equipment', 'settings'];
 
 export const NavigationTabs: React.FC<NavigationTabsProps> = ({
   activeTab,
@@ -49,7 +48,10 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
       const stored = localStorage.getItem('lighthouse_visible_panels');
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const filtered = parsed.filter((k: string) => k !== 'voice' && ['library', 'loans', 'upload', 'equipment', 'todolist', 'chat', 'settings'].includes(k));
+          if (filtered.length > 0) return filtered;
+        }
       }
     } catch {}
     return DEFAULT_VISIBLE_PANELS;
@@ -90,7 +92,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
     {
       key: 'todolist',
       label: 'TodoList Matrix',
-      icon: <Table2 className="w-4 h-4 text-[#0097B2]" />,
+      icon: <Table2 className="w-4 h-4 text-[#C88A35]" />,
       description: 'Tabular Matrix, Excel & PDF sharing',
     },
     {
@@ -100,17 +102,11 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
       description: 'Gundam units & Team Hardware accounts',
     },
     {
-      key: 'voice',
-      label: currentLang === 'es' ? 'Comandos de Voz' : currentLang === 'ja' ? '音声コマンド' : 'Voice Commands',
-      icon: <Mic className="w-4 h-4 text-red-500 animate-pulse" />,
-      description: 'Microphone speech input & quick generation',
-    },
-    {
       key: 'loans',
       label: t.navLoans,
       icon: <Activity className="w-4 h-4" />,
       badge: overdueCount > 0 ? overdueCount : activeLoanCount > 0 ? activeLoanCount : undefined,
-      badgeColor: overdueCount > 0 ? 'bg-[#DC2626] text-white animate-pulse' : 'bg-[#0097B2] text-white',
+      badgeColor: overdueCount > 0 ? 'bg-[#BD3A2B] text-white animate-pulse' : 'bg-[#C88A35] text-white',
       description: 'Circulation & Overdue Monitoring',
     },
     {
@@ -122,7 +118,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
     {
       key: 'chat',
       label: 'AI Archivist & Search',
-      icon: <Bot className="w-4 h-4 text-[#F5A623]" />,
+      icon: <Bot className="w-4 h-4 text-[#C88A35]" />,
       description: 'Gemini research assistant & search grounding',
     },
     {
@@ -157,16 +153,16 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
   const hiddenTabs = allTabs.filter((tab) => !visiblePanels.includes(tab.key));
 
   return (
-    <nav className="border-b border-[#1E2A5E]/10 dark:border-slate-800 bg-[#FAF7F0] dark:bg-[#0F172A] px-4 sm:px-6 lg:px-8 relative">
+    <nav className="border-b border-[#EAE2D2] dark:border-[#2D2823] bg-[#FAF6EE] dark:bg-[#171513] px-4 sm:px-6 lg:px-8 relative transition-colors">
       <div className="max-w-7xl mx-auto flex items-center justify-between overflow-x-auto no-scrollbar gap-2 sm:gap-4 py-2.5">
         <div className="flex items-center space-x-1 sm:space-x-2">
           {onOpenHamburger && (
             <button
               onClick={onOpenHamburger}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-slate-800 text-[#1E2A5E] dark:text-amber-300 border border-[#1E2A5E]/15 dark:border-slate-700 shadow-2xs hover:bg-slate-50 dark:hover:bg-slate-700 transition active:scale-95 mr-1 cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-[#FFFFFF] dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] transition active:scale-95 mr-1 cursor-pointer"
               title="Open Hamburger Main Menu"
             >
-              <Menu className="w-4 h-4" />
+              <Menu className="w-4 h-4 text-[#C88A35]" />
               <span className="hidden sm:inline">Menu</span>
             </button>
           )}
@@ -180,8 +176,8 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
                   onClick={() => onTabChange(tab.key)}
                   className={`flex items-center gap-2 pl-3 sm:pl-3.5 pr-2 sm:pr-2.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all relative whitespace-nowrap active:scale-98 cursor-pointer ${
                     isActive
-                      ? 'bg-[#1E2A5E] text-white shadow-md dark:bg-amber-400 dark:text-[#1E2A5E]'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-[#1E2A5E] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                      ? 'bg-[#2B2520] text-[#FAF6EE] shadow-sm dark:bg-[#FAF6EE] dark:text-[#2B2520]'
+                      : 'text-[#736859] dark:text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white hover:bg-[#F2ECE0] dark:hover:bg-[#201C19]'
                   }`}
                 >
                   <span>{tab.icon}</span>
@@ -189,7 +185,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
                   {tab.badge !== undefined && (
                     <span
                       className={`ml-1 px-1.5 py-0.5 text-[10px] font-bold rounded-full ${
-                        tab.badgeColor || 'bg-slate-500 text-white'
+                        tab.badgeColor || 'bg-[#736859] text-white'
                       }`}
                     >
                       {tab.badge}
@@ -198,8 +194,8 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
                   {/* Quick Delete Panel Button (x) */}
                   <span
                     onClick={(e) => handleDeletePanel(tab.key, e)}
-                    className={`ml-1.5 p-0.5 rounded-full hover:bg-black/20 dark:hover:bg-black/30 transition opacity-0 group-hover:opacity-100 ${
-                      isActive ? 'text-white dark:text-slate-900' : 'text-slate-400 hover:text-red-500'
+                    className={`ml-1.5 p-0.5 rounded-full hover:bg-black/10 dark:hover:bg-white/20 transition opacity-0 group-hover:opacity-100 ${
+                      isActive ? 'text-[#FAF6EE]/80 dark:text-[#2B2520]/80' : 'text-[#9C907E] hover:text-[#BD3A2B]'
                     }`}
                     title={`Delete / Hide ${tab.label} panel`}
                   >
@@ -214,13 +210,13 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
           <div className="relative">
             <button
               onClick={() => setIsManageOpen(!isManageOpen)}
-              className="flex items-center gap-1 px-2.5 py-2 rounded-xl text-xs font-semibold border border-dashed border-slate-300 dark:border-slate-700 text-slate-500 hover:text-[#1E2A5E] dark:hover:text-amber-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+              className="flex items-center gap-1 px-2.5 py-2 rounded-xl text-xs font-semibold border border-dashed border-[#DECFA9] dark:border-[#4A4135] text-[#736859] dark:text-[#A89D8E] hover:text-[#2B2520] dark:hover:text-white hover:bg-[#F5EFE3] dark:hover:bg-[#201C19] transition cursor-pointer"
               title="Manage, Delete, or Restore workspace panels"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#C88A35]" />
               <span className="hidden md:inline">Manage Panels</span>
               {hiddenTabs.length > 0 && (
-                <span className="text-[10px] px-1.5 py-0.2 bg-slate-200 dark:bg-slate-700 rounded-full font-bold">
+                <span className="text-[10px] px-1.5 py-0.2 bg-[#EAE2D2] dark:bg-[#2D2823] text-[#2B2520] dark:text-[#FAF6EE] rounded-full font-bold">
                   +{hiddenTabs.length}
                 </span>
               )}
@@ -228,15 +224,15 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
 
             {/* Manage Panels Dropdown Modal */}
             {isManageOpen && (
-              <div className="absolute left-0 mt-2 w-72 bg-white dark:bg-[#0F172A] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-3.5 z-50 space-y-3 animate-in fade-in">
-                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
-                  <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-1.5">
-                    <SlidersHorizontal className="w-3.5 h-3.5 text-[#0097B2]" />
+              <div className="absolute left-0 mt-2 w-72 bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl shadow-xl border border-[#EAE2D2] dark:border-[#38322B] p-3.5 z-50 space-y-3 animate-in fade-in">
+                <div className="flex items-center justify-between border-b border-[#EAE2D2] dark:border-[#38322B] pb-2">
+                  <h4 className="text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE] uppercase tracking-wider flex items-center gap-1.5">
+                    <SlidersHorizontal className="w-3.5 h-3.5 text-[#C88A35]" />
                     <span>Manage Workspace Panels</span>
                   </h4>
                   <button
                     onClick={() => setIsManageOpen(false)}
-                    className="p-1 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
+                    className="p-1 text-[#9C907E] hover:text-[#2B2520] dark:hover:text-white rounded-lg cursor-pointer"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -308,7 +304,7 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({
                   </button>
                   <button
                     onClick={() => setIsManageOpen(false)}
-                    className="font-bold text-[#0097B2] hover:underline cursor-pointer"
+                    className="font-bold text-[#BD3A2B] hover:underline cursor-pointer"
                   >
                     Done
                   </button>

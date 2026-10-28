@@ -18,7 +18,6 @@ import { LoansDashboard } from './components/LoansDashboard';
 import { BulkUploadView } from './components/BulkUploadView';
 import { EquipmentView } from './components/EquipmentView';
 import { TodoListView } from './components/TodoListView';
-import { VoiceCommandsView } from './components/VoiceCommandsView';
 import { HamburgerDrawer } from './components/HamburgerDrawer';
 import { ResumeExportModal } from './components/ResumeExportModal';
 import { SettingsView } from './components/SettingsView';
@@ -334,7 +333,7 @@ export default function App() {
   const fbConfig = getStoredFirebaseConfig();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F0] dark:bg-[#0B1120] text-[#1E2A5E] dark:text-slate-100 transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] transition-colors duration-300">
       {/* Top Header */}
       <Header
         currentLang={currentLang}
@@ -342,7 +341,6 @@ export default function App() {
         isDarkMode={isDarkMode}
         onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
         currentRole={currentRole}
-        onToggleRole={() => setCurrentRole(currentRole === 'admin' ? 'user' : 'admin')}
         equipmentList={equipmentList}
         activeEquipmentId={activeEquipmentId}
         onSelectEquipment={setActiveEquipmentId}
@@ -355,7 +353,6 @@ export default function App() {
           setChatSearchQuery('');
           setIsChatModalOpen(true);
         }}
-        onOpenVoiceTab={() => setActiveTab('voice')}
         onOpenHamburger={() => setIsHamburgerOpen(true)}
         firebaseUser={firebaseUser}
         onGoogleSignIn={handleGoogleSignIn}
@@ -377,8 +374,8 @@ export default function App() {
       <main className="flex-1 pb-16">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-3">
-            <div className="w-10 h-10 border-4 border-[#1E2A5E]/20 border-t-[#0097B2] rounded-full animate-spin" />
-            <p className="text-xs font-semibold text-slate-500 font-serif-jp">
+            <div className="w-10 h-10 border-4 border-[#EAE2D2] border-t-[#BD3A2B] dark:border-[#38322B] dark:border-t-[#C88A35] rounded-full animate-spin" />
+            <p className="text-xs font-semibold text-[#736859] dark:text-[#A89D8E] font-serif-jp">
               とうだいぶんこ（燈台文庫）読み込み中...
             </p>
           </div>
@@ -448,25 +445,6 @@ export default function App() {
               />
             )}
 
-            {activeTab === 'voice' && (
-              <VoiceCommandsView
-                currentLang={currentLang}
-                onShowToast={showToast}
-                currentUserEmail={firebaseUser?.email || undefined}
-                onNavigateToTab={tab => setActiveTab(tab)}
-                onAddBooks={handleSaveBatchBooks}
-                onAddEquipment={handleAddEquipment}
-                onOpenHamburger={() => setIsHamburgerOpen(true)}
-                onOpenResumeModal={target => {
-                  setResumeModalTarget(target || 'all');
-                  setIsResumeModalOpen(true);
-                }}
-                books={books}
-                topics={topics}
-                equipmentList={equipmentList}
-              />
-            )}
-
             {activeTab === 'settings' && (
               <SettingsView
                 currentLang={currentLang}
@@ -479,11 +457,11 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[#1E2A5E]/10 dark:border-slate-800 bg-[#FAF7F0] dark:bg-[#0B1120] py-6 px-4 text-center text-xs text-slate-500 dark:text-slate-400">
-        <p className="font-semibold text-[#1E2A5E] dark:text-slate-300">
+      <footer className="border-t border-[#EAE2D2] dark:border-[#2D2823] bg-[#FAF6EE] dark:bg-[#171513] py-6 px-4 text-center text-xs text-[#736859] dark:text-[#A89D8E]">
+        <p className="font-semibold text-[#2B2520] dark:text-[#FAF6EE]">
           LIGHTHOUSE 橋i • 燈台文庫（とうだいぶんこ）• Lighthouse Hashi Library
         </p>
-        <p className="text-[11px] text-slate-400 mt-1">
+        <p className="text-[11px] text-[#A89D8E] mt-1">
           Intelligent Technical Book Management Pipeline • Mobile, Tablet & Desktop Responsive
         </p>
       </footer>

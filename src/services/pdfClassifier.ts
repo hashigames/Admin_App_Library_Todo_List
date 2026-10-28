@@ -3,7 +3,7 @@ import { Book } from '../types';
 
 // Topic palette colors for generative cover art
 const TOPIC_PALETTES: Record<string, { bg: string; accent: string; text: string; secondary: string }> = {
-  'Machine Learning': { bg: '#1E2A5E', accent: '#F5A623', text: '#FAF7F0', secondary: '#3B82F6' },
+  'Machine Learning': { bg: '#2B2520', accent: '#C88A35', text: '#FAF6EE', secondary: '#BD3A2B' },
   'Computer Vision': { bg: '#0F4C81', accent: '#38BDF8', text: '#FAF7F0', secondary: '#0284C7' },
   'RAG': { bg: '#183B4E', accent: '#34D399', text: '#FAF7F0', secondary: '#10B981' },
   'CompTIA': { bg: '#991B1B', accent: '#FCA5A5', text: '#FFF1F2', secondary: '#EF4444' },

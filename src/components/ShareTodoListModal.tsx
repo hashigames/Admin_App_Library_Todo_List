@@ -320,43 +320,43 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-      <div className="bg-white dark:bg-[#0F172A] rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 max-h-[92vh] overflow-y-auto">
+      <div className="bg-[#FAF6EE] dark:bg-[#171513] rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-[#EAE2D2] dark:border-[#38322B] space-y-4 max-h-[92vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div className="flex items-center justify-between border-b border-[#EAE2D2] dark:border-[#38322B] pb-3">
           <div className="flex items-center gap-3">
-            <span className="p-2.5 rounded-xl bg-linear-to-r from-[#1E2A5E] to-[#0097B2] text-white shadow-xs">
+            <span className="p-2.5 rounded-xl bg-[#2B2520] dark:bg-[#C88A35] text-[#FAF6EE] dark:text-[#2B2520] shadow-xs">
               <Share2 className="w-5 h-5" />
             </span>
             <div>
-              <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
+              <h3 className="text-base font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-2 font-serif-jp">
                 <span>Share Matrix to Customer / Team</span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0097B2]/10 text-[#0097B2] border border-[#0097B2]/30">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#BD3A2B]/10 text-[#BD3A2B] border border-[#BD3A2B]/30">
                   Live Dispatch
                 </span>
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
                 Send by Email (multi-recipient, comma-separated) or Cellphone SMS / WhatsApp
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+            className="p-1.5 text-[#736859] hover:text-[#2B2520] dark:text-[#A89D8E] dark:hover:text-[#FAF6EE] rounded-lg hover:bg-[#EAE2D2] dark:hover:bg-[#2D2823] transition cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Database Summary Banner */}
-        <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+        <div className="p-3 rounded-xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] flex items-center justify-between text-xs">
           <div>
             <div className="flex items-center gap-2">
-              <Table2 className="w-4 h-4 text-[#0097B2]" />
-              <strong className="text-slate-800 dark:text-slate-100 font-bold">
+              <Table2 className="w-4 h-4 text-[#C88A35]" />
+              <strong className="text-[#2B2520] dark:text-[#FAF6EE] font-bold">
                 {database.name}
               </strong>
             </div>
-            <p className="text-[11px] text-slate-500 mt-0.5">
+            <p className="text-[11px] text-[#736859] dark:text-[#A89D8E] mt-0.5">
               Author: {database.author || 'User'} • {database.columns.length} columns × {database.rows.length} rows
             </p>
           </div>
@@ -536,18 +536,18 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
               value={customMessage}
               onChange={(e) => setCustomMessage(e.target.value)}
               placeholder="e.g. Here is the requested dynamic tabular matrix report."
-              className="w-full text-xs bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-800 dark:text-slate-100 outline-none focus:ring-2 focus:ring-[#0097B2]"
+              className="w-full text-xs bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] rounded-xl p-2.5 text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-2 focus:ring-[#C88A35]"
             />
           </div>
 
           {/* Local Download Checkbox */}
-          <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2">
+          <div className="p-2.5 rounded-xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] flex items-center gap-2">
             <input
               type="checkbox"
               id="alsoDownloadCopy"
               checked={alsoDownloadCopy}
               onChange={(e) => setAlsoDownloadCopy(e.target.checked)}
-              className="rounded border-slate-300 text-[#0097B2] focus:ring-[#0097B2] cursor-pointer"
+              className="rounded border-[#EAE2D2] text-[#BD3A2B] focus:ring-[#BD3A2B] cursor-pointer"
             />
             <label
               htmlFor="alsoDownloadCopy"
@@ -693,14 +693,14 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
             </button>
 
             {showSmtpDrawer && (
-              <div className="p-3 bg-white dark:bg-[#0B1120] space-y-3 text-xs border-t border-slate-200 dark:border-slate-800">
-                <p className="text-[11px] text-slate-500">
+              <div className="p-3 bg-[#FAF6EE] dark:bg-[#171513] space-y-3 text-xs border-t border-[#EAE2D2] dark:border-[#38322B]">
+                <p className="text-[11px] text-[#736859] dark:text-[#A89D8E]">
                   Enter your Gmail (or custom SMTP) credentials to send emails with attachments directly from the app server into any recipient inbox without launching webmail.
                 </p>
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-[#5C5348] dark:text-[#DDD3BC]">
                       SMTP Host
                     </label>
                     <input
@@ -708,11 +708,11 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
                       value={smtpConfig.host}
                       onChange={(e) => setSmtpConfig({ ...smtpConfig, host: e.target.value })}
                       placeholder="smtp.gmail.com"
-                      className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs"
+                      className="w-full mt-1 p-2 bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] rounded-lg text-xs outline-none focus:ring-1 focus:ring-[#C88A35]"
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-[#5C5348] dark:text-[#DDD3BC]">
                       Port (587 or 465)
                     </label>
                     <input
@@ -720,14 +720,14 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
                       value={smtpConfig.port}
                       onChange={(e) => setSmtpConfig({ ...smtpConfig, port: Number(e.target.value) })}
                       placeholder="587"
-                      className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs"
+                      className="w-full mt-1 p-2 bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] rounded-lg text-xs outline-none focus:ring-1 focus:ring-[#C88A35]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-[#5C5348] dark:text-[#DDD3BC]">
                       User Email
                     </label>
                     <input
@@ -735,11 +735,11 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
                       value={smtpConfig.user}
                       onChange={(e) => setSmtpConfig({ ...smtpConfig, user: e.target.value })}
                       placeholder="andreramiers@gmail.com"
-                      className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs"
+                      className="w-full mt-1 p-2 bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] rounded-lg text-xs outline-none focus:ring-1 focus:ring-[#C88A35]"
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <label className="text-[11px] font-bold text-[#5C5348] dark:text-[#DDD3BC]">
                       Password / Gmail App Password
                     </label>
                     <input
@@ -747,7 +747,7 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
                       value={smtpConfig.pass}
                       onChange={(e) => setSmtpConfig({ ...smtpConfig, pass: e.target.value })}
                       placeholder="16-character app password"
-                      className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs"
+                      className="w-full mt-1 p-2 bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] rounded-lg text-xs outline-none focus:ring-1 focus:ring-[#C88A35]"
                     />
                   </div>
                 </div>
@@ -772,7 +772,7 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
                     type="button"
                     disabled={isTestingSmtp}
                     onClick={handleSaveAndTestSmtp}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#1E2A5E] hover:bg-[#162047] text-white shadow-xs transition disabled:opacity-50 cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] shadow-xs transition disabled:opacity-50 cursor-pointer"
                   >
                     {isTestingSmtp ? (
                       <>
@@ -792,13 +792,13 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex items-center justify-between pt-3 border-t border-[#EAE2D2] dark:border-[#38322B]">
             <button
               type="button"
               onClick={handleDownload}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE] bg-[#FFFFFF] dark:bg-[#201C19] hover:bg-[#F5EFE3] rounded-xl border border-[#EAE2D2] dark:border-[#38322B] transition cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-3.5 h-3.5 text-[#C88A35]" />
               <span>Download {reportFormat.toUpperCase()}</span>
             </button>
 
@@ -806,14 +806,14 @@ export const ShareTodoListModal: React.FC<ShareTodoListModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-3.5 py-2 text-xs font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 rounded-xl cursor-pointer"
+                className="px-3.5 py-2 text-xs font-medium text-[#736859] hover:text-[#2B2520] dark:hover:text-[#FAF6EE] rounded-xl cursor-pointer"
               >
                 Close
               </button>
               <button
                 type="submit"
                 disabled={isSending}
-                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-linear-to-r from-[#1E2A5E] to-[#0097B2] text-white hover:opacity-95 rounded-xl shadow-md transition disabled:opacity-50 active:scale-95 cursor-pointer"
+                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white rounded-xl shadow-xs transition disabled:opacity-50 active:scale-95 cursor-pointer"
               >
                 {isSending ? (
                   <>

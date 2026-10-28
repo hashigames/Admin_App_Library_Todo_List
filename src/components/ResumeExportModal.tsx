@@ -203,16 +203,16 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl bg-white dark:bg-[#0F172A] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-xl bg-[#FAF6EE] dark:bg-[#171513] rounded-3xl shadow-2xl border border-[#EAE2D2] dark:border-[#38322B] overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="px-6 py-4 bg-linear-to-r from-[#1E2A5E] to-[#2A3B82] text-white flex items-center justify-between">
+        <div className="px-6 py-4 bg-[#2B2520] text-[#FAF6EE] flex items-center justify-between border-b border-[#38322B]">
           <div className="flex items-center gap-2.5">
             <div className="p-2 bg-white/10 rounded-xl">
-              <Layers className="w-5 h-5 text-[#F5A623]" />
+              <Layers className="w-5 h-5 text-[#C88A35]" />
             </div>
             <div>
-              <h2 className="text-base font-bold">Export & Dispatch Resume Reports</h2>
-              <p className="text-xs text-blue-200">
+              <h2 className="text-base font-bold font-serif-jp">Export & Dispatch Resume Reports</h2>
+              <p className="text-xs text-[#DECFA9]">
                 Send Excel or PDF summaries via Email or Cellphone SMS
               </p>
             </div>
@@ -229,7 +229,7 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
         <div className="p-6 overflow-y-auto space-y-5">
           {/* Step 1: Select Category (Kept Strictly Separated) */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#736859] dark:text-[#A89D8E] mb-2">
               1. Select Resume Scope (Organized & Separated)
             </label>
             <div className="grid grid-cols-3 gap-2.5">
@@ -238,13 +238,13 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
                 onClick={() => setTarget('todolist')}
                 className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition ${
                   target === 'todolist'
-                    ? 'border-[#0097B2] bg-[#0097B2]/10 text-[#0097B2] font-bold shadow-xs'
-                    : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                    ? 'border-[#BD3A2B] bg-[#BD3A2B]/10 text-[#BD3A2B] font-bold shadow-xs'
+                    : 'border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] hover:bg-[#F5EFE3] text-[#2B2520] dark:text-[#FAF6EE]'
                 }`}
               >
                 <Table2 className="w-5 h-5 mb-1" />
                 <span className="text-xs">TodoList Matrix</span>
-                <span className="text-[10px] text-slate-400">{databases.length} Lists</span>
+                <span className="text-[10px] text-[#736859]">{databases.length} Lists</span>
               </button>
 
               <button
@@ -252,11 +252,11 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
                 onClick={() => setTarget('library')}
                 className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition ${
                   target === 'library'
-                    ? 'border-[#1E2A5E] bg-[#1E2A5E]/10 text-[#1E2A5E] dark:text-amber-300 font-bold shadow-xs'
-                    : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                    ? 'border-[#C88A35] bg-[#C88A35]/10 text-[#C88A35] font-bold shadow-xs'
+                    : 'border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] hover:bg-[#F5EFE3] text-[#2B2520] dark:text-[#FAF6EE]'
                 }`}
               >
-                <BookOpen className="w-5 h-5 mb-1 text-[#F5A623]" />
+                <BookOpen className="w-5 h-5 mb-1 text-[#C88A35]" />
                 <span className="text-xs">Library Shelves</span>
                 <span className="text-[10px] text-slate-400">{books.length} Books</span>
               </button>
@@ -282,7 +282,7 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
             <div className="bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1.5">
               <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
                 <span>Select Target TodoList Database:</span>
-                <span className="text-[11px] text-[#0097B2] font-mono">
+                <span className="text-[11px] text-[#C88A35] font-mono">
                   {currentDb?.columns.length} cols × {currentDb?.rows.length} rows
                 </span>
               </label>
@@ -336,31 +336,31 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
                 type="button"
                 onClick={handleDownload}
                 title="Direct Download to device"
-                className="flex items-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-[#1E2A5E] dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition active:scale-95"
+                className="flex items-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#FFFFFF] dark:bg-[#201C19] hover:bg-[#F5EFE3] text-[#2B2520] dark:text-[#FAF6EE] text-xs font-bold border border-[#EAE2D2] dark:border-[#38322B] transition active:scale-95 shadow-2xs"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 text-[#C88A35]" />
                 <span>Download</span>
               </button>
             </div>
           </div>
 
           {/* Step 3: Remote Dispatch (Email or SMS) */}
-          <form onSubmit={handleDispatch} className="space-y-4 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <form onSubmit={handleDispatch} className="space-y-4 pt-2 border-t border-[#EAE2D2] dark:border-[#38322B]">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <label className="text-xs font-bold uppercase tracking-wider text-[#736859] dark:text-[#A89D8E]">
                 3. Send Via Email or Cellphone Alert
               </label>
-              <div className="flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs">
+              <div className="flex rounded-lg bg-[#FAF6EE] dark:bg-[#201C19] p-0.5 border border-[#EAE2D2] dark:border-[#38322B] text-xs">
                 <button
                   type="button"
                   onClick={() => setChannel('email')}
                   className={`px-3 py-1 rounded-md flex items-center gap-1.5 font-semibold transition ${
                     channel === 'email'
-                      ? 'bg-white dark:bg-slate-700 text-[#1E2A5E] dark:text-white shadow-xs'
-                      : 'text-slate-500 hover:text-slate-700'
+                      ? 'bg-[#FFFFFF] dark:bg-[#2B2520] text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs'
+                      : 'text-[#736859] hover:text-[#2B2520]'
                   }`}
                 >
-                  <Mail className="w-3.5 h-3.5" />
+                  <Mail className="w-3.5 h-3.5 text-[#C88A35]" />
                   <span>Email</span>
                 </button>
                 <button
@@ -368,11 +368,11 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
                   onClick={() => setChannel('sms')}
                   className={`px-3 py-1 rounded-md flex items-center gap-1.5 font-semibold transition ${
                     channel === 'sms'
-                      ? 'bg-white dark:bg-slate-700 text-[#1E2A5E] dark:text-white shadow-xs'
-                      : 'text-slate-500 hover:text-slate-700'
+                      ? 'bg-[#FFFFFF] dark:bg-[#2B2520] text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs'
+                      : 'text-[#736859] hover:text-[#2B2520]'
                   }`}
                 >
-                  <Smartphone className="w-3.5 h-3.5" />
+                  <Smartphone className="w-3.5 h-3.5 text-[#BD3A2B]" />
                   <span>SMS Cellphone</span>
                 </button>
               </div>
@@ -381,10 +381,10 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
             {channel === 'email' ? (
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <label className="text-xs font-semibold text-[#2B2520] dark:text-[#FAF6EE]">
                     Recipient Email Address(es):
                   </label>
-                  <span className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium">
+                  <span className="text-[11px] text-[#C88A35] font-medium">
                     Separate multiple emails with comma (,)
                   </span>
                 </div>
@@ -394,7 +394,7 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
                   placeholder="e.g. lead.architect@company.com, engineer@domain.org"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  className="w-full text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg p-2.5 text-slate-800 dark:text-slate-100 outline-none focus:ring-2 focus:ring-[#0097B2]"
+                  className="w-full text-xs bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] rounded-lg p-2.5 text-[#2B2520] dark:text-[#FAF6EE] outline-none focus:ring-2 focus:ring-[#C88A35]"
                 />
                 {/* Email parsed tags */}
                 {(() => {
@@ -526,7 +526,7 @@ export const ResumeExportModal: React.FC<ResumeExportModalProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold text-white bg-[#0097B2] hover:bg-[#008199] shadow-md transition disabled:opacity-50 active:scale-95"
+                className="flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold text-white bg-[#BD3A2B] hover:bg-[#A83225] shadow-xs transition disabled:opacity-50 active:scale-95"
               >
                 {isSubmitting ? (
                   <>
