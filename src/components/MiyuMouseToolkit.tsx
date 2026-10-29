@@ -168,14 +168,14 @@ export const MiyuMouseToolkit: React.FC<MiyuMouseToolkitProps> = ({
       }}
       className="fixed z-50 pointer-events-auto transition-all duration-150 animate-in fade-in zoom-in-95"
     >
-      <div className="w-[320px] sm:w-[350px] bg-[#FAF6EE]/98 dark:bg-[#1C1815]/98 backdrop-blur-md rounded-2xl p-3.5 shadow-2xl border-2 border-[#C88A35]/50 dark:border-[#C88A35]/40 text-[#2B2520] dark:text-[#FAF6EE] relative">
+      <div className="w-[320px] sm:w-[350px] bg-white/98 dark:bg-[#1E141A]/98 backdrop-blur-md rounded-2xl p-3.5 shadow-2xl border-2 border-[#E8637C]/60 dark:border-[#E8637C]/50 text-[#1E1619] dark:text-[#FDF2F5] relative">
         {/* Glow indicator & Arrow pointer */}
-        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#FAF6EE] dark:bg-[#1C1815] rotate-45 border-t-2 border-l-2 border-[#C88A35]/50" />
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white dark:bg-[#1E141A] rotate-45 border-t-2 border-l-2 border-[#E8637C]/60" />
 
         <div className="relative flex items-start gap-3">
           {/* Miyu Chibi Avatar with animated frame */}
           <div className="relative shrink-0">
-            <div className={`w-14 h-14 rounded-full overflow-hidden border-2 ${isSpeaking ? 'border-[#BD3A2B] ring-2 ring-[#BD3A2B]/40 animate-pulse' : 'border-[#C88A35]'} shadow-md bg-white dark:bg-[#141210]`}>
+            <div className={`w-14 h-14 rounded-full overflow-hidden border-2 ${isSpeaking ? 'border-[#8A1E3B] ring-2 ring-[#E8637C]/50 animate-pulse' : 'border-[#E8637C]'} shadow-md bg-[#FFF5F7] dark:bg-[#140E12]`}>
               <img
                 src={MIYU_IMAGES[activeTip.pose] || MIYU_IMAGES.welcome}
                 alt="MIYU"
@@ -184,8 +184,8 @@ export const MiyuMouseToolkit: React.FC<MiyuMouseToolkitProps> = ({
             </div>
             {isSpeaking && (
               <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#BD3A2B] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-4 w-4 bg-[#BD3A2B] text-[8px] text-white items-center justify-center font-bold">♪</span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E8637C] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-4 w-4 bg-[#8A1E3B] text-[8px] text-white items-center justify-center font-bold">🌸</span>
               </span>
             )}
           </div>
@@ -194,11 +194,11 @@ export const MiyuMouseToolkit: React.FC<MiyuMouseToolkitProps> = ({
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="text-[10px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded bg-[#C88A35]/15 text-[#8A5A18] dark:text-[#DECFA9] border border-[#C88A35]/30">
-                  MIYU GUIDE
+                <span className="text-[10px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded bg-[#FFF0F3] text-[#8A1E3B] dark:bg-[#321B27] dark:text-[#F48FB1] border border-[#F2D5DE] dark:border-[#4D3343]">
+                  🌸 MIYU GUIDE
                 </span>
                 {activeTip.badge && (
-                  <span className="text-[9px] font-bold px-1 py-0.5 rounded bg-[#BD3A2B]/10 text-[#BD3A2B] dark:text-[#FF8D80]">
+                  <span className="text-[9px] font-bold px-1 py-0.5 rounded bg-[#FDE8EE] text-[#8A1E3B] dark:text-[#F48FB1]">
                     {activeTip.badge}
                   </span>
                 )}
@@ -208,10 +208,10 @@ export const MiyuMouseToolkit: React.FC<MiyuMouseToolkitProps> = ({
               <button
                 type="button"
                 onClick={handleSpeak}
-                className={`p-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
+                className={`p-1 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer ${
                   isSpeaking
-                    ? 'bg-[#BD3A2B] text-white animate-pulse'
-                    : 'bg-[#FAF6EE] dark:bg-[#2B2520] text-[#C88A35] hover:bg-[#EAE2D2] dark:hover:bg-[#38322B] border border-[#DECFA9] dark:border-[#38322B]'
+                    ? 'bg-[#8A1E3B] text-white animate-pulse'
+                    : 'bg-[#FFF0F3] dark:bg-[#251820] text-[#8A1E3B] dark:text-[#FDF2F5] hover:bg-[#FDE8EE] dark:hover:bg-[#32202B] border border-[#F2D5DE] dark:border-[#4D3343]'
                 }`}
                 title="Hear Miyu explain in native voice"
               >
@@ -220,12 +220,12 @@ export const MiyuMouseToolkit: React.FC<MiyuMouseToolkitProps> = ({
               </button>
             </div>
 
-            <h4 className="text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp flex items-center gap-1 truncate">
-              <Sparkles className="w-3 h-3 text-[#C88A35]" />
+            <h4 className="text-xs font-bold text-[#1E1619] dark:text-[#FDF2F5] font-serif-jp flex items-center gap-1 truncate">
+              <Sparkles className="w-3 h-3 text-[#E8637C]" />
               <span>{activeTip.title}</span>
             </h4>
 
-            <p className="text-[11px] leading-relaxed text-[#5C5348] dark:text-[#D5CCA8] font-sans">
+            <p className="text-[11px] leading-relaxed text-[#57474E] dark:text-[#E2B8C4] font-sans">
               {activeTip.text}
             </p>
           </div>

@@ -50,7 +50,7 @@ export const BookCard: React.FC<BookCardProps> = ({
     generateCoverThumbnail(book.title, book.author, book.topic, book.subTags);
 
   return (
-    <div className="group relative flex flex-col bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl overflow-hidden border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+    <div className="group relative flex flex-col bg-white dark:bg-[#1E141A] rounded-2xl overflow-hidden border border-[#F2D5DE] dark:border-[#382631] shadow-2xs transition-all duration-300 hover:shadow-xl hover:border-[#E8637C]/60 hover:-translate-y-1">
       {/* Book Cover Frame */}
       <div
         onClick={() => onViewDetails(book)}
@@ -121,13 +121,13 @@ export const BookCard: React.FC<BookCardProps> = ({
         <div>
           {/* Topic & SubTags */}
           <div className="flex flex-wrap items-center gap-1.5 mb-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase bg-[#F5EFE3] dark:bg-[#2B2520] text-[#736859] dark:text-[#EAE2D2] border border-[#EAE2D2] dark:border-[#38322B]">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase bg-[#FFF0F3] dark:bg-[#2B1B24] text-[#8A1E3B] dark:text-[#F48FB1] border border-[#F2D5DE] dark:border-[#382631]">
               {book.topic}
             </span>
             {book.subTags?.slice(0, 2).map((st, i) => (
               <span
                 key={i}
-                className="px-1.5 py-0.5 rounded text-[10px] bg-[#FAF6EE] dark:bg-[#171513] text-[#736859] dark:text-[#A89D8E]"
+                className="px-1.5 py-0.5 rounded text-[10px] bg-[#FFF9FB] dark:bg-[#1A1217] text-[#6B5B63] dark:text-[#E2B8C4]"
               >
                 #{st}
               </span>
@@ -137,13 +137,13 @@ export const BookCard: React.FC<BookCardProps> = ({
           {/* Book Title */}
           <h3
             onClick={() => onViewDetails(book)}
-            className="font-bold text-[#2B2520] dark:text-[#FAF6EE] text-sm line-clamp-2 hover:text-[#BD3A2B] cursor-pointer mb-1 leading-snug"
+            className="font-bold text-[#1E1619] dark:text-[#FDF2F5] text-sm line-clamp-2 hover:text-[#E8637C] cursor-pointer mb-1 leading-snug"
           >
             {book.title}
           </h3>
 
           {/* Author */}
-          <p className="text-xs text-[#736859] dark:text-[#A89D8E] italic mb-2 line-clamp-1">
+          <p className="text-xs text-[#6B5B63] dark:text-[#E2B8C4] italic mb-2 line-clamp-1">
             {book.author}
           </p>
         </div>
@@ -181,23 +181,23 @@ export const BookCard: React.FC<BookCardProps> = ({
               <button
                 onClick={() => onLend(book)}
                 disabled={currentRole !== 'admin'}
-                className={`w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold transition active:scale-98 ${
+                className={`w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold transition active:scale-98 cursor-pointer ${
                   currentRole === 'admin'
-                    ? 'bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] shadow-2xs'
-                    : 'bg-[#F5EFE3] text-[#A89D8E] cursor-not-allowed'
+                    ? 'bg-[#8A1E3B] hover:bg-[#A82B4E] text-white shadow-2xs'
+                    : 'bg-[#FFF5F7] text-[#8A7881] cursor-not-allowed'
                 }`}
               >
-                <ArrowRight className="w-3.5 h-3.5 text-[#C88A35]" />
+                <ArrowRight className="w-3.5 h-3.5 text-pink-200" />
                 <span>{t.quickLend}</span>
               </button>
             ) : (
               <button
                 onClick={() => onReturn(book)}
                 disabled={currentRole !== 'admin'}
-                className={`w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold transition active:scale-98 ${
+                className={`w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold transition active:scale-98 cursor-pointer ${
                   currentRole === 'admin'
-                    ? 'bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs'
-                    : 'bg-[#F5EFE3] text-[#A89D8E] cursor-not-allowed'
+                    ? 'bg-[#2E7D5B] hover:bg-[#25664A] text-white shadow-2xs'
+                    : 'bg-[#FFF5F7] text-[#8A7881] cursor-not-allowed'
                 }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
@@ -208,7 +208,7 @@ export const BookCard: React.FC<BookCardProps> = ({
             <button
               onClick={() => onViewDetails(book)}
               title={t.viewDetails}
-              className="p-2 rounded-lg border border-[#EAE2D2] dark:border-[#38322B] text-[#736859] dark:text-[#FAF6EE] hover:bg-[#F5EFE3] dark:hover:bg-[#2B2520] cursor-pointer"
+              className="p-2 rounded-lg border border-[#F2D5DE] dark:border-[#38322B] text-[#8A1E3B] dark:text-[#FDF2F5] hover:bg-[#FFF5F7] dark:hover:bg-[#251820] cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />
             </button>

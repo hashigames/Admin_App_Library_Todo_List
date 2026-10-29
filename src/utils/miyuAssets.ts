@@ -37,16 +37,16 @@ export interface MiyuTooltipGuide {
 // Explanations for each interactive button and section in the application
 export const MIYU_BUTTON_EXPLANATIONS: Record<string, MiyuTooltipGuide> = {
   'nav-todolist': {
-    title: 'TodoList Matrix',
-    titleJa: '多機能タスク・マトリックス',
-    en: 'This is the TodoListMatrix! Build dynamic columns (Text, Clickable URLs, Numbers, Dates), diminish or expand columns like Excel, zoom in/out, and navigate rapidly with Tab and arrow keys!',
-    ja: 'ここが「TodoListMatrix」だよ！URLリンクや数値、日付列を自由に追加できて、Excelみたいに列幅を拡大・縮小できるの！Tabキーでの爆速入力やズーム機能もあるよ♪',
+    title: 'Create TodoList',
+    titleJa: 'Create TodoList (TodoList作成)',
+    en: 'This is Create TodoList! Build dynamic columns (Text, Clickable URLs, Numbers, Dates), diminish or expand columns like Excel, zoom in/out, and navigate rapidly with Tab and arrow keys!',
+    ja: 'ここが「Create TodoList」だよ！URLリンクや数値、日付列を自由に追加できて、Excelみたいに列幅を拡大・縮小できるの！Tabキーでの爆速入力やズーム機能もあるよ♪',
     pose: 'welcome',
     badge: 'Matrix Core',
   },
   'nav-library': {
-    title: 'Technical Library Catalog',
-    titleJa: '技術書カタログ',
+    title: 'Create Inventory Software',
+    titleJa: 'Create Inventory Software (ソフトウェア棚卸作成)',
     en: 'Browse our complete collection of technical PDFs in Machine Learning, Computer Vision, RAG, CompTIA, Cisco, GCP, and Unreal Engine with live reading!',
     ja: '機械学習やコンピュータビジョン、クラウド、ゲームエンジンの技術書PDFを快適に読書・検索できる本棚だよ！',
     pose: 'empowered',
@@ -61,8 +61,8 @@ export const MIYU_BUTTON_EXPLANATIONS: Record<string, MiyuTooltipGuide> = {
     badge: 'Loans',
   },
   'nav-equipment': {
-    title: 'Equipment & Terminals',
-    titleJa: 'Gundam端末・機材管理',
+    title: 'Create Inventory Equipment',
+    titleJa: 'Create Inventory Equipment (機材棚卸作成)',
     en: 'Manage and monitor all Gundam workstation terminals (Freedom, Justice, Destiny) and assign equipment to users.',
     ja: 'FreedomやJusticeなどのGundam端末やPC機材の利用状況を管理して、学生やエンジニアに割り当てられるよ！',
     pose: 'excited_jump',
@@ -203,5 +203,21 @@ export const MIYU_BUTTON_EXPLANATIONS: Record<string, MiyuTooltipGuide> = {
     ja: 'Googleアカウントでログインすると、個人の読書履歴や貸出データが安全に紐づけられるよ！',
     pose: 'talking',
     badge: 'Auth',
+  },
+  'bottom-firebase-settings': {
+    title: 'Firebase & Settings',
+    titleJa: 'Firebase ＆ 各種システム設定',
+    en: 'Open the complete Firebase configuration, cloud persistence status, and verified SMTP email delivery settings.',
+    ja: 'Firebaseのクラウド同期設定や、貸出通知用SMTPメールの設定画面を開くよ！',
+    pose: 'welcome',
+    badge: 'Config',
+  },
+  'bottom-manage-panels': {
+    title: 'Manage Workspace Panels',
+    titleJa: 'ワークスペース・パネル管理',
+    en: 'Customize which panels appear in your workspace! Hide, show, or restore panels (TodoList, Library, Loans, Upload, etc.) at any time.',
+    ja: '表示するパネルを自由にカスタマイズ！非表示にしたパネルを復元したり、すっきり整理できるよ♪',
+    pose: 'empowered',
+    badge: 'Customizer',
   },
 };

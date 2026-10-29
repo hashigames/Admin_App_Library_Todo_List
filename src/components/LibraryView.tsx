@@ -117,32 +117,32 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 animate-in fade-in">
       
       {/* ── TOP VIEW SWITCHER & TITLE BAR ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-3xl bg-[#FFFFFF] dark:bg-[#201C19] border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-3xl bg-white dark:bg-[#1E141A] border border-[#F2D5DE] dark:border-[#382631] shadow-2xs">
         <div>
-          <h2 className="text-lg font-bold text-[#2B2520] dark:text-[#FAF6EE] flex items-center gap-2 font-serif-jp">
-            <span>燈台文庫 蔵書一覧</span>
-            <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#F5EFE3] text-[#736859] dark:bg-[#2B2520] dark:text-[#DDD3BC] font-medium tracking-wide">
+          <h2 className="text-lg font-bold text-[#1E1619] dark:text-[#FDF2F5] flex items-center gap-2 font-serif-jp">
+            <span>🌸 燈台文庫 蔵書一覧</span>
+            <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#FFF0F3] text-[#8A1E3B] dark:bg-[#321B27] dark:text-[#F48FB1] border border-[#F2D5DE] dark:border-[#4D3343] font-medium tracking-wide">
               とうだいぶんこ
             </span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#2B2520] text-[#FAF6EE] dark:bg-[#38322B] font-sans font-bold">
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#8A1E3B] text-white dark:bg-[#E8637C] dark:text-[#1E1619] font-sans font-bold">
               {books.length} Books
             </span>
           </h2>
-          <p className="text-xs text-[#736859] dark:text-[#A89F91] mt-0.5">
+          <p className="text-xs text-[#6B5B63] dark:text-[#E2B8C4] mt-0.5">
             Organized with Windows Panels Hierarchy, topic directories, and real-time loan tracking.
           </p>
         </div>
 
         {/* View Switcher: Windows Panels vs Shelves vs Table */}
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="text-xs font-semibold text-[#8E8373] hidden md:inline">View:</span>
-          <div className="flex items-center bg-[#F5EFE3] dark:bg-[#171513] border border-[#EAE2D2] dark:border-[#38322B] rounded-2xl p-1">
+          <span className="text-xs font-semibold text-[#8A7881] hidden md:inline">View:</span>
+          <div className="flex items-center bg-[#FFF5F7] dark:bg-[#251820] border border-[#F2D5DE] dark:border-[#382631] rounded-2xl p-1">
             <button
               onClick={() => setViewMode('windows')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                 viewMode === 'windows'
-                  ? 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
-                  : 'text-[#5C5348] dark:text-[#DDD3BC] hover:text-[#2B2520] dark:hover:text-white'
+                  ? 'bg-[#8A1E3B] text-white shadow-2xs dark:bg-[#E8637C] dark:text-[#1E1619]'
+                  : 'text-[#6B5B63] dark:text-[#E2B8C4] hover:text-[#8A1E3B] dark:hover:text-white'
               }`}
             >
               <FolderTree className="w-3.5 h-3.5" />
@@ -151,10 +151,10 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 
             <button
               onClick={() => setViewMode('shelf')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                 viewMode === 'shelf'
-                  ? 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
-                  : 'text-[#5C5348] dark:text-[#DDD3BC] hover:text-[#2B2520] dark:hover:text-white'
+                  ? 'bg-[#8A1E3B] text-white shadow-2xs dark:bg-[#E8637C] dark:text-[#1E1619]'
+                  : 'text-[#6B5B63] dark:text-[#E2B8C4] hover:text-[#8A1E3B] dark:hover:text-white'
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
@@ -163,10 +163,10 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 
             <button
               onClick={() => setViewMode('table')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                 viewMode === 'table'
-                  ? 'bg-[#2B2520] text-[#FAF6EE] shadow-2xs dark:bg-[#FAF6EE] dark:text-[#2B2520]'
-                  : 'text-[#5C5348] dark:text-[#DDD3BC] hover:text-[#2B2520] dark:hover:text-white'
+                  ? 'bg-[#8A1E3B] text-white shadow-2xs dark:bg-[#E8637C] dark:text-[#1E1619]'
+                  : 'text-[#6B5B63] dark:text-[#E2B8C4] hover:text-[#8A1E3B] dark:hover:text-white'
               }`}
             >
               <List className="w-3.5 h-3.5" />
@@ -202,12 +202,12 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t.searchPlaceholder}
-                className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#EAE2D2] dark:border-[#38322B] bg-[#FFFFFF] dark:bg-[#201C19] text-xs sm:text-sm text-[#2B2520] dark:text-[#FAF6EE] shadow-2xs outline-none focus:ring-2 focus:ring-[#C88A35] transition"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#F2D5DE] dark:border-[#38322B] bg-white dark:bg-[#1E141A] text-xs sm:text-sm text-[#1E1619] dark:text-[#FDF2F5] shadow-2xs outline-none focus:ring-2 focus:ring-[#E8637C] transition"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8E8373] hover:text-[#2B2520] text-xs"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A7881] hover:text-[#8A1E3B] text-xs cursor-pointer"
                 >
                   ✕
                 </button>
@@ -220,7 +220,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
               <select
                 value={statusFilter}
                 onChange={e => setStatusFilter(e.target.value as any)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 outline-none"
+                className="px-3 py-2 rounded-xl text-xs font-semibold border border-[#F2D5DE] dark:border-[#38322B] bg-white dark:bg-[#1E141A] text-[#1E1619] dark:text-[#FDF2F5] outline-none cursor-pointer focus:ring-1 focus:ring-[#E8637C]"
               >
                 <option value="all">{t.allStatus}</option>
                 <option value="available">{t.available}</option>
@@ -232,7 +232,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as any)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 outline-none"
+                className="px-3 py-2 rounded-xl text-xs font-semibold border border-[#F2D5DE] dark:border-[#38322B] bg-white dark:bg-[#1E141A] text-[#1E1619] dark:text-[#FDF2F5] outline-none cursor-pointer focus:ring-1 focus:ring-[#E8637C]"
               >
                 <option value="newest">{t.sortNewest}</option>
                 <option value="title">{t.sortTitle}</option>
@@ -245,10 +245,10 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
             <button
               onClick={() => setSelectedTopic('all')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition active:scale-95 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition active:scale-95 cursor-pointer ${
                 selectedTopic === 'all'
-                  ? 'bg-[#2B2520] text-[#FAF6EE] dark:bg-[#FAF6EE] dark:text-[#2B2520] shadow-2xs'
-                  : 'bg-[#FFFFFF] dark:bg-[#201C19] text-[#5C5348] dark:text-[#DDD3BC] border border-[#EAE2D2] dark:border-[#38322B] hover:border-[#C88A35]'
+                  ? 'bg-[#8A1E3B] text-white dark:bg-[#E8637C] dark:text-[#1E1619] shadow-2xs'
+                  : 'bg-white dark:bg-[#1E141A] text-[#6B5B63] dark:text-[#E2B8C4] border border-[#F2D5DE] dark:border-[#38322B] hover:border-[#E8637C] hover:bg-[#FFF5F7]'
               }`}
             >
               {t.allTopics} ({books.length})

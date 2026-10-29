@@ -273,12 +273,12 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
   };
 
   const quickPrompts = currentLang === 'ja' ? [
-    'TodoListMatrixの機能と使い方を教えて！',
+    'Create TodoListの機能と使い方を教えて！',
     'Excelみたいに列幅を小さく（縮小）する方法は？',
     'マトリックスのズーム（拡大・縮小）とTabキー移動は？',
     'おすすめの機械学習・AI本を教えて！',
   ] : [
-    'Explain TodoListMatrix and how it works!',
+    'Explain Create TodoList and how it works!',
     'How do I diminish or resize columns like Excel?',
     'How does Matrix Zoom & Tab navigation work?',
     'Recommend technical books in Machine Learning',
@@ -288,13 +288,13 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
     <aside aria-label="Miyu AI Assistant" className="fixed bottom-5 right-5 z-40 flex flex-col items-end">
       {/* 1. Small Panel Area (when open) */}
       {isOpen && (
-        <div className="mb-3 w-[340px] sm:w-[380px] h-[520px] max-h-[80vh] flex flex-col bg-[#FAF6EE]/95 dark:bg-[#1C1815]/95 backdrop-blur-md rounded-2xl shadow-2xl border-2 border-[#C88A35]/60 dark:border-[#C88A35]/40 overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
+        <div className="mb-3 w-[340px] sm:w-[380px] h-[520px] max-h-[80vh] flex flex-col bg-white dark:bg-[#1E141A] backdrop-blur-md rounded-3xl shadow-2xl border-2 border-[#F2D5DE] dark:border-[#382631] overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
           {/* Anime Header Card */}
-          <div className="p-3 bg-gradient-to-r from-[#2B2520] via-[#38322B] to-[#2B2520] text-[#FAF6EE] border-b border-[#C88A35]/40 flex items-center justify-between shrink-0 shadow-sm">
+          <div className="p-3 bg-gradient-to-r from-[#8A1E3B] via-[#C83761] to-[#E8637C] text-white border-b border-[#F2D5DE]/40 flex items-center justify-between shrink-0 shadow-sm">
             <div className="flex items-center gap-2.5">
               {/* Animated Chibi Avatar Badge */}
               <div className="relative">
-                <div className={`w-11 h-11 rounded-full overflow-hidden border-2 ${isSpeaking ? 'border-[#BD3A2B] ring-2 ring-[#BD3A2B]/50 animate-pulse' : 'border-[#C88A35]'} shadow bg-[#FAF6EE]`}>
+                <div className={`w-11 h-11 rounded-full overflow-hidden border-2 ${isSpeaking ? 'border-white ring-2 ring-white/50 animate-pulse' : 'border-pink-200'} shadow bg-[#FFF5F7]`}>
                   <img
                     src={MIYU_IMAGES[currentPose] || MIYU_IMAGES.welcome}
                     alt="MIYU"
@@ -303,8 +303,8 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
                 </div>
                 {isSpeaking && (
                   <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#BD3A2B] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#BD3A2B]"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-white"></span>
                   </span>
                 )}
               </div>
@@ -313,24 +313,24 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
                 <div className="flex items-center gap-1.5">
                   <h3 className="text-sm font-bold tracking-wide font-serif-jp text-white flex items-center gap-1">
                     <span>MIYU</span>
-                    <span className="text-[11px] text-[#DECFA9] font-normal">ミユ</span>
+                    <span className="text-[11px] text-pink-100 font-normal">ミユ 🌸</span>
                   </h3>
-                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#BD3A2B] text-white">
+                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-white/20 text-white">
                     AI Voice
                   </span>
                 </div>
-                <p className="text-[10px] text-[#DECFA9]/80 flex items-center gap-1">
+                <p className="text-[10px] text-pink-100/90 flex items-center gap-1">
                   {isSpeaking ? (
-                    <span className="text-[#FF8D80] font-medium flex items-center gap-1 animate-pulse">
+                    <span className="text-white font-medium flex items-center gap-1 animate-pulse">
                       <span>Speaking...</span>
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#FF8D80]"></span>
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-white"></span>
                     </span>
                   ) : isListening ? (
-                    <span className="text-emerald-400 font-medium flex items-center gap-1 animate-pulse">
+                    <span className="text-amber-200 font-medium flex items-center gap-1 animate-pulse">
                       <span>Listening to mic...</span>
                     </span>
                   ) : (
-                    <span>Lighthouse Companion &amp; Matrix Guide</span>
+                    <span>Lighthouse Sakura Companion</span>
                   )}
                 </p>
               </div>
@@ -347,12 +347,12 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
                 }}
                 className={`p-1.5 rounded-lg text-xs transition ${
                   autoVoiceReply
-                    ? 'text-[#C88A35] hover:bg-[#FAF6EE]/10'
-                    : 'text-stone-400 hover:bg-[#FAF6EE]/10'
+                    ? 'text-white hover:bg-white/20'
+                    : 'text-white/50 hover:bg-white/10'
                 }`}
                 title={autoVoiceReply ? 'Auto Voice Speech: ON' : 'Auto Voice Speech: MUTED'}
               >
-                {autoVoiceReply ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4 text-stone-500" />}
+                {autoVoiceReply ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4 text-white/40" />}
               </button>
 
               {/* Mouse Toolkit guide toggle */}
@@ -361,8 +361,8 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
                 onClick={onToggleMouseToolkit}
                 className={`px-1.5 py-0.5 rounded text-[10px] font-bold border transition ${
                   mouseToolkitEnabled
-                    ? 'bg-[#C88A35]/30 text-[#DECFA9] border-[#C88A35]'
-                    : 'bg-transparent text-stone-400 border-stone-600 hover:text-white'
+                    ? 'bg-white/25 text-white border-white/50'
+                    : 'bg-transparent text-white/60 border-white/30 hover:text-white'
                 }`}
                 title="Toggle Miyu Mouse Hover Tooltip Explanations"
               >
@@ -373,7 +373,7 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
               <button
                 type="button"
                 onClick={() => onLanguageChange(currentLang === 'ja' ? 'en' : 'ja')}
-                className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[#FAF6EE]/10 text-[#DECFA9] hover:bg-[#FAF6EE]/20 transition"
+                className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-white/20 text-white hover:bg-white/30 transition"
                 title="Switch Language"
               >
                 {currentLang === 'ja' ? 'JP' : 'EN'}
@@ -383,7 +383,7 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
               <button
                 type="button"
                 onClick={onToggleOpen}
-                className="p-1 rounded-lg text-[#DECFA9] hover:text-white hover:bg-white/10 transition"
+                className="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/20 transition cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -391,14 +391,14 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
           </div>
 
           {/* Chat Messages Body */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-2.5 text-xs">
+          <div className="flex-1 overflow-y-auto p-3 space-y-2.5 text-xs bg-white dark:bg-[#1E141A]">
             {messages.map(m => (
               <div
                 key={m.id}
                 className={`flex gap-2 ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {m.sender === 'miyu' && (
-                  <div className="w-7 h-7 rounded-full overflow-hidden border border-[#C88A35] shrink-0 mt-0.5 bg-[#FAF6EE]">
+                  <div className="w-7 h-7 rounded-full overflow-hidden border border-[#E8637C] shrink-0 mt-0.5 bg-[#FFF0F3]">
                     <img
                       src={MIYU_IMAGES[m.pose || 'idle']}
                       alt="Miyu"
@@ -410,8 +410,8 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
                 <div
                   className={`max-w-[82%] rounded-2xl p-2.5 shadow-2xs relative ${
                     m.sender === 'user'
-                      ? 'bg-[#BD3A2B] text-white rounded-tr-none'
-                      : 'bg-white dark:bg-[#201C19] text-[#2B2520] dark:text-[#FAF6EE] border border-[#DECFA9] dark:border-[#38322B] rounded-tl-none'
+                      ? 'bg-[#E8637C] text-white rounded-tr-none'
+                      : 'bg-[#FFF5F7] dark:bg-[#251820] text-[#1E1619] dark:text-[#FDF2F5] border border-[#F2D5DE] dark:border-[#382631] rounded-tl-none'
                   }`}
                 >
                   <p className="leading-relaxed whitespace-pre-wrap">{m.text}</p>
@@ -424,8 +424,8 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
                         onClick={() => playMessageAudio(m.text, m.id)}
                         className={`flex items-center gap-1 font-bold px-1.5 py-0.5 rounded transition ${
                           activeVoiceMsgId === m.id && isSpeaking
-                            ? 'bg-[#BD3A2B] text-white animate-pulse'
-                            : 'hover:text-[#BD3A2B] text-[#C88A35]'
+                            ? 'bg-[#8A1E3B] text-white animate-pulse'
+                            : 'hover:text-[#8A1E3B] text-[#E8637C]'
                         }`}
                         title="Play in native voice"
                       >
@@ -448,32 +448,32 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
             ))}
 
             {isLoading && (
-              <div className="flex gap-2 items-center text-xs text-[#736859] dark:text-[#A89D8E] italic p-1 animate-pulse">
-                <div className="w-6 h-6 rounded-full overflow-hidden border border-[#C88A35] shrink-0 bg-[#FAF6EE]">
+              <div className="flex gap-2 items-center text-xs text-[#8A7881] italic p-1 animate-pulse">
+                <div className="w-6 h-6 rounded-full overflow-hidden border border-[#E8637C] shrink-0 bg-[#FFF5F7]">
                   <img src={MIYU_IMAGES.thinking} alt="Miyu Thinking" className="w-full h-full object-cover object-top scale-125" />
                 </div>
-                <span>Miyu is thinking... (考え中♪)</span>
+                <span>Miyu is thinking... (考え中🌸)</span>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
           {/* Quick Suggestions Chips */}
-          <div className="px-2 py-1.5 border-t border-[#EAE2D2] dark:border-[#2D2823] bg-[#FAF6EE]/80 dark:bg-[#171513]/80 flex gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+          <div className="px-2 py-1.5 border-t border-[#F2D5DE] dark:border-[#382631] bg-[#FFF9FB] dark:bg-[#1A1217] flex gap-1.5 overflow-x-auto no-scrollbar shrink-0">
             {quickPrompts.map((q, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handleSendMessage(q)}
-                className="whitespace-nowrap px-2 py-1 rounded-full text-[10px] bg-white dark:bg-[#201C19] border border-[#DECFA9] dark:border-[#38322B] text-[#736859] dark:text-[#DECFA9] hover:border-[#C88A35] hover:text-[#BD3A2B] transition shrink-0"
+                className="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] bg-white dark:bg-[#251820] border border-[#F2D5DE] dark:border-[#382631] text-[#8A1E3B] dark:text-[#FDF2F5] hover:border-[#E8637C] hover:bg-[#FDE8EE] transition shrink-0 cursor-pointer"
               >
-                ★ {q}
+                🌸 {q}
               </button>
             ))}
           </div>
 
           {/* Input Footer: Voice Mic + Text Input + Send */}
-          <div className="p-2.5 bg-white dark:bg-[#201C19] border-t border-[#DECFA9] dark:border-[#38322B] shrink-0">
+          <div className="p-2.5 bg-white dark:bg-[#1E141A] border-t border-[#F2D5DE] dark:border-[#382631] shrink-0">
             <form
               onSubmit={e => {
                 e.preventDefault();
@@ -487,8 +487,8 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
                 onClick={toggleListening}
                 className={`p-2 rounded-xl transition cursor-pointer flex items-center justify-center shrink-0 ${
                   isListening
-                    ? 'bg-[#BD3A2B] text-white animate-bounce shadow-md'
-                    : 'bg-[#FAF6EE] dark:bg-[#171513] text-[#736859] dark:text-[#A89D8E] hover:text-[#BD3A2B] border border-[#DECFA9] dark:border-[#38322B]'
+                    ? 'bg-[#8A1E3B] text-white animate-bounce shadow-md'
+                    : 'bg-[#FFF5F7] dark:bg-[#251820] text-[#8A1E3B] dark:text-[#FDF2F5] hover:bg-[#FDE8EE] border border-[#F2D5DE] dark:border-[#382631]'
                 }`}
                 title={isListening ? 'Listening... click to stop' : 'Click to talk with your microphone'}
               >
@@ -505,14 +505,14 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
                     ? currentLang === 'ja' ? 'お話し中...' : 'Listening to your voice...'
                     : currentLang === 'ja' ? 'ミユに質問やマトリックスの操作を聞く...' : 'Ask Miyu about TodoListMatrix or books...'
                 }
-                className="flex-1 px-3 py-2 text-xs rounded-xl bg-[#FAF6EE] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
+                className="flex-1 px-3 py-2 text-xs rounded-xl bg-[#FFF9FB] dark:bg-[#251820] border border-[#F2D5DE] dark:border-[#382631] text-[#1E1619] dark:text-[#FDF2F5] focus:outline-none focus:ring-1 focus:ring-[#E8637C]"
               />
 
               {/* Send Button */}
               <button
                 type="submit"
                 disabled={!inputText.trim() || isLoading}
-                className="p-2 rounded-xl bg-[#BD3A2B] hover:bg-[#A83225] disabled:opacity-40 text-white transition shadow-2xs cursor-pointer shrink-0"
+                className="p-2 rounded-xl bg-[#8A1E3B] hover:bg-[#A82B4E] disabled:opacity-40 text-white transition shadow-2xs cursor-pointer shrink-0"
                 title="Send Message"
               >
                 <Send className="w-4 h-4" />
@@ -528,10 +528,10 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
         {!isOpen && (
           <div
             onClick={onToggleOpen}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-[#201C19] border-2 border-[#C88A35]/50 shadow-lg text-[#2B2520] dark:text-[#FAF6EE] text-xs font-bold cursor-pointer hover:scale-105 transition animate-pulse"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-[#1E141A] border-2 border-[#E8637C]/60 shadow-lg text-[#8A1E3B] dark:text-[#FDF2F5] text-xs font-bold cursor-pointer hover:scale-105 transition"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#C88A35]" />
-            <span>{currentLang === 'ja' ? 'ミユに質問する？' : 'Talk with Miyu!'}</span>
+            <Sparkles className="w-3.5 h-3.5 text-[#E8637C]" />
+            <span>{currentLang === 'ja' ? 'ミユに質問する？🌸' : 'Talk with Miyu! 🌸'}</span>
           </div>
         )}
 
@@ -541,12 +541,12 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
           onClick={onToggleOpen}
           className={`relative p-1 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer ${
             isOpen
-              ? 'bg-[#BD3A2B] ring-4 ring-[#BD3A2B]/30'
-              : 'bg-gradient-to-tr from-[#2B2520] via-[#C88A35] to-[#BD3A2B] ring-4 ring-[#C88A35]/40'
+              ? 'bg-[#8A1E3B] ring-4 ring-[#E8637C]/40'
+              : 'bg-gradient-to-tr from-[#8A1E3B] via-[#E8637C] to-[#FCE0E7] ring-4 ring-[#E8637C]/40'
           }`}
           title="Open Miyu Voice Chatbot & Matrix Companion"
         >
-          <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/80 bg-[#FAF6EE]">
+          <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/90 bg-[#FFF5F7]">
             <img
               src={MIYU_IMAGES.waving}
               alt="MIYU Anime Assistant"
@@ -556,9 +556,9 @@ export const MiyuVoiceChatbot: React.FC<MiyuVoiceChatbotProps> = ({
 
           {/* Anime Online / Speaking Indicator Badge */}
           <span className="absolute bottom-0 right-0 flex h-4 w-4">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white text-[8px] text-white font-bold items-center justify-center">
-              ♪
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E8637C] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-[#E8637C] border-2 border-white text-[8px] text-white font-bold items-center justify-center">
+              🌸
             </span>
           </span>
         </button>

@@ -702,37 +702,38 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
     <div
       className={`transition-all duration-300 ${
         isMaximized
-          ? 'fixed inset-0 z-40 bg-[#FAF6EE] dark:bg-[#171513] overflow-y-auto p-4 sm:p-8'
+          ? 'fixed inset-0 z-40 bg-white dark:bg-[#140E12] overflow-y-auto p-4 sm:p-8'
           : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'
       } space-y-6`}
     >
       {/* Top Banner / Title Bar */}
-      <div className="bg-[#FFFFFF] dark:bg-[#201C19] rounded-2xl p-5 border border-[#EAE2D2] dark:border-[#38322B] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#1E141A] rounded-2xl p-5 border border-[#F2D5DE] dark:border-[#38322B] shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             {onOpenHamburger && (
               <button
                 onClick={onOpenHamburger}
-                className="p-2 rounded-xl bg-[#F5EFE3] dark:bg-[#2B2520] hover:bg-[#EAE2D2] text-[#2B2520] dark:text-[#FAF6EE] transition mr-1 cursor-pointer"
+                className="p-2 rounded-xl bg-[#FFF5F7] dark:bg-[#251820] hover:bg-[#FDE8EE] text-[#1E1619] dark:text-[#FDF2F5] transition mr-1 cursor-pointer"
                 title="Open Main Menu Hamburger Drawer"
               >
-                <Menu className="w-5 h-5 text-[#C88A35]" />
+                <Menu className="w-5 h-5 text-[#E8637C]" />
               </button>
             )}
-            <span className="p-2 rounded-xl bg-[#2B2520] text-[#FAF6EE] shadow-2xs">
-              <Table2 className="w-5 h-5 text-[#C88A35]" />
+            <span className="p-2 rounded-xl bg-[#FFF0F3] dark:bg-[#251820] text-[#8A1E3B] shadow-2xs">
+              <Table2 className="w-5 h-5 text-[#E8637C]" />
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-[#2B2520] dark:text-[#FAF6EE] font-serif-jp">
-                  TodoList & Dynamic Tabular Matrix
+                <h1 className="text-xl font-bold text-[#1E1619] dark:text-[#FDF2F5] font-serif-jp flex items-center gap-1.5">
+                  <span>Create TodoList</span>
+                  <span className="text-base">🌸</span>
                 </h1>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#4A6B53]/15 text-[#324D3B] dark:bg-[#4A6B53]/30 dark:text-[#7EB38B] border border-[#4A6B53]/40">
-                  Interactive Database
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#FFF0F3] text-[#8A1E3B] dark:bg-[#321B27] dark:text-[#F48FB1] border border-[#F2D5DE] dark:border-[#4D3343]">
+                  Dynamic Matrix
                 </span>
               </div>
-              <p className="text-xs text-[#736859] dark:text-[#A89D8E]">
-                Create custom lists and tabular databases (e.g. Employers_Colombia), edit like Excel, save to Persistent Firebase, and export to Excel/PDF with email alerts.
+              <p className="text-xs text-[#6B5B63] dark:text-[#E2B8C4]">
+                Create custom lists and tabular databases, edit like Excel, save to Persistent Firebase, and export to Excel/PDF.
               </p>
             </div>
           </div>
@@ -745,7 +746,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <select
                 value={activeDbId}
                 onChange={e => setActiveDbId(e.target.value)}
-                className="bg-[#F5EFE3] dark:bg-[#171513] border border-[#DECFA9] dark:border-[#38322B] text-[#2B2520] dark:text-[#FAF6EE] text-xs font-semibold rounded-xl px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-[#C88A35]"
+                className="bg-[#FFF5F7] dark:bg-[#21171D] border border-[#F2D5DE] dark:border-[#38322B] text-[#1E1619] dark:text-[#FDF2F5] text-xs font-semibold rounded-xl px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-[#E8637C]"
               >
                 {databases.map(d => (
                   <option key={d.id} value={d.id}>
@@ -759,7 +760,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
           <button
             onClick={() => setIsCreateModalOpen(true)}
             data-miyu-tip="matrix-add-db"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition-transform active:scale-95 cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#8A1E3B] hover:bg-[#A82B4E] text-white shadow-2xs transition-transform active:scale-95 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Create New Database</span>
@@ -902,10 +903,10 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <button
                 onClick={handleSaveToFirebase}
                 disabled={isSaving}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#2B2520] hover:bg-[#3D352E] text-[#FAF6EE] shadow-sm transition-transform active:scale-95 disabled:opacity-50 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#8A1E3B] hover:bg-[#A82B4E] text-white shadow-sm transition-transform active:scale-95 disabled:opacity-50 cursor-pointer"
                 title="Save database and matrix state into Persistent Firebase"
               >
-                <Save className="w-3.5 h-3.5 text-[#C88A35]" />
+                <Save className="w-3.5 h-3.5 text-[#E8637C]" />
                 <span>{isSaving ? 'Saving...' : 'Save to Firebase'}</span>
               </button>
 
@@ -913,7 +914,7 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               <button
                 onClick={() => setIsShareModalOpen(true)}
                 data-miyu-tip="matrix-share"
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#BD3A2B] hover:bg-[#A83225] text-white shadow-2xs transition-transform active:scale-95 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#E8637C] hover:bg-[#D84C74] text-white shadow-2xs transition-transform active:scale-95 cursor-pointer"
                 title="Share this TodoList to Customer or Team via Email (multi-recipient, comma-separated) or Cellphone SMS / WhatsApp"
               >
                 <Share2 className="w-3.5 h-3.5" />
@@ -1172,12 +1173,12 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
               style={{ zoom: `${matrixZoom}%` }}
               className="min-w-full inline-block align-top transition-all origin-top-left"
             >
-              <table className="w-full border-collapse text-left text-xs">
+              <table className="w-full border-collapse text-left text-xs bg-white dark:bg-[#1E141A]">
                 {/* Sticky Table Header */}
-                <thead className="bg-[#FAF6EE] dark:bg-[#171513] sticky top-0 z-20 border-b border-[#DECFA9] dark:border-[#38322B] shadow-2xs">
+                <thead className="bg-[#FFF5F7] dark:bg-[#1E141A] sticky top-0 z-20 border-b border-[#F2D5DE] dark:border-[#38322B] shadow-2xs">
                   <tr>
                     {/* Row index indicator header */}
-                    <th className="w-12 px-2 py-2.5 text-center text-[10px] font-bold text-[#A89D8E] uppercase tracking-wider border-r border-[#EAE2D2] dark:border-[#38322B] bg-[#F5EFE3] dark:bg-[#201C19] sticky left-0 z-30">
+                    <th className="w-12 px-2 py-2.5 text-center text-[10px] font-bold text-[#8A7881] uppercase tracking-wider border-r border-[#F2D5DE] dark:border-[#38322B] bg-[#FFF0F3] dark:bg-[#251820] sticky left-0 z-30">
                       #
                     </th>
 
@@ -1189,13 +1190,13 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                         <th
                           key={col.id}
                           style={{ width: `${colWidth}px`, minWidth: `${colWidth}px` }}
-                          className="px-3 py-2 text-xs font-bold text-[#2B2520] dark:text-[#FAF6EE] border-r border-[#EAE2D2] dark:border-[#38322B] group relative select-none"
+                          className="px-3 py-2 text-xs font-bold text-[#8A1E3B] dark:text-[#FDF2F5] border-r border-[#F2D5DE] dark:border-[#38322B] group relative select-none bg-[#FFF5F7] dark:bg-[#1E141A]"
                         >
                           <div className="flex items-center justify-between gap-1">
                             <div className="flex items-center gap-1.5 truncate">
                               {isColUrl && (
                                 <span title="Hyperlink URL Column (Links are clickable)">
-                                  <Link className="w-3.5 h-3.5 text-[#C88A35] shrink-0" />
+                                  <Link className="w-3.5 h-3.5 text-[#E8637C] shrink-0" />
                                 </span>
                               )}
                               <span className="truncate" title={col.name}>
@@ -1311,11 +1312,11 @@ export const TodoListView: React.FC<TodoListViewProps> = ({
                           <td
                             key={col.id}
                             style={{ width: `${colWidth}px`, minWidth: `${colWidth}px` }}
-                            className={`p-0 border-r border-[#EAE2D2] dark:border-[#38322B] transition-colors relative ${
+                            className={`p-0 border-r border-[#F2D5DE] dark:border-[#382631] transition-colors relative ${
                               hasUrlError
-                                ? 'ring-2 ring-[#BD3A2B] bg-[#BD3A2B]/10'
+                                ? 'ring-2 ring-[#8A1E3B] bg-[#FFF0F3]'
                                 : isFocused
-                                ? 'ring-2 ring-[#C88A35] ring-inset bg-[#FAF6EE] dark:bg-[#171513]'
+                                ? 'ring-2 ring-[#E8637C] ring-inset bg-[#FFF5F7] dark:bg-[#251820]'
                                 : ''
                             }`}
                           >

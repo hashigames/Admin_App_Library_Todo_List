@@ -73,7 +73,7 @@ export const HamburgerDrawer: React.FC<HamburgerDrawerProps> = ({
     },
     {
       key: 'todolist',
-      title: 'TodoList Matrix',
+      title: 'Create TodoList',
       subtitle: 'Tabular Excel-like Databases & Deadlines',
       icon: <Table2 className="w-5 h-5 text-[#C88A35]" />,
       count: todoListsCount,
@@ -200,29 +200,20 @@ export const HamburgerDrawer: React.FC<HamburgerDrawerProps> = ({
                       onSelectTab(item.key);
                       onClose();
                     }}
-                    className="flex items-center gap-3.5 flex-1 text-left min-w-0"
+                    className="flex items-center gap-3.5 flex-1 text-left min-w-0 py-1"
                   >
-                    <div
-                      className={`p-2.5 rounded-xl border transition ${
-                        isActive
-                          ? 'bg-[#FFFFFF] dark:bg-[#171513] border-[#DECFA9] dark:border-[#38322B] shadow-2xs'
-                          : 'bg-[#F5EFE3] dark:bg-[#2B2520] border-[#EAE2D2] dark:border-[#38322B]'
-                      }`}
-                    >
-                      {item.icon}
-                    </div>
                     <div className="truncate">
                       <div className="flex items-center gap-2">
-                        <span className={`text-sm font-bold truncate ${isActive ? 'text-[#2B2520] dark:text-[#FAF6EE]' : 'text-[#5C5348] dark:text-[#DDD3BC]'}`}>
+                        <span className={`text-sm font-bold truncate ${isActive ? 'text-[#8A1E3B] dark:text-[#F48FB1]' : 'text-[#2B2520] dark:text-[#FAF6EE]'}`}>
                           {item.title}
                         </span>
                         {isActive && (
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-[#BD3A2B] text-white">
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-[#E8637C] text-white">
                             Active
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-[#8E8373] dark:text-[#A89F91] truncate">
+                      <p className="text-[11px] text-[#8E8373] dark:text-[#A89F91] truncate mt-0.5">
                         {item.subtitle}
                       </p>
                     </div>

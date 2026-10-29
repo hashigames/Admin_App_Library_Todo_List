@@ -16,10 +16,11 @@ export const translations = {
     firebaseCloud: 'Firebase Cloud',
 
     // Navigation
-    navLibrary: 'Library Shelves',
-    navLoans: 'Loans & Board',
+    navLibrary: 'Create Inventory Software',
+    navTodoList: 'Create TodoList',
+    navLoans: 'Loan & Board',
     navUpload: 'Bulk AI Upload',
-    navEquipment: 'Equipment',
+    navEquipment: 'Create Inventory Equipment',
     navSettings: 'Firebase & Settings',
 
     // Library Views & Actions
@@ -160,10 +161,11 @@ export const translations = {
     firebaseCloud: 'Firebase クラウド',
 
     // Navigation
-    navLibrary: '書庫・本棚',
+    navLibrary: 'Create Inventory Software (ソフトウェア棚卸)',
+    navTodoList: 'Create TodoList (TodoList作成)',
     navLoans: '貸出管理・現況盤',
     navUpload: 'AI一括登録',
-    navEquipment: '機材・設備管理',
+    navEquipment: 'Create Inventory Equipment (機材棚卸)',
     navSettings: '設定・Firebase',
 
     // Library Views & Actions
@@ -304,10 +306,11 @@ export const translations = {
     firebaseCloud: 'Firebase Cloud',
 
     // Navigation
-    navLibrary: 'Estantería de Libros',
+    navLibrary: 'Create Inventory Software',
+    navTodoList: 'Create TodoList',
     navLoans: 'Préstamos y Estado en Vivo',
     navUpload: 'Carga Masiva con IA',
-    navEquipment: 'Equipment (Usuarios)',
+    navEquipment: 'Create Inventory Equipment',
     navSettings: 'Ajustes y Firebase',
 
     // Library Views & Actions

@@ -77,46 +77,46 @@ export const LighthouseLogo: React.FC<LighthouseLogoProps> = ({
           <path d="M75 110C75 107 77.2 105 80 105C82.8 105 85 107 85 110V124H75V110Z" fill="#2B2520" />
         </g>
 
-        {/* Dual Flowing Waves in Japanese Indigo and Amber Cream */}
+        {/* Dual Flowing Waves in Japanese Indigo and Sakura Blossom Rose */}
         <g id="ocean-waves">
-          {/* Wave 1 */}
+          {/* Wave 1: Indigo */}
           <path
             d="M20 134C35 125 55 124 75 135C95 146 115 146 135 133C142 128 148 122 152 116C145 124 136 130 126 133C104 139 88 132 72 124C52 114 36 117 20 134Z"
             fill="#2C3E50"
           />
-          {/* Wave 2 */}
+          {/* Wave 2: Sakura Pink */}
           <path
             d="M32 144C48 136 68 136 86 145C102 153 120 152 138 140C144 136 148 131 152 126C146 133 138 138 128 141C110 147 94 142 80 135C62 126 48 129 32 144Z"
-            fill="#C88A35"
+            fill="#E8637C"
           />
         </g>
       </svg>
 
-      {/* Brand Text Stack matching LightHouse 橋 */}
+      {/* Brand Text Stack matching LightHouse 橋 - Sakura White Style */}
       <div className="flex flex-col">
         <div className="flex items-center gap-1.5 leading-none">
-          <span className="font-bold tracking-wider text-[#2B2520] dark:text-[#FAF6EE] font-sans text-xl sm:text-2xl">
+          <span className="font-bold tracking-wider text-[#1E1619] dark:text-[#FDF2F5] font-sans text-xl sm:text-2xl">
             LIGHTHOUSE
           </span>
-          <span className="font-black text-[#BD3A2B] font-serif-jp text-2xl sm:text-3xl ml-0.5">
+          <span className="font-black text-[#E8637C] font-serif-jp text-2xl sm:text-3xl ml-0.5">
             橋
           </span>
-          <span className="text-[#2B2520] dark:text-[#DDD3BC] font-bold text-sm tracking-tight">
+          <span className="text-[#1E1619] dark:text-[#FCE0E7] font-bold text-sm tracking-tight">
             i
           </span>
         </div>
 
         {showSubtitle && (
           <div className="flex items-center gap-1.5 sm:gap-2 mt-0.5 flex-wrap">
-            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.22em] text-[#736859] dark:text-[#DDD3BC] font-semibold">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.22em] text-[#6B5B63] dark:text-[#E2B8C4] font-semibold">
               PROTOTYPE SOFTWARE PIPELINE
             </span>
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#C88A35]"></span>
-            <span className="font-serif-jp text-xs sm:text-sm font-bold text-[#2B2520] dark:text-[#FAF6EE]">
-              燈台文庫
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#E8637C]"></span>
+            <span className="font-serif-jp text-xs sm:text-sm font-bold text-[#8A1E3B] dark:text-[#F48FB1]">
+              燈台文庫 🌸 桜
             </span>
             <span
-              className="text-[10px] sm:text-[11px] font-bold text-[#2B2520] dark:text-[#FAF6EE] bg-[#FFFFFF] dark:bg-[#2B2520] border border-[#EAE2D2] dark:border-[#5C5348] px-2 py-0.5 rounded-full font-serif-jp tracking-wider shadow-2xs"
+              className="text-[10px] sm:text-[11px] font-bold text-[#8A1E3B] dark:text-[#FDF2F5] bg-[#FFF5F7] dark:bg-[#21171D] border border-[#F2D5DE] dark:border-[#382631] px-2 py-0.5 rounded-full font-serif-jp tracking-wider shadow-2xs"
               title="ひらがな名称: とうだいぶんこ (Japanese Market Hiragana: Toudai Bunko)"
             >
               とうだいぶんこ

@@ -20,6 +20,7 @@ import { EquipmentView } from './components/EquipmentView';
 import { TodoListView } from './components/TodoListView';
 import { HamburgerDrawer } from './components/HamburgerDrawer';
 import { ResumeExportModal } from './components/ResumeExportModal';
+import { CloudShellPanel } from './components/CloudShellPanel';
 import { SettingsView } from './components/SettingsView';
 import { LendModal } from './components/LendModal';
 import { ReturnModal } from './components/ReturnModal';
@@ -27,6 +28,8 @@ import { BookDetailsModal } from './components/BookDetailsModal';
 import { GeminiChatbotModal } from './components/GeminiChatbotModal';
 import { MiyuVoiceChatbot } from './components/MiyuVoiceChatbot';
 import { MiyuMouseToolkit } from './components/MiyuMouseToolkit';
+import { BottomPanelsBar } from './components/BottomPanelsBar';
+import { SakuraPetalsOverlay } from './components/SakuraPetalsOverlay';
 import { Toast, ToastMessage } from './components/Toast';
 import { DynamicDatabase } from './types';
 import {
@@ -84,6 +87,48 @@ export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('admin');
   const [activeTab, setActiveTab] = useState<TabKey>('library');
 
+  // Workspace visible panels state (synced with top bar & bottom bar)
+  const [visiblePanels, setVisiblePanels] = useState<TabKey[]>(() => {
+    try {
+      const stored = localStorage.getItem('lighthouse_visible_panels');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const filtered = parsed.filter((k: string) => k !== 'voice' && k !== 'settings' && ['library', 'loans', 'upload', 'equipment', 'todolist', 'chat'].includes(k));
+          if (!filtered.includes('loans')) {
+            filtered.push('loans');
+          }
+          if (filtered.length > 0) return filtered;
+        }
+      }
+    } catch {}
+    return ['library', 'todolist', 'equipment', 'loans'];
+  });
+
+  const handleTogglePanel = (panelKey: TabKey) => {
+    setVisiblePanels(prev => {
+      let next: TabKey[];
+      if (prev.includes(panelKey)) {
+        if (prev.length <= 1) return prev;
+        next = prev.filter(k => k !== panelKey);
+      } else {
+        next = [...prev, panelKey];
+      }
+      try {
+        localStorage.setItem('lighthouse_visible_panels', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
+
+  const handleResetPanels = () => {
+    const defaultPanels: TabKey[] = ['library', 'todolist', 'equipment', 'loans'];
+    setVisiblePanels(defaultPanels);
+    try {
+      localStorage.setItem('lighthouse_visible_panels', JSON.stringify(defaultPanels));
+    } catch {}
+  };
+
   // Domain data
   const [books, setBooks] = useState<Book[]>([]);
   const [equipmentList, setEquipmentList] = useState<EquipmentUser[]>([]);
@@ -94,6 +139,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Panel & Modals state
+  const [isCloudShellOpen, setIsCloudShellOpen] = useState(false);
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const [resumeModalTarget, setResumeModalTarget] = useState<'todolist' | 'library' | 'equipment' | 'all'>('all');
@@ -355,7 +401,10 @@ export default function App() {
   const fbConfig = getStoredFirebaseConfig();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF6EE] dark:bg-[#171513] text-[#2B2520] dark:text-[#FAF6EE] transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-[#FFFFFF] dark:bg-[#140E12] text-[#1E1619] dark:text-[#FDF2F5] transition-colors duration-300 relative paper-texture selection:bg-[#E8637C]/25 selection:text-[#8A1E3B]">
+      {/* Gentle Floating Sakura Petals Ambiance */}
+      <SakuraPetalsOverlay enabled={true} />
+
       {/* Top Header */}
       <Header
         currentLang={currentLang}
@@ -368,6 +417,7 @@ export default function App() {
         onSelectEquipment={setActiveEquipmentId}
         isFirebaseLive={fbConfig.isConfigured}
         onOpenFirebaseModal={() => setActiveTab('settings')}
+        onOpenCloudShell={() => setIsCloudShellOpen(true)}
         onOpenUploadModal={() => setActiveTab('upload')}
         onOpenLendModal={() => handleOpenLend()}
         onOpenChatModal={() => {
@@ -388,15 +438,17 @@ export default function App() {
         overdueCount={overdueCount}
         needsReviewCount={needsReviewCount}
         onOpenHamburger={() => setIsHamburgerOpen(true)}
+        visiblePanels={visiblePanels}
+        onSetVisiblePanels={setVisiblePanels}
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pb-16">
+      <main className="flex-1 pb-16 relative z-20">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-3">
-            <div className="w-10 h-10 border-4 border-[#EAE2D2] border-t-[#BD3A2B] dark:border-[#38322B] dark:border-t-[#C88A35] rounded-full animate-spin" />
-            <p className="text-xs font-semibold text-[#736859] dark:text-[#A89D8E] font-serif-jp">
-              とうだいぶんこ（燈台文庫）読み込み中...
+            <div className="w-10 h-10 border-4 border-[#F2D5DE] border-t-[#E8637C] dark:border-[#382631] dark:border-t-[#E8637C] rounded-full animate-spin" />
+            <p className="text-xs font-semibold text-[#8A1E3B] dark:text-[#F48FB1] font-serif-jp">
+              とうだいぶんこ（燈台文庫）桜 読み込み中... 🌸
             </p>
           </div>
         ) : (
@@ -476,13 +528,27 @@ export default function App() {
         )}
       </main>
 
+      {/* Bottom Panel below the app: [ ⚙ Firebase & Settings ] [ 🎛 Manage Panels +3 ] */}
+      <BottomPanelsBar
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
+        visiblePanels={visiblePanels}
+        onTogglePanel={handleTogglePanel}
+        onResetPanels={handleResetPanels}
+        currentLang={currentLang}
+      />
+
       {/* Footer */}
-      <footer className="border-t border-[#EAE2D2] dark:border-[#2D2823] bg-[#FAF6EE] dark:bg-[#171513] py-6 px-4 text-center text-xs text-[#736859] dark:text-[#A89D8E]">
-        <p className="font-semibold text-[#2B2520] dark:text-[#FAF6EE]">
-          LIGHTHOUSE 橋i • 燈台文庫（とうだいぶんこ）• Lighthouse Hashi Library
+      <footer className="border-t border-[#F2D5DE] dark:border-[#382631] bg-[#FFFFFF] dark:bg-[#140E12] py-6 px-4 text-center text-xs text-[#6B5B63] dark:text-[#E2B8C4]">
+        <p className="font-semibold text-[#1E1619] dark:text-[#FDF2F5] flex items-center justify-center gap-1.5 flex-wrap">
+          <span>🌸 LIGHTHOUSE 橋i</span>
+          <span>•</span>
+          <span>燈台文庫（とうだいぶんこ）桜</span>
+          <span>•</span>
+          <span>Japanese Sakura Edition</span>
         </p>
-        <p className="text-[11px] text-[#A89D8E] mt-1">
-          Intelligent Technical Book Management Pipeline • Mobile, Tablet & Desktop Responsive
+        <p className="text-[11px] text-[#8A7881] mt-1">
+          Intelligent Technical Book Management &amp; Dynamic Matrix Pipeline
         </p>
       </footer>
 
@@ -536,6 +602,21 @@ export default function App() {
         currentLang={currentLang}
         initialBookContext={chatBookContext}
         initialSearchQuery={chatSearchQuery}
+      />
+
+      {/* Google Cloud Shell Interactive Access Panel */}
+      <CloudShellPanel
+        isOpen={isCloudShellOpen}
+        onClose={() => setIsCloudShellOpen(false)}
+        onNavigateToTab={(tab: TabKey) => {
+          setActiveTab(tab);
+          if (!visiblePanels.includes(tab)) {
+            setVisiblePanels(prev => [...prev, tab]);
+          }
+        }}
+        booksCount={books.length}
+        databasesCount={databases.length}
+        equipmentCount={equipmentList.length}
       />
 
       {/* Main Menu Hamburger Drawer */}
